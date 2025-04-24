@@ -21,64 +21,49 @@ function logout() {
 
 renderHome();
 
+function getRandomNumber() {
+  return Math.floor(Math.random() * 100) + 1;
+}
 
-/* Phân trang */
-const rowsPerPage = 6;
-let currentPage = 1;
-
-function renderTable() {
-  const start = (currentPage - 1) * rowsPerPage;
-  const end = start + rowsPerPage;
-  const cardItem = document.getElementById("card-item");
+function renderCard() {
+  let cardItem = document.querySelector(".card-item");
   cardItem.innerHTML = "";
 
-  const pageItems = employees.slice(start, end);
-  pageItems.forEach((emp, index) => {
-    const row = `<tr>
-        <td>${start + index + 1}</td>
-        <td>${emp.name}</td>
-        <td>${emp.position}</td>
-      </tr>`;
-      cardItem.innerHTML += row;
+  Recipe.forEach((re) => {
+    let categories = category
+      .filter((cate) => re.category.some((c) => c.id === cate.id))
+      .map((cate) => cate.name)
+      .join(", ");
+      cardItem.innerHTML+= `
+      <div class="col">
+        <div class="card h-100">
+          <div class="card-body">
+            <span class="badge text-bg-warning mb-2">
+              <i class="fas fa-users"></i>
+              Community Recipes
+            </span>
+            <h5 class="card-title">${re.name}</h5>
+            <p class="card-text">${re.author}</p>
+            <p class="card-category">
+              <i class="fas fa-tag"></i>
+              ${categories}
+            </p>
+            <div class="d-flex justify-content-end gap-2 align-items-center">
+              <i class="far fa-heart"></i>
+              ${Math.floor(Math.random() * 100)}
+            </div>
+          </div>
+          <div class="card-footer d-flex justify-content-between">
+            <small><strong>By</strong> 100g</small>
+            <small><strong>Energy</strong> ${re.ingredients[0].macronutrients.energy} kcal</small>
+            <small><strong>Fat</strong> ${re.ingredients[0].macronutrients.fat} g</small>
+            <small><strong>Carbohydrate</strong> ${re.ingredients[0].macronutrients.carbohydrate} g</small>
+            <small><strong>Protein</strong> ${re.ingredients[0].macronutrients.protein} g</small>
+          </div>
+        </div>
+      </div>
+    `;
   });
-
-  renderPagination();
 }
 
-function renderPagination() {
-  const totalPages = Math.ceil(employees.length / rowsPerPage);
-  const pagination = document.getElementById("pagination");
-  pagination.innerHTML = "";
-  // Previous button
-  const prevBtn = document.createElement("button");
-  prevBtn.textContent = "Previous";
-  if (currentPage === 1) prevBtn.disabled = true;
-  prevBtn.addEventListener("click", () => changePage(currentPage - 1));
-  pagination.appendChild(prevBtn);
-
-  // Page number buttons
-  for (let i = 1; i <= totalPages; i++) {
-    const pageBtn = document.createElement("button");
-    pageBtn.textContent = i;
-    // tạo hiệu ứng để biết đang ở trang nào
-    if (i === currentPage) pageBtn.classList.add("active");
-    // Khi click thì gọi hàm đổi trang
-    pageBtn.addEventListener("click", () => changePage(i));
-    pagination.appendChild(pageBtn);
-  }
-
-  // Next button
-  const nextBtn = document.createElement("button");
-  nextBtn.textContent = "Next";
-  if (currentPage === totalPages) nextBtn.disabled = true;
-  nextBtn.addEventListener("click", () => changePage(currentPage + 1));
-  pagination.appendChild(nextBtn);
-}
-
-function changePage(page) {
-  const totalPages = Math.ceil(employees.length / rowsPerPage);
-  if (page < 1 || page > totalPages) return;
-  currentPage = page;
-  renderTable();
-}
-
+renderCard();

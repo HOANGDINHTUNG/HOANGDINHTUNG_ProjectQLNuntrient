@@ -10,7 +10,10 @@
   </head>
   <body>
     <script src="./auth/authen.js"></script>
-    <script src="./js/list.js"></script>
+    <script src="./resource/userList.js"></script>
+    <script src="./resource/Food.js"></script>
+    <script src="./resource/Recipe.js"></script>  
+    <script src="./resource/category.js"></script>
     <script src="./js/main.js"></script>
     <script src="./home/home.js"></script>
 
@@ -74,60 +77,20 @@
 
               <select class="form-select form-select-sm" aria-label="Small select example">
                 <option selected value="">All categories</option>
-                <option value="1">Desserts</option>
-                <option value="2">Breakfast and snacks</option>
-                <option value="3">Appetizers and side dishes</option>
-                <option value="4">Soups</option>
-                <option value="5">Meat dishes</option>
-                <option value="6">Fish dishes</option>
-                <option value="7">Vegetarian dishes</option>
+                <option value="vegeterian">vegeterian</option>
+                <option value="appetizer">appetizer</option>
+                <option value="vegan">vegan</option>
+                <option value="main course">main course</option>
+                <option value="dessert">dessert</option>
+                <option value="low-carb">low-carb</option>
+                <option value="gluten-free">gluten-free</option>
+                <option value="breakfast">breakfast</option>
+                <option value="salad">salad</option>
+                <option value="soup">soup</option>
               </select>
             </div>
 
-            <div class="row row-cols-1 row-cols-md-2 g-4 card-item">
-              <div class="col">
-                <div class="card h-100">
-                  <div class="card-body">
-                    <span class="badge text-bg-warning mb-2">
-                      <i class="fas fa-users"></i>
-                      Community Recipes
-                    </span>
-                    <h5 class="card-title">Turmeric Roasted Cauliflower Salad (lowfodmap)</h5>
-                    <p class="card-text">Joana Jardim</p>
-                    <p class="card-category">
-                      <i class="fas fa-tag"></i>
-                      Vegetarian dishes
-                    </p>
-                    <div class="d-flex justify-content-end gap-2 align-items-center">
-                      <i class="far fa-heart"></i>
-                      37
-                    </div>
-                  </div>
-                  <div class="card-footer d-flex justify-content-between">
-                    <small>
-                      <strong>By</strong>
-                      100g
-                    </small>
-                    <small>
-                      <strong>Energy</strong>
-                      143kcal
-                    </small>
-                    <small>
-                      <strong>Fat</strong>
-                      6g
-                    </small>
-                    <small>
-                      <strong>Carbohydrate</strong>
-                      18g
-                    </small>
-                    <small>
-                      <strong>Protein</strong>
-                      5g
-                    </small>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <div class="row row-cols-1 row-cols-md-2 g-4 card-item"></div>
 
             <div class="pagination" id="pagination"></div>
           </div>
