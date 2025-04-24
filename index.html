@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ingredient dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="./home/style.css" />
+  </head>
+  <body>
+    <script src="./auth/authen.js"></script>
+    <script src="./js/list.js"></script>
+    <script src="./js/main.js"></script>
+    <script src="./home/home.js"></script>
+
+    <div class="container-fluid Home">
+      <div class="row">
+        <!-- Sidebar -->
+        <div id="sidebar" class="col-md-2 sidebar d-flex flex-column vh-100">
+          <div class="container-fluid logo p-3">
+            <img src="./img/bd9a9a7d62b2b3b87b6c262d3ea21469fddf65f8 (1).png" class="img-fluid" />
+          </div>
+          <nav class="nav flex-column p-3 flex-grow-1">
+            <a class="nav-link active">
+              <i class="fas fa-home"></i>
+              Homepage
+            </a>
+            <a class="nav-link" href="./page/food/food.html">
+              <i class="fas fa-apple-alt"></i>
+              Foods
+            </a>
+            <a class="nav-link">
+              <i class="fas fa-book"></i>
+              Recipes
+            </a>
+          </nav>
+          <div class="p-3">
+            <a class="btn btn-success w-100" href="#" onclick="logout()">
+              <i class="fas fa-sign-out-alt"></i>
+              Sign out
+            </a>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+
+        <div id="mainContent" class="col-md-10 main-content">
+          <div class="menu border-bottom border-1">
+            <div class="rounded" onclick="toggleSidebar()">
+              <i class="fa-solid fa-bars"></i>
+            </div>
+          </div>
+          <div class="title">
+            <h2>Recipes</h2>
+            <p>Create, check and update recipes</p>
+          </div>
+          <div class="p-4 rounded-3 shadow">
+            <h4>Recipes</h4>
+            <p>Create, check and creat new recipes</p>
+            <div class="d-flex gap-4 mb-3" style="height: 40px">
+              <input type="text" class="form-control" placeholder="Search food" />
+
+              <div class="input-group">
+                <button class="btn btn-outline-secondary" type="button"><i class="fas fa-filter"></i></button>
+                <select class="form-select" id="inputGroupSelect03" aria-label="Example select with button addon">
+                  <option selected>Sort by nutrient</option>
+                  <option value="Energy">Energy</option>
+                  <option value="Fat">Fat</option>
+                  <option value="Carbohydrate">Carbohydrate</option>
+                  <option value="Protein">Protein</option>
+                </select>
+              </div>
+
+              <select class="form-select form-select-sm" aria-label="Small select example">
+                <option selected value="">All categories</option>
+                <option value="1">Desserts</option>
+                <option value="2">Breakfast and snacks</option>
+                <option value="3">Appetizers and side dishes</option>
+                <option value="4">Soups</option>
+                <option value="5">Meat dishes</option>
+                <option value="6">Fish dishes</option>
+                <option value="7">Vegetarian dishes</option>
+              </select>
+            </div>
+
+            <div class="row row-cols-1 row-cols-md-2 g-4 card-item">
+              <div class="col">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <span class="badge text-bg-warning mb-2">
+                      <i class="fas fa-users"></i>
+                      Community Recipes
+                    </span>
+                    <h5 class="card-title">Turmeric Roasted Cauliflower Salad (lowfodmap)</h5>
+                    <p class="card-text">Joana Jardim</p>
+                    <p class="card-category">
+                      <i class="fas fa-tag"></i>
+                      Vegetarian dishes
+                    </p>
+                    <div class="d-flex justify-content-end gap-2 align-items-center">
+                      <i class="far fa-heart"></i>
+                      37
+                    </div>
+                  </div>
+                  <div class="card-footer d-flex justify-content-between">
+                    <small>
+                      <strong>By</strong>
+                      100g
+                    </small>
+                    <small>
+                      <strong>Energy</strong>
+                      143kcal
+                    </small>
+                    <small>
+                      <strong>Fat</strong>
+                      6g
+                    </small>
+                    <small>
+                      <strong>Carbohydrate</strong>
+                      18g
+                    </small>
+                    <small>
+                      <strong>Protein</strong>
+                      5g
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="pagination" id="pagination"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--=============== JS ===============-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./js/effect.js"></script>
+  </body>
+</html>

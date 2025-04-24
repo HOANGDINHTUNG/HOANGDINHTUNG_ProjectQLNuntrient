@@ -1,0 +1,77 @@
+body {
+  background-color: #f4f6f9;
+}
+.sidebar {
+  height: 100vh;
+  background-color: #2b3c4e;
+  color: white;
+}
+.sidebar .nav-link {
+  color: #ccc;
+}
+.sidebar .nav-link.active {
+  background-color: #1abc9c;
+  color: white;
+}
+.sidebar .nav-link:hover{
+    background-color: #1abc9c;
+    color: white;
+}
+
+.card-category {
+  font-size: 0.85rem;
+  color: #ff8c42;
+}
+.card-footer small {
+  margin-right: 15px;
+}
+.logo {
+  padding: 40px 15px;
+  img {
+    width: 150px;
+    height: 44px;
+  }
+}
+
+.menu {
+  height: 75px;
+  background-color: white;
+  padding: 20px;
+}
+.rounded {
+  background-color: #1ab394;
+  padding: 5px 10px;
+  width: 40px;
+  text-align: center;
+  color: white;
+}
+
+.title{
+    padding: 20px;
+    background-color: white;
+    color: #ccc;
+}
+
+.p-4{
+    margin: 30px 20px;
+    background-color: white;
+}
+
+.fas{
+    margin-right: 10px;
+}
+
+.input-group,.form-select{
+    width: 400px;
+}
+
+/* Đóng mở thanh sidebar*/
+.sidebar.collapsed {
+    display: none !important;
+  }
+  
+  .main-content.full-width {
+    width: 100% !important;
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
