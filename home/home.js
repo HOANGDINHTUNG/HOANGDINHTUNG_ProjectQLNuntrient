@@ -25,6 +25,9 @@ function getRandomNumber() {
   return Math.floor(Math.random() * 100) + 1;
 }
 
+console.log(Food)
+console.log(Recipe)
+console.log(category)
 function renderCard() {
   let cardItem = document.querySelector(".card-item");
   cardItem.innerHTML = "";

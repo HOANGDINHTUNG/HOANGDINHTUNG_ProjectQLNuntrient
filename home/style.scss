@@ -71,7 +71,7 @@ body {
 
 .input-group,
 .form-select {
-  width: 400px;
+  width: 500px;
 }
 
 /* Đóng mở thanh sidebar*/
@@ -104,5 +104,47 @@ body {
 .pagination button.active {
   background-color: #1ab394;
   color: white;
+}
+
+.box-content{
+  margin: 30px 20px;
+  display: flex;
+  gap: 30px
+}
+
+textarea.form-control {
+  resize: none;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+input.form-control::placeholder {
+  font-weight: 300;
+  font-style: italic;
+}
+
+.statistical{
+  width:55%;
+}
+
+.chart{
+  width:45%
+}
+
+#legend {
+  margin-top: 20px;
+  display: flex;
+  gap: 20px;
+  font-size: 14px;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.box {
+  width: 12px;
+  height: 12px;
 }
 

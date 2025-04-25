@@ -3,10 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Food</title>
+    <title>Ingredient dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="../../home/style.css" />
+    <link rel="stylesheet" href="./form/form.css">
   </head>
   <body>
     <div class="container-fluid Home">
@@ -25,7 +26,7 @@
               <i class="fas fa-apple-alt"></i>
               Foods
             </a>
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="../recipes/recipe.html">
               <i class="fas fa-book"></i>
               Recipes
             </a>
@@ -80,11 +81,9 @@
               </select>
             </div>
 
-            <div class="card-food">
-              
-            </div>
+            <div class="card-food"></div>
 
-            <div class="border border-1 p-3 d-flex gap-3 align-items-center">
+            <div class="border border-1 p-3 d-flex gap-3 align-items-center" id="openFormBtn">
               <i class="fa-solid fa-plus"></i>
               <span>Create food</span>
             </div>
@@ -94,6 +93,8 @@
         </div>
       </div>
     </div>
+
+    <!--=============== JS ===============-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../js/effect.js"></script>
     <script src="../../home/home.js"></script>

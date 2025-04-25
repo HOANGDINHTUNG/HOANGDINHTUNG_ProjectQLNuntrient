@@ -115,3 +115,19 @@ function changePage(page) {
 
 // Khởi tạo lần đầu
 renderTable();
+
+
+document.getElementById("openFormBtn").addEventListener("click", function () {
+  window.location.href = "./form/form.html";
+});
+
+function closeForm(){
+  window.location.href = "../food.html";
+}
+
+document.querySelector(".overlay-iframe").addEventListener("click", function (e) {
+  // Kiểm tra nếu người dùng click chính vào iframe (chứ không phải nội dung trong đó)
+  if (e.target === this) {
+    this.style.display = "none";
+  }
+});

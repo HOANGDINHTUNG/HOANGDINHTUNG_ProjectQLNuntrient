@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recipe Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../../home/style.css" />
+  </head>
+  <body>
+    <script src="./auth/authen.js"></script>
+    <script src="./resource/userList.js"></script>
+    <script src="./resource/Food.js"></script>
+    <script src="./resource/Recipe.js"></script>
+    <script src="./resource/category.js"></script>
+    <script src="./js/main.js"></script>
+    <script src="./home/home.js"></script>
+
+    <div class="container-fluid Home">
+      <div class="row">
+        <!-- Sidebar -->
+        <div id="sidebar" class="col-md-2 sidebar d-flex flex-column vh-100">
+          <div class="container-fluid logo p-3">
+            <img src="../../img/bd9a9a7d62b2b3b87b6c262d3ea21469fddf65f8 (1).png" class="img-fluid" />
+          </div>
+          <nav class="nav flex-column p-3 flex-grow-1">
+            <a class="nav-link" href="../../index.html">
+              <i class="fas fa-home"></i>
+              Homepage
+            </a>
+            <a class="nav-link" href="../food/food.html">
+              <i class="fas fa-apple-alt"></i>
+              Foods
+            </a>
+            <a class="nav-link active">
+              <i class="fas fa-book"></i>
+              Recipes
+            </a>
+          </nav>
+          <div class="p-3">
+            <a class="btn btn-success w-100" href="#" onclick="logout()">
+              <i class="fas fa-sign-out-alt"></i>
+              Sign out
+            </a>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+
+        <div id="mainContent" class="col-md-10 main-content">
+          <div class="menu border-bottom border-1">
+            <div class="rounded" onclick="toggleSidebar()">
+              <i class="fa-solid fa-bars"></i>
+            </div>
+          </div>
+          <div class="title">
+            <h2>Recipes</h2>
+            <p>Create, check and update recipes</p>
+          </div>
+          <!-- <div class="p-4 rounded-3 shadow">
+            <div class="d-flex align-items-center justify-content-between">
+              <div>
+                <h4>Recipes</h4>
+                <p>Create, check and creat new recipes</p>
+              </div>
+              <span style="font-size: 40px">+</span>
+            </div>
+            <div class="d-flex gap-4 mb-3" style="height: 40px">
+              <input type="text" class="form-control" placeholder="Search food" />
+
+              <div class="input-group">
+                <button class="btn btn-outline-secondary" type="button"><i class="fas fa-filter"></i></button>
+                <select class="form-select" id="inputGroupSelect03" aria-label="Example select with button addon">
+                  <option selected>Sort by nutrient</option>
+                  <option value="Energy">Energy</option>
+                  <option value="Fat">Fat</option>
+                  <option value="Carbohydrate">Carbohydrate</option>
+                  <option value="Protein">Protein</option>
+                </select>
+              </div>
+
+              <select class="form-select form-select-sm" aria-label="Small select example">
+                <option selected value="">All categories</option>
+                <option value="vegeterian">vegeterian</option>
+                <option value="appetizer">appetizer</option>
+                <option value="vegan">vegan</option>
+                <option value="main course">main course</option>
+                <option value="dessert">dessert</option>
+                <option value="low-carb">low-carb</option>
+                <option value="gluten-free">gluten-free</option>
+                <option value="breakfast">breakfast</option>
+                <option value="salad">salad</option>
+                <option value="soup">soup</option>
+              </select>
+            </div>
+
+            <div class="d-flex align-items-center justify-content-between">
+              <div class="border border-1 p-2 d-flex gap-2 align-items-center">
+                <i class="fa-solid fa-heart" style="color: red"></i>
+                <span>Favorites</span>
+                <span class="opacity-50">0</span>
+              </div>
+              <div class="p-2 d-flex align-items-center">
+                <i class="fas fa-check-square" style="font-size: 20px;color: #2196f3"></i>
+                <i class="fas fa-pen-to-square" style="font-size: 20px;color: #2196f3"></i>
+                <span style="font-weight: 600;color: #2196f3">My recipes</span>
+              </div>
+            </div>
+
+            <div class="row row-cols-1 row-cols-md-2 g-4 card-item"></div>
+
+            <div class="pagination" id="pagination"></div>
+          </div> -->
+
+          <div class="box-content mb-4">
+            <div class="w-25">
+              <div class="d-flex flex-column gap-4">
+                <div class="border border-1 rounded-2" style="background-color: white; height: 300px; padding: 20px">
+                  <div class="d-flex flex-column justify-content-between h-100">
+                    <div class="d-flex align-items-center gap-2">
+                      <span class="badge text-bg-warning p-2">
+                        <i class="fas fa-users"></i>
+                        Community Recipes
+                      </span>
+                      <div
+                        class="d-flex border border-1 rounded-2 gap-1 align-items-center"
+                        style="font-size: 12px; padding: 4px">
+                        <i class="far fa-heart"></i>
+                        <span>37</span>
+                      </div>
+                    </div>
+
+                    <div class="card-category border border-1 p-1 rounded-3" style="width: 150px">
+                      <i class="fas fa-tag"></i>
+                      Vegetarian dishes
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="d-flex border border-1 rounded-2 gap-1 align-items-center"
+                  style="font-size: 12px; padding: 4px; width: 130px">
+                  <i class="fa-solid fa-heart" style="color: red"></i>
+                  <span>Add to favourite</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="border border-1 w-100 rounded-2 lh-1" style="background-color: white; padding: 20px">
+              <div class="fw-light fs-4">Basic information</div>
+              <span class="fw-light" style="font-size: 14px">Check and edit recipe's basic information</span>
+              <div class="d-flex mt-3">
+                <span
+                  class="border border-end-0 w-50 text-wrap rounded-start-0 ps-2 align-items-center d-flex fs-6 fw-light"
+                  style="background-color: #fafafb">
+                  Name
+                </span>
+                <input
+                  type="text"
+                  class="form-control rounded-0 fw-light"
+                  value="Turmeric Roasted Cauliflower Salad (lowfodmap)" />
+              </div>
+              <div class="d-flex mt-3">
+                <span
+                  class="border border-end-0 w-50 text-wrap rounded-start-0 ps-2 align-items-center d-flex fs-6 fw-light"
+                  style="background-color: #fafafb">
+                  Description
+                </span>
+                <textarea class="form-control rounded-0 fw-light">
+                        Our roasted cauliflower salad with turmeric is low in calories and packed with punchy flavor. Turmeric
+                        adds lovely color and flavor to this easy vegan-friendly recipe</textarea
+                >
+              </div>
+              <div class="d-flex mt-3">
+                <span
+                  class="border border-end-0 w-50 text-wrap rounded-start-0 ps-2 align-items-center d-flex fs-6 fw-light"
+                  style="background-color: #fafafb">
+                  Author
+                </span>
+                <input type="text" class="form-control rounded-0 fw-light" value="Joana Jardim" />
+              </div>
+              <div class="d-flex mt-3">
+                <span
+                  class="border border-end-0 w-50 text-wrap rounded-start-0 ps-2 align-items-center d-flex fs-6 fw-light"
+                  style="background-color: #fafafb">
+                  Total time
+                </span>
+                <input type="text" class="form-control rounded-0 fw-light" value="00:40" />
+              </div>
+              <div class="d-flex mt-3">
+                <span
+                  class="border border-end-0 w-50 text-wrap rounded-start-0 ps-2 align-items-center d-flex fs-6 fw-light"
+                  style="background-color: #fafafb">
+                  Preparation time
+                </span>
+                <input type="text" class="form-control rounded-0 fw-light" value="00:40" />
+              </div>
+              <div class="d-flex mt-3">
+                <span
+                  class="border border-end-0 w-50 text-wrap rounded-start-0 ps-2 align-items-center d-flex fs-6 fw-light"
+                  style="background-color: #fafafb">
+                  Final weight
+                </span>
+                <input type="text" class="form-control rounded-0 fw-light" value="978.8 grams" />
+              </div>
+              <div class="d-flex mt-3">
+                <span
+                  class="border border-end-0 w-50 text-wrap rounded-start-0 ps-2 align-items-center d-flex fs-6 fw-light"
+                  style="background-color: #fafafb">
+                  Portions
+                </span>
+                <input type="text" class="form-control rounded-0 fw-light" value="4" />
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="box-content flex-column p-3 lh-2 rounded-2 mb-4"
+            style="background-color: #1ab394; gap: 5px; color: white">
+            <span class="fs-5">Creation</span>
+            <span style="font-size: 14px">Create the recipe and choose the ingredients</span>
+          </div>
+
+          <div class="box-content">
+            <div class="statistical">
+              <div
+                class="d-flex flex-column gap-3 border border-1 rounded-2 mb-4"
+                style="padding: 20px; background-color: white">
+                <div class="d-flex lh-1 flex-column mb-2">
+                  <span class="fs-4">Ingredients</span>
+                  <span style="opacity: 0.5; font-size: 14px">Search and add ingredients to the recipe</span>
+                </div>
+                <div class="border border-2 p-2">1 chopped cup (1/2" pieces) of cauliflower, raw (107 g)</div>
+                <div class="border border-2 p-2">1 tsp of spices, turmeric, ground (3 g)</div>
+                <div class="border border-2 p-2">1 tbsp of olive oil (14 g)</div>
+                <div class="border border-2 p-2">100 grams of rice, brown, medium-grain, raw</div>
+                <div class="border border-2 p-2">150 grams of edamame, frozen, unprepared</div>
+                <div class="border border-2 p-2">1 cup, sections of lemons, raw, without peel (212 g)</div>
+                <div class="border border-2 p-2">1 cup slices of cucumber, with peel, raw (104 g)</div>
+                <div class="border border-2 p-2">4 tbsps of parsley, fresh (15 g)</div>
+                <div class="border border-2 p-2">50 grams of nuts, cashew nuts, oil roasted, with salt added</div>
+                <div class="border border-2 p-2">5 tbsps of vinegar, balsamic (80 g)</div>
+                <div class="border border-2 p-2">4 tbsps of soy sauce made from soy (tamari) (72 g)</div>
+                <div class="border border-2 p-2">1 tablespoon of oil, sesame, salad or cooking (14 g)</div>
+                <div class="border border-2 p-2">1 tablespoon of oil, sesame, salad or cooking (14 g)</div>
+                <div class="border border-2 p-2">2 tbsps of syrups, maple (40 g)</div>
+              </div>
+
+              <div
+                class="d-flex flex-column gap-2 border border-1 rounded-2"
+                style="padding: 20px; background-color: white">
+                <div class="d-flex lh-1 flex-column">
+                  <span class="fs-4">Cooking method</span>
+                  <span style="opacity: 0.5; font-size: 14px">Give instructions to prepare this recipe</span>
+                </div>
+                <div class="d-flex mt-3">
+                  <span
+                    class="border border-end-0 p-3 text-center rounded-start-0 ps-2 align-items-center d-flex fs-5 fw-light"
+                    style="background-color: #fafafb">
+                    1
+                  </span>
+                  <p class="form-control rounded-0 fw-light mb-0">
+                    STEP 1 Heat the oven to 200C/fan 180C/gas 6. Put the cauliflower in an ovenproof dish or tin, add
+                    the turmeric, some seasoning and 2 tbsp oil, and toss together. Roast for 20-25 minutes until
+                    tender. Tip onto a plate and cool. STEP 2 Meanwhile boil the rice in salted water until tender,
+                    adding the edamame for the last minute of cooking, then drain well. Leave to cool, then tip into a
+                    large bowl. Add the roasted cauliflower, lemon juice, cucumber and some seasoning, and toss
+                    together. Add the herbs and toss again. Add mint for extra flavor. STEP 3 Whisk together the
+                    dressing ingredients. Divide the cauliflower and rice between plates, scatter over the cashews and
+                    drizzle with the dressing.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="chart">
+              <div class="border rounded-2 d-flex flex-column mb-4" style="background-color: white; padding: 20px">
+                <div class="d-flex lh-1 flex-column mb-2">
+                  <span class="fs-4">Global analysis per portion</span>
+                  <span style="opacity: 0.5; font-size: 14px">Energy, macronutrients and fiber distribution</span>
+                </div>
+                <div class="d-flex justify-content-between mt-2 mb-1 border-bottom">
+                  <span>Energy</span>
+                  <span>351 kcal</span>
+                </div>
+
+                <div class="d-flex justify-content-around mt-4 flex-wrap gap-3">
+                  <div class="d-flex flex-column align-items-center">
+                    <div class="p-3 border-5 rounded-circle m-0" style="border: solid #db4965">16g</div>
+                    <span>Fat</span>
+                  </div>
+                  <div class="d-flex flex-column align-items-center">
+                    <div class="p-3 border-5 rounded-circle m-0" style="border: solid #ea9f77">45g</div>
+                    <span>Carbohydrate</span>
+                  </div>
+                  <div class="d-flex flex-column align-items-center">
+                    <div class="p-3 border-5 rounded-circle m-0" style="border: solid #1ab394">12g</div>
+                    <span>Protein</span>
+                  </div>
+                  <div class="d-flex flex-column align-items-center">
+                    <div class="p-3 border-5 rounded-circle m-0" style="border: solid #6a7d93">6 g</div>
+                    <span>Fiber</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="border rounded-2 d-flex flex-column mb-4" style="background-color: white; padding: 20px">
+                <div class="d-flex lh-1 flex-column mb-4">
+                  <span class="fs-4">Macronutrients per portion</span>
+                  <span style="opacity: 0.5; font-size: 14px">Macronutrients distribution of the recipe</span>
+                </div>
+                <div>
+                  <canvas id="myPieChart" width="300" height="300" class="ms-4"></canvas>
+
+                  <div id="legend" class="ms-5">
+                    <div class="legend-item">
+                      <div class="box" style="background-color: #db4965"></div>
+                      Fat
+                    </div>
+                    <div class="legend-item">
+                      <div class="box" style="background-color: #f4a261"></div>
+                      Carbohydrate
+                    </div>
+                    <div class="legend-item">
+                      <div class="box" style="background-color: #2a9d8f"></div>
+                      Protein
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="border rounded-2 d-flex flex-column mb-4" style="background-color: white; padding: 20px">
+                <div class="d-flex lh-1 flex-column mb-4">
+                  <span class="fs-4">Micronutrients per portion</span>
+                  <span style="opacity: 0.5; font-size: 14px">Micronutrients distribution of the recipe</span>
+                </div>
+                <div class="d-flex flex-column">
+                    <div class="d-flex justify-content-between p-1">
+                        <span>Sodium</span>
+                        <span>1418 mg</span>
+                    </div>
+                    <div class="d-flex justify-content-between p-1" style="background-color: #FAFAFB;">
+                        <span>Vitamin A</span>
+                        <span>18 ug</span>
+                    </div>
+                    <div class="d-flex justify-content-between p-1">
+                        <span>Vitamin B-6</span>
+                        <span>0 mg</span>
+                    </div>
+                    <div class="d-flex justify-content-between p-1" style="background-color: #FAFAFB;">
+                        <span>Vitamin B-12</span>
+                        <span>0 ug</span>
+                    </div>
+                    <div class="d-flex justify-content-between p-1">
+                        <span>Vitamin C</span>
+                        <span>50 mg</span>
+                    </div>
+                    <div class="d-flex justify-content-between p-1" style="background-color: #FAFAFB;">
+                        <span>Vitamin D (D2 + D3)</span>
+                        <span>0 ug</span>
+                    </div>
+                    <div class="d-flex justify-content-between p-1">
+                        <span>Vitamin E</span>
+                        <span>1 mg</span>
+                    </div>
+                    <div class="d-flex justify-content-between p-1" style="background-color: #FAFAFB;">
+                        <span>Vitamin K</span>
+                        <span>87 ug</span>
+                    </div>
+                    <div class="d-flex justify-content-between p-1">
+                        <span>Sugars</span>
+                        <span>13 g</span>
+                    </div>
+                    <div class="d-flex justify-content-between p-1" style="background-color: #FAFAFB;">
+                        <span>Calcium</span>
+                        <span>88 mg</span>
+                    </div>
+                    <div class="d-flex justify-content-between p-1">
+                        <span>Iron</span>
+                        <span>4 mg</span>
+                    </div>
+                    <div class="d-flex justify-content-between p-1" style="background-color: #FAFAFB;">
+                        <span>Magnesium</span>
+                        <span>127 mg</span>
+                    </div>
+                    <div class="d-flex justify-content-between p-1">
+                        <span>Phosphorus</span>
+                        <span>251 mg</span>
+                    </div>
+                    <div class="d-flex justify-content-between p-1" style="background-color: #FAFAFB;">
+                        <span>Phosphorus</span>
+                        <span>649 mg</span>
+                    </div>
+                    <div class="d-flex justify-content-between p-1">
+                        <span>Zinc</span>
+                        <span>2 mg</span>
+                    </div>
+                    <div class="d-flex justify-content-between p-1" style="background-color: #FAFAFB;">
+                        <span>Copper</span>
+                        <span>1 mg</span>
+                    </div>
+                    <div class="d-flex justify-content-between p-1">
+                        <span>Copper</span>
+                        <span>1 ug</span>
+                    </div>
+                    <div class="d-flex justify-content-between p-1" style="background-color: #FAFAFB;">
+                        <span>Manganese</span>
+                        <span>2 mg</span>
+                    </div>
+                    <div class="d-flex justify-content-between p-1">
+                        <span>Manganese</span>
+                        <span>4 ug</span>
+                    </div>
+                    <div class="d-flex justify-content-between p-1" style="background-color: #FAFAFB;">
+                        <span>Thiamin</span>
+                        <span>0 mg</span>
+                    </div>
+                    <div class="d-flex justify-content-between p-1">
+                        <span>Riboflavin</span>
+                        <span>0 mg</span>
+                    </div>
+                    <div class="d-flex justify-content-between p-1" style="background-color: #FAFAFB;">
+                        <span>Niacin</span>
+                        <span>3 mg</span>
+                    </div>
+                    <div class="d-flex justify-content-between p-1">
+                        <span>Pantothenic acid</span>
+                        <span>1 mg</span>
+                    </div>
+                    <div class="d-flex justify-content-between p-1" style="background-color: #FAFAFB;">
+                        <span>Folate, total</span>
+                        <span>156 ug</span>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--=============== JS ===============-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="./recipe.js"></script>
+    <script src="../../js/effect.js"></script>
+  </body>
+</html>

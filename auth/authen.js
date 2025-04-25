@@ -1,53 +1,21 @@
-/*=============== SHOW HIDE PASSWORD LOGIN ===============*/
-const passwordAccess = (loginPass, loginEye) => {
-  const input = document.getElementById(loginPass),
-    iconEye = document.getElementById(loginEye);
+const loginsec=document.querySelector('.login-section')
+const loginlink=document.querySelector('.login-link')
+const registerlink=document.querySelector('.register-link')
+registerlink.addEventListener('click',()=>{
+    loginsec.classList.add('active')
+})
+loginlink.addEventListener('click',()=>{
+    loginsec.classList.remove('active')
+})
 
-  iconEye.addEventListener("click", () => {
-    // Change password to text
-    input.type === "password" ? (input.type = "text") : (input.type = "password");
-
-    // Icon change
-    iconEye.classList.toggle("ri-eye-fill");
-    iconEye.classList.toggle("ri-eye-off-fill");
-  });
-};
-passwordAccess("password", "loginPassword");
-
-/*=============== SHOW HIDE PASSWORD CREATE ACCOUNT ===============*/
-const passwordRegister = (loginPass, loginEye) => {
-  const input = document.getElementById(loginPass),
-    iconEye = document.getElementById(loginEye);
-
-  iconEye.addEventListener("click", () => {
-    input.type === "password" ? (input.type = "text") : (input.type = "password");
-
-    iconEye.classList.toggle("ri-eye-fill");
-    iconEye.classList.toggle("ri-eye-off-fill");
-  });
-};
-passwordRegister("passwordCreate", "loginPasswordCreate");
-
-/*=============== SHOW HIDE LOGIN & CREATE ACCOUNT ===============*/
-const loginAcessRegister = document.getElementById("loginAccessRegister"),
-  buttonRegister = document.getElementById("loginButtonRegister"),
-  buttonAccess = document.getElementById("loginButtonAccess");
-
-buttonRegister.addEventListener("click", () => {
-  loginAcessRegister.classList.add("active");
-});
-
-function signUp() {
-  loginAcessRegister.classList.add("active");
+function signUp(){
+  loginsec.classList.add('active')
 }
 
-buttonAccess.addEventListener("click", () => {
-  loginAcessRegister.classList.remove("active");
-});
-
-function signIn() {
-  loginAcessRegister.classList.remove("active");
+function signIn(){
+  loginsec.classList.remove('active')
 }
+
 
 function login(e) {
   e.preventDefault();
@@ -97,7 +65,7 @@ function register(e) {
     return;
   }
 
-  userList.push({id: userList.length + 1, email: data.email, username: data.lastName, password: data.password});
+  userList.push({id: userList.length + 1, email: data.email, username: data.fullname, password: data.password});
   saveDataListToLocal(userList);
   alert("Đăng ký thành công");
   signIn();
