@@ -1,121 +1,31 @@
-// const foods = [
-//   {
-//     id: 1,
-//     name: "Ackee, canned, drained",
-//     source: "Minh Cuong Tran",
-//     category: "Vegetables and Vegetable Products",
-//     quantity: "100g",
-//     macronutrients: {
-//       energy: 151,
-//       carbohydrate: 0.8,
-//       fat: 15.2,
-//       protein: 2.9,
-//     },
-//     micronutrients: {
-//       cholesterol: 0.0,
-//       fiber: null,
-//       sodium: 240.0,
-//       water: 76.7,
-//       VitaminA: null,
-//       VitaminB6: 0.06,
-//       VitaminB12: 0.0,
-//       VitaminC: 30.0,
-//       VitaminD: 0.0,
-//       VitaminE: null,
-//       VitaminK: null,
-//       starch: 0.0,
-//       lactose: 0.0,
-//       calcium: 35.0,
-//       iron: 0.7,
-//       magnesium: 40.0,
-//       phosphorus: 47.0,
-//       potassium: 270.0,
-//       zinc: 0.6,
-//       copper: 0.27,
-//       fluoride: null,
-//       manganese: null,
-//       selenium: null,
-//       thiamin: 0.03,
-//       riboflavin: 0.07,
-//       niacin: 0.6,
-//       pantothenicAcid: null,
-//       folateTotal: 41.0,
-//       folicAcid: null,
-//       fattyAcidsTrans: 0.0,
-//       fattyAcidsSaturated: null,
-//       fattyAcidsMonounsaturated: null,
-//       fattyAcidsPolyunsaturated: null,
-//       chloride: 340.0,
-//     },
-//   },
-// ];
+// Lắng nghe sự kiện click chỉ một lần ngoài renderRecipes
+document.getElementById("recipeList").addEventListener("click", (e) => {
+  const card = e.target.closest(".card");
+  if (card && card.dataset.id) {
+    const id = card.dataset.id;
+    const recipe = recipes.find((r) => r.id == id);
+    showDetailRecipe(recipe);
+  }
+});
 
-// const recipes = [
-//   {
-//     id: 1,
-//     coverSrc: "https://nutriumstorageaccount.blob.core.windows.net/rails-active-storage/6qim5uox87nr22st6i7nzt8",
-//     name: "Turmeric Roasted Cauliflower Salad (Lowfodmap)",
-//     description: "Our roasted cauliflower salad with turmeric is low in calories and packed with punchy flavor.",
-//     author: "Joana Jardim",
-//     totalTime: "00:40",
-//     preparationTime: "00:40",
-//     finalWeight: "978.8 grams",
-//     portions: 4,
-//     ingredients: [foods[0]],
-//     cookingMethods: [
-//       {
-//         id: 1,
-//         content: "STEP 1 Heat the oven to 200C/fan 180C/gas 6. Put the cauliflower in an ovenproof dish or tin...",
-//       },
-//     ],
-//     category: [
-//       {id: 1, name: "vegetarian"},
-//       {id: 2, name: "appetizer"},
-//     ],
-//   },
-// ];
+// Hàm tính toán dinh dưỡng tổng hợp từ tất cả nguyên liệu
+function getTotalNutrition(ingredients) {
+  return ingredients.reduce((total, ingredient) => {
+    const nutrition = getNutrition(ingredient);
+    total.energy += nutrition.energy;
+    total.fat += nutrition.fat;
+    total.carbohydrate += nutrition.carbohydrate;
+    total.protein += nutrition.protein;
+    return total;
+  }, { energy: 0, fat: 0, carbohydrate: 0, protein: 0 });
+}
 
-// const categories = [
-//   {
-//     id: 1,
-//     name: "vegeterian",
-//     description: "Dishes that do not include meat, fish, or poultry, suitable for vegetarians.",
-//   },
-//   {
-//     id: 2,
-//     name: "appetizer",
-//     description: "Small dishes served before the main course to stimulate the appetite.",
-//   },
-//   {id: 3, name: "vegan", description: "Plant-based recipes with no animal products, including dairy and eggs."},
-//   {id: 4, name: "main course", description: "The main dish in a meal, often more substantial and filling."},
-//   {id: 5, name: "dessert", description: "Sweet dishes typically served at the end of a meal."},
-//   {
-//     id: 6,
-//     name: "low-carb",
-//     description: "Recipes with reduced carbohydrate content, often for weight or sugar control.",
-//   },
-//   {
-//     id: 7,
-//     name: "gluten-free",
-//     description: "Meals made without gluten, suitable for those with gluten intolerance.",
-//   },
-//   {id: 8, name: "breakfast", description: "Recipes designed for the first meal of the day."},
-//   {
-//     id: 9,
-//     name: "salad",
-//     description: "Cold or warm dishes primarily composed of vegetables, fruits, and dressings.",
-//   },
-//   {
-//     id: 10,
-//     name: "soup",
-//     description: "Liquid-based dishes, either hot or cold, made with a variety of ingredients.",
-//   },
-// ];
-
-// Hàm lấy thông tin dinh dưỡng (giả sử 100g đầu tiên)
+// Hàm tính toán dinh dưỡng cho từng nguyên liệu
 function getNutrition(f) {
-  const food = f; // hiện tại lấy đại 1 food mẫu, tùy vào công thức thực tế bạn sẽ nối food chính xác
-  const macro = food.macronutrients;
+  if (!f || !f.macronutrients) {
+    return { energy: 0, fat: 0, carbohydrate: 0, protein: 0 };
+  }
+  const macro = f.macronutrients;
   return {
     energy: macro.energy,
     fat: macro.fat,
@@ -124,94 +34,67 @@ function getNutrition(f) {
   };
 }
 
-// Render danh sách recipe
-function renderRecipes() {
-  let recipeList = document.getElementById("recipeList");
-  recipeList.addEventListener("click", (e) => {
-    const card = e.target.closest(".card"); // tìm thẻ card gần nhất
-    if (card && card.dataset.id) {
-      const id = card.dataset.id;
-      const recipe = Recipe.find((r) => r.id == id);
-      document.getElementById("box-recipe").style.display="none"
-      document.getElementById("recipeDetail").style.display="block"
-      updateRecipeWithChart(recipe);
-    }
-  });
-  recipeList.innerHTML = "";
-  Recipe.forEach((recipe) => {
-    const nutrition = getNutrition(recipe.ingredients[0]);
+// Hàm tạo HTML cho một thẻ card công thức
+function createRecipeCard(recipe, nutrition) {
+  const categoryNames = recipe.category
+    .map((cat) => {
+      const found = category.find((c) => c.id === cat.id);
+      return found ? found.name : "Unknown";
+    })
+    .join(", ");
 
-    // Lấy danh sách category
-    const categoryNames = recipe.category
-      .map((cat) => {
-        const found = category.find((c) => c.id === cat.id);
-        return found ? found.name : "Unknown";
-      })
-      .join(", ");
-
-    recipeList.innerHTML += `
-
-    <div class="col">
-          <div
-            class="card h-100"
-            data-id="${recipe.id}"
-            style="
-              background-image: url('${recipe.coverSrc}');
-              color: black;
-              background-size: cover;
-              background-position: center;
-            ">
-            <div class="card-body">
-              <span class="badge text-bg-warning mb-2">
-                <i class="fas fa-users"></i>
-                Community Recipes
-              </span>
-              <div class="d-flex justify-content-between align-items-center">
-                <h5 class="card-title">${recipe.name}</h5>
-                <div class="gap-2">
-                  <div class="border border-1 rounded-2 align-items-center p-1 d-flex flex-nowrap">
-                    <i class="far fa-heart me-2"></i>
-                    ${getRandomNumber()}
-                  </div>
-                </div>
-              </div>
-              <p class="card-text">${recipe.author}</p>
-              <p class="card-category">
-                <i class="fas fa-tag"></i>
-                ${categoryNames}
-              </p>
-            </div>
-            <div class="card-footer border d-flex justify-content-between">
-              <small>
-                <strong>By</strong>
-                100g
-              </small>
-              <small>
-                <strong>Energy</strong>
-                ${nutrition.energy}kcal
-              </small>
-              <small>
-                <strong>Fat</strong>
-                ${nutrition.fat}g
-              </small>
-              <small>
-                <strong>Carbohydrate</strong>
-                ${nutrition.carbohydrate}g
-              </small>
-              <small>
-                <strong>Protein</strong>
-                ${nutrition.protein}g
-              </small>
+  const card = document.createElement("div");
+  card.classList.add("col");
+  card.innerHTML = `
+    <div class="card h-100" data-id="${recipe.id}" style="background-image: url('${recipe.coverSrc}'); color: black; background-size: cover; background-position: center;">
+      <div class="card-body">
+        <span class="badge text-bg-warning mb-2">
+          <i class="fas fa-users"></i> Community Recipes
+        </span>
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="card-title">${recipe.name}</h5>
+          <div class="gap-2">
+            <div class="border border-1 rounded-2 align-items-center p-1 d-flex flex-nowrap">
+              <i class="far fa-heart me-2"></i> ${getRandomNumber()}
             </div>
           </div>
         </div>
-    
-    `;
-  });
+        <p class="card-text">${recipe.author}</p>
+        <p class="card-category"><i class="fas fa-tag"></i> ${categoryNames}</p>
+      </div>
+      <div class="card-footer border d-flex justify-content-between">
+        <small><strong>By</strong> 100g</small>
+        <small><strong>Energy</strong> ${nutrition.energy}kcal</small>
+        <small><strong>Fat</strong> ${nutrition.fat}g</small>
+        <small><strong>Carbohydrate</strong> ${nutrition.carbohydrate}g</small>
+        <small><strong>Protein</strong> ${nutrition.protein}g</small>
+      </div>
+    </div>
+  `;
+  return card;
 }
 
-renderRecipes();
+// Hàm render tất cả công thức
+function renderRecipes() {
+  let recipeList = document.getElementById("recipeList");
+  recipeList.innerHTML = ""; // Làm sạch danh sách công thức
 
+  // Sử dụng DocumentFragment để tối ưu hiệu suất khi tạo nhiều phần tử
+  const fragment = document.createDocumentFragment();
+
+  recipes.forEach((recipe) => {
+    const nutrition = getTotalNutrition(recipe.ingredients); // Tổng hợp dinh dưỡng từ tất cả nguyên liệu
+    const card = createRecipeCard(recipe, nutrition);  // Tạo card cho mỗi công thức
+    fragment.appendChild(card); // Thêm card vào DocumentFragment
+  });
+
+  recipeList.appendChild(fragment); // Thêm tất cả các card vào DOM một lần
+}
+
+renderRecipes()
+
+
+// ====================================
 
 function showDetailRecipe(recipe) {
   let recipeDetail = document.getElementById("recipeDetail");
@@ -396,7 +279,7 @@ function showDetailRecipe(recipe) {
                     <span>Protein</span>
                   </div>
                   <div class="d-flex flex-column align-items-center">
-                    <div class="border-5 rounded-circle m-0 d-flex justify-content-center align-items-center" style="border: solid #6a7d93;width: 50px;height: 50px;">${100-nutrition.fat-nutrition.carbohydrate-nutrition.protein}</div>
+                    <div class="border-5 rounded-circle m-0 d-flex justify-content-center align-items-center" style="border: solid #6a7d93;width: 50px;height: 50px;"></div>
                     <span>Fiber</span>
                   </div>
                 </div>
@@ -408,7 +291,7 @@ function showDetailRecipe(recipe) {
                   <span style="opacity: 0.5; font-size: 14px">Macronutrients distribution of the recipe</span>
                 </div>
                 <div>
-                  <canvas id="myPieChart" width="300" height="300" class="ms-4"></canvas>
+                  <canvas id="myPieChart" width="300" height="300" class="ms-4" ></canvas>
 
                   <div id="legend" class="ms-5">
                     <div class="legend-item">
@@ -432,7 +315,7 @@ function showDetailRecipe(recipe) {
                   <span class="fs-4">Micronutrients per portion</span>
                   <span style="opacity: 0.5; font-size: 14px">Micronutrients distribution of the recipe</span>
                 </div>
-                <div class="d-flex flex-column" id="micronutrients">
+                <div class="d-flex flex-column">
                     <div class="d-flex justify-content-between p-1">
                         <span>Sodium</span>
                         <span>1418 mg</span>
@@ -537,70 +420,57 @@ function showDetailRecipe(recipe) {
   `;
 }
 
-function pieChart(food) {
-  const ctx = document.getElementById("myPieChart").getContext("2d");
 
-  let total=food.macronutrients.fat+ food.macronutrients.carbohydrate+ food.macronutrients.protein
-  let fat=(food.macronutrients.fat*100)/total
-  let carbohydrate=(food.macronutrients.carbohydrate*100)/total
-  let protein=(food.macronutrients.protein*100)/total
+function drawPieChart(nutrition) {
   const data = {
-    labels: ["Fat", "Carbohydrate", "Protein"],
-    datasets: [
-      {
-        data: [fat.toFixed(2),carbohydrate.toFixed(2),protein.toFixed(2)],
-        backgroundColor: ["#DB4965", "#F4A261", "#2A9D8F"],
-        borderColor: "#fff",
-        borderWidth: 2,
-      },
-    ],
+    labels: ['Fat', 'Carbohydrate', 'Protein'],
+    datasets: [{
+      data: [nutrition.fat, nutrition.carbohydrate, nutrition.protein],
+      backgroundColor: ['#db4965', '#ea9f77', '#8bd3dd'],
+      borderColor: ['#db4965', '#ea9f77', '#8bd3dd'],
+      borderWidth: 1
+    }]
   };
 
-  const config = {
-    type: "pie",
+  const ctx = document.getElementById('nutritionPieChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'pie',
     data: data,
     options: {
-      responsive: false,
+      responsive: true,
       plugins: {
-        legend: {display: false},
+        legend: {
+          position: 'top',
+        },
         tooltip: {
           callbacks: {
-            label: function (context) {
-              return context.label + ": " + context.parsed + "%";
-            },
-          },
-        },
-        datalabels: {
-          color: "#fff",
-          font: {
-            weight: "bold",
-            size: 14,
-          },
-          formatter: (value, context) => {
-            return value + "%";
-          },
-        },
-      },
-    },
-    plugins: [ChartDataLabels], // <<< thêm dòng này
-  };
-  new Chart(ctx, config);
+            label: function(tooltipItem) {
+              return tooltipItem.label + ": " + tooltipItem.raw + "g";
+            }
+          }
+        }
+      }
+    }
+  });
 }
-
 
 function updateRecipeWithChart(recipe) {
   // Hiển thị chi tiết công thức
   showDetailRecipe(recipe);
+  
+  console.log(recipe)
 
   // Lấy dinh dưỡng của công thức
-  const nutrition =recipe.ingredients[0];
+  const nutrition = getNutrition(recipe.ingredients[0]);
 
   // Vẽ biểu đồ tròn
-  pieChart(nutrition);
+  drawPieChart(nutrition);
 }
+
+updateRecipeWithChart(recipes[0]);
 
 
 function goBack(){
-  document.getElementById("box-recipe").style.display="block"
-  document.getElementById("recipeDetail").style.display="none"
+  document.getElementById("box-recipe").style.display="none"
+  document.getElementById("recipeDetail").style.display="block"
 }

@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="../../home/style.css" />
   </head>
   <body>
-    <!-- <script src="../../auth/authen.js"></script> -->
+    <script src="../../auth/authen.js"></script>
     <script src="../../js/main.js"></script>
     <script src="../../home/home.js"></script>
     <script src="../../resource/userList.js"></script>
@@ -55,7 +55,7 @@
             <p>Create, check and update recipes</p>
           </div>
 
-          <div class="p-4 rounded-3 shadow">
+          <div class="p-4 rounded-3 shadow" id="box-recipe">
             <div class="d-flex align-items-center justify-content-between">
               <div>
                 <h4>Recipes</h4>
@@ -109,6 +109,7 @@
 
             <div class="pagination" id="pagination"></div>
           </div>
+
 
           <!-- <div class="box-content mb-4">
             <div class="w-25">
@@ -164,8 +165,8 @@
                   Description
                 </span>
                 <textarea class="form-control rounded-0 fw-light">
-                        Our roasted cauliflower salad with turmeric is low in calories and packed with punchy flavor. Turmeric
-                        adds lovely color and flavor to this easy vegan-friendly recipe</textarea
+                          Our roasted cauliflower salad with turmeric is low in calories and packed with punchy flavor. Turmeric
+                          adds lovely color and flavor to this easy vegan-friendly recipe</textarea
                 >
               </div>
               <div class="d-flex mt-3">
@@ -210,14 +211,12 @@
               </div>
             </div>
           </div>
-
           <div
             class="box-content flex-column p-3 lh-2 rounded-2 mb-4"
             style="background-color: #1ab394; gap: 5px; color: white">
             <span class="fs-5">Creation</span>
             <span style="font-size: 14px">Create the recipe and choose the ingredients</span>
           </div>
-
           <div class="box-content">
             <div class="statistical">
               <div
@@ -283,19 +282,35 @@
 
                 <div class="d-flex justify-content-between mt-4 flex-wrap gap-3">
                   <div class="d-flex flex-column align-items-center">
-                    <div class="border-5 rounded-circle m-0 d-flex justify-content-center align-items-center" style="border: solid #db4965;width: 50px;height: 50px;">16g</div>
+                    <div
+                      class="border-5 rounded-circle m-0 d-flex justify-content-center align-items-center"
+                      style="border: solid #db4965; width: 50px; height: 50px">
+                      16g
+                    </div>
                     <span>Fat</span>
                   </div>
                   <div class="d-flex flex-column align-items-center">
-                    <div class="border-5 rounded-circle m-0 d-flex justify-content-center align-items-center" style="border: solid #ea9f77;width: 50px;height: 50px;">45g</div>
+                    <div
+                      class="border-5 rounded-circle m-0 d-flex justify-content-center align-items-center"
+                      style="border: solid #ea9f77; width: 50px; height: 50px">
+                      45g
+                    </div>
                     <span>Carbohydrate</span>
                   </div>
                   <div class="d-flex flex-column align-items-center">
-                    <div class="border-5 rounded-circle m-0 d-flex justify-content-center align-items-center" style="border: solid #1ab394;width: 50px;height: 50px;">12g</div>
+                    <div
+                      class="border-5 rounded-circle m-0 d-flex justify-content-center align-items-center"
+                      style="border: solid #1ab394; width: 50px; height: 50px">
+                      12g
+                    </div>
                     <span>Protein</span>
                   </div>
                   <div class="d-flex flex-column align-items-center">
-                    <div class="border-5 rounded-circle m-0 d-flex justify-content-center align-items-center" style="border: solid #6a7d93;width: 50px;height: 50px;">6g</div>
+                    <div
+                      class="border-5 rounded-circle m-0 d-flex justify-content-center align-items-center"
+                      style="border: solid #6a7d93; width: 50px; height: 50px">
+                      6g
+                    </div>
                     <span>Fiber</span>
                   </div>
                 </div>
@@ -307,7 +322,7 @@
                   <span style="opacity: 0.5; font-size: 14px">Macronutrients distribution of the recipe</span>
                 </div>
                 <div>
-                  <canvas id="myPieChart" width="300" height="300" class="ms-4"></canvas>
+                  <canvas id="nutritionPieChart" width="300" height="300" class="ms-4" onload="pieChart()"></canvas>
 
                   <div id="legend" class="ms-5">
                     <div class="legend-item">
@@ -430,10 +445,14 @@
                   </div>
                 </div>
               </div>
+              <div class="d-flex justify-content-end"><button class="btn btn-primary">Return Dashboard</button></div>
             </div>
           </div> -->
 
-          <!-- <div class="box-content mb-4">
+          <div id="recipeDetail" style="display: block;"></div>
+        </div>
+
+        <!-- <div class="box-content mb-4">
             <div class="d-flex flex-column gap-4 w-25">
               <div class="border border-1 rounded-2" style="background-color: white; height: 300px; padding: 20px">
                 <div class="d-flex flex-column justify-content-between h-100">
@@ -1002,7 +1021,6 @@
               </div>
             </div>
           </div> -->
-        </div>
       </div>
     </div>
 
