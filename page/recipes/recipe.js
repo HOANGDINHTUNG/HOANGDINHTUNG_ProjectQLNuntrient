@@ -49,7 +49,6 @@
 //     },
 //   },
 // ];
-
 // const recipes = [
 //   {
 //     id: 1,
@@ -74,7 +73,6 @@
 //     ],
 //   },
 // ];
-
 // const categories = [
 //   {
 //     id: 1,
@@ -112,6 +110,25 @@
 //   },
 // ];
 
+document.addEventListener("DOMContentLoaded", () => {
+  const inputs = document.querySelectorAll(".nutrition-row input");
+
+  inputs.forEach((input) => {
+    const row = input.closest(".nutrition-row");
+
+    input.addEventListener("focus", () => {
+      document.querySelectorAll(".nutrition-row").forEach((r) => r.classList.remove("active"));
+      row.classList.add("active");
+    });
+
+    input.addEventListener("blur", () => {
+      setTimeout(() => {
+        row.classList.remove("active");
+      }, 200);
+    });
+  });
+});
+
 // Hàm lấy thông tin dinh dưỡng (giả sử 100g đầu tiên)
 function getNutrition(f) {
   const food = f; // hiện tại lấy đại 1 food mẫu, tùy vào công thức thực tế bạn sẽ nối food chính xác
@@ -132,8 +149,8 @@ function renderRecipes() {
     if (card && card.dataset.id) {
       const id = card.dataset.id;
       const recipe = Recipe.find((r) => r.id == id);
-      document.getElementById("box-recipe").style.display="none"
-      document.getElementById("recipeDetail").style.display="block"
+      document.getElementById("box-recipe").style.display = "none";
+      document.getElementById("recipeDetail").style.display = "block";
       updateRecipeWithChart(recipe);
     }
   });
@@ -212,7 +229,6 @@ function renderRecipes() {
 
 renderRecipes();
 
-
 function showDetailRecipe(recipe) {
   let recipeDetail = document.getElementById("recipeDetail");
   const nutrition = getNutrition(recipe.ingredients[0]);
@@ -223,7 +239,7 @@ function showDetailRecipe(recipe) {
       return found ? found.name : "Unknown";
     })
     .join(", ");
-    recipeDetail.innerHTML = `
+  recipeDetail.innerHTML = `
     <div class="box-content mb-4">
             <div class="w-25">
               <div class="d-flex flex-column gap-4">
@@ -384,19 +400,27 @@ function showDetailRecipe(recipe) {
 
                 <div class="d-flex justify-content-around mt-4 flex-wrap gap-3">
                   <div class="d-flex flex-column align-items-center">
-                    <div class="border-5 rounded-circle m-0 d-flex justify-content-center align-items-center" style="border: solid #db4965;width: 50px;height: 50px;">${nutrition.fat}g</div>
+                    <div class="border-5 rounded-circle m-0 d-flex justify-content-center align-items-center" style="border: solid #db4965;width: 50px;height: 50px;">${
+                      nutrition.fat
+                    }g</div>
                     <span>Fat</span>
                   </div>
                   <div class="d-flex flex-column align-items-center">
-                    <div class="border-5 rounded-circle m-0 d-flex justify-content-center align-items-center" style="border: solid #ea9f77;width: 50px;height: 50px;">${nutrition.carbohydrate}g</div>
+                    <div class="border-5 rounded-circle m-0 d-flex justify-content-center align-items-center" style="border: solid #ea9f77;width: 50px;height: 50px;">${
+                      nutrition.carbohydrate
+                    }g</div>
                     <span>Carbohydrate</span>
                   </div>
                   <div class="d-flex flex-column align-items-center">
-                    <div class="border-5 rounded-circle m-0 d-flex justify-content-center align-items-center" style="border: solid #1ab394;width: 50px;height: 50px;">${nutrition.protein}g</div>
+                    <div class="border-5 rounded-circle m-0 d-flex justify-content-center align-items-center" style="border: solid #1ab394;width: 50px;height: 50px;">${
+                      nutrition.protein
+                    }g</div>
                     <span>Protein</span>
                   </div>
                   <div class="d-flex flex-column align-items-center">
-                    <div class="border-5 rounded-circle m-0 d-flex justify-content-center align-items-center" style="border: solid #6a7d93;width: 50px;height: 50px;">${100-nutrition.fat-nutrition.carbohydrate-nutrition.protein}</div>
+                    <div class="border-5 rounded-circle m-0 d-flex justify-content-center align-items-center" style="border: solid #6a7d93;width: 50px;height: 50px;">${
+                      100 - nutrition.fat - nutrition.carbohydrate - nutrition.protein
+                    }</div>
                     <span>Fiber</span>
                   </div>
                 </div>
@@ -540,15 +564,15 @@ function showDetailRecipe(recipe) {
 function pieChart(food) {
   const ctx = document.getElementById("myPieChart").getContext("2d");
 
-  let total=food.macronutrients.fat+ food.macronutrients.carbohydrate+ food.macronutrients.protein
-  let fat=(food.macronutrients.fat*100)/total
-  let carbohydrate=(food.macronutrients.carbohydrate*100)/total
-  let protein=(food.macronutrients.protein*100)/total
+  let total = food.macronutrients.fat + food.macronutrients.carbohydrate + food.macronutrients.protein;
+  let fat = (food.macronutrients.fat * 100) / total;
+  let carbohydrate = (food.macronutrients.carbohydrate * 100) / total;
+  let protein = (food.macronutrients.protein * 100) / total;
   const data = {
     labels: ["Fat", "Carbohydrate", "Protein"],
     datasets: [
       {
-        data: [fat.toFixed(2),carbohydrate.toFixed(2),protein.toFixed(2)],
+        data: [fat.toFixed(2), carbohydrate.toFixed(2), protein.toFixed(2)],
         backgroundColor: ["#DB4965", "#F4A261", "#2A9D8F"],
         borderColor: "#fff",
         borderWidth: 2,
@@ -587,20 +611,23 @@ function pieChart(food) {
   new Chart(ctx, config);
 }
 
-
 function updateRecipeWithChart(recipe) {
   // Hiển thị chi tiết công thức
   showDetailRecipe(recipe);
 
   // Lấy dinh dưỡng của công thức
-  const nutrition =recipe.ingredients[0];
+  const nutrition = recipe.ingredients[0];
 
   // Vẽ biểu đồ tròn
   pieChart(nutrition);
 }
 
+function goBack() {
+  document.getElementById("box-recipe").style.display = "block";
+  document.getElementById("recipeDetail").style.display = "none";
+}
 
-function goBack(){
-  document.getElementById("box-recipe").style.display="block"
-  document.getElementById("recipeDetail").style.display="none"
+function addDetailRecipe() {
+  document.getElementById("box-recipe").style.display = "none";
+  document.getElementById("addNewRecipe").style.display = "block";
 }
