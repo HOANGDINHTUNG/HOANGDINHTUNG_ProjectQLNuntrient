@@ -43,7 +43,7 @@ function renderTable() {
 
 function renderPagination() {
   const totalPages = Math.ceil(Food.length / rowsPerPage);
-  const pagination = document.getElementById("pagination");
+  const pagination = document.getElementById("paginationFood");
   pagination.innerHTML = "";
 
   // Nút về trang đầu ⏮ (ẩn nếu đang ở trang 1)
@@ -121,13 +121,22 @@ document.getElementById("openFormBtn").addEventListener("click", function () {
   window.location.href = "./form/form.html";
 });
 
-function closeForm(){
+document.getElementById("closeForm").addEventListener("click",()=>{
   window.location.href = "../food.html";
-}
+})
 
-document.querySelector(".overlay-iframe").addEventListener("click", function (e) {
-  // Kiểm tra nếu người dùng click chính vào iframe (chứ không phải nội dung trong đó)
-  if (e.target === this) {
-    this.style.display = "none";
+document.getElementById("close-form").addEventListener("click",()=>{
+  window.location.href = "../food.html";
+})
+
+function addNewFood(e){
+  e.preventDefault()
+  let formFoodEl=e.target
+  let data=getFormData(formFoodEl)
+  if(validateForm(data)){
+    alert("Thông tin đã nhập vào đầy đủ")
   }
-});
+  Food.push(data)
+  saveDataToLocal("Food",Food)
+  alert("Thêm thành công")
+}

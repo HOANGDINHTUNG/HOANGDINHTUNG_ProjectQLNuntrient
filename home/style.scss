@@ -165,3 +165,12 @@ input.form-control::placeholder {
 #box-recipe{
   display: block;
 }
+
+/* CSS (có thể để chung trong file hoặc <style> của bạn) */
+#comboList .list-group-item {
+  cursor: pointer;
+}
+#comboList .list-group-item:hover {
+  background-color: #f8f9fa; /* sáng hơn khi hover */
+}
+

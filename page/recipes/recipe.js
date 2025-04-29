@@ -110,6 +110,9 @@
 //   },
 // ];
 
+const rowsPerPage = 4;
+let currentPage = 1;
+
 document.addEventListener("DOMContentLoaded", () => {
   const inputs = document.querySelectorAll(".nutrition-row input");
 
@@ -141,24 +144,40 @@ function getNutrition(f) {
   };
 }
 
-// Render danh sách recipe
-function renderRecipes() {
-  let recipeList = document.getElementById("recipeList");
+const recipeState = {
+  currentPage: 1,
+  rowsPerPage: 4,
+};
+
+renderRecipes({
+  containerID: "recipeList",
+  paginationID: "paginationRecipe",
+  data: Recipe,
+  state: recipeState,
+  img: "../..",
+});
+
+function renderRecipes({containerID, paginationID, data, state, img}) {
+  const start = (state.currentPage - 1) * state.rowsPerPage;
+  const end = start + state.rowsPerPage;
+  const recipeList = document.getElementById(containerID);
+
   recipeList.addEventListener("click", (e) => {
-    const card = e.target.closest(".card"); // tìm thẻ card gần nhất
+    const card = e.target.closest(".card");
     if (card && card.dataset.id) {
       const id = card.dataset.id;
-      const recipe = Recipe.find((r) => r.id == id);
+      const recipe = data.find((r) => r.id == id);
       document.getElementById("box-recipe").style.display = "none";
       document.getElementById("recipeDetail").style.display = "block";
       updateRecipeWithChart(recipe);
     }
   });
-  recipeList.innerHTML = "";
-  Recipe.forEach((recipe) => {
-    const nutrition = getNutrition(recipe.ingredients[0]);
 
-    // Lấy danh sách category
+  recipeList.innerHTML = "";
+
+  const pageItems = data.slice(start, end);
+  pageItems.forEach((recipe) => {
+    const nutrition = getNutrition(recipe.ingredients[0]);
     const categoryNames = recipe.category
       .map((cat) => {
         const found = category.find((c) => c.id === cat.id);
@@ -167,67 +186,110 @@ function renderRecipes() {
       .join(", ");
 
     recipeList.innerHTML += `
-
-    <div class="col">
-          <div
-            class="card h-100"
-            data-id="${recipe.id}"
-            style="
-              background-image: url('${recipe.coverSrc}');
-              color: black;
-              background-size: cover;
-              background-position: center;
-            ">
-            <div class="card-body">
-              <span class="badge text-bg-warning mb-2">
-                <i class="fas fa-users"></i>
-                Community Recipes
-              </span>
-              <div class="d-flex justify-content-between align-items-center">
-                <h5 class="card-title">${recipe.name}</h5>
-                <div class="gap-2">
-                  <div class="border border-1 rounded-2 align-items-center p-1 d-flex flex-nowrap">
-                    <i class="far fa-heart me-2"></i>
-                    ${getRandomNumber()}
-                  </div>
+      <div class="col">
+        <div class="card h-100 shadow-lg" data-id="${recipe.id}"
+          style="
+            background-image: url('${img}${recipe.coverSrc}');
+            color:white;
+            background-size: cover;
+            background-position: center;
+          ">
+          <div class="card-body">
+            <span class="badge text-bg-warning mb-2">
+              <i class="fas fa-users"></i> Community Recipes
+            </span>
+            <div class="d-flex justify-content-between align-items-center">
+              <h5 class="card-title">${recipe.name}</h5>
+              <div class="gap-2">
+                <div class="border border-1 rounded-2 align-items-center p-1 d-flex flex-nowrap" style="color:white" id="recipeList">
+                  <i class="far fa-heart me-2"></i> ${getRandomNumber()}
                 </div>
               </div>
-              <p class="card-text">${recipe.author}</p>
-              <p class="card-category">
-                <i class="fas fa-tag"></i>
-                ${categoryNames}
-              </p>
             </div>
-            <div class="card-footer border d-flex justify-content-between">
-              <small>
-                <strong>By</strong>
-                100g
-              </small>
-              <small>
-                <strong>Energy</strong>
-                ${nutrition.energy}kcal
-              </small>
-              <small>
-                <strong>Fat</strong>
-                ${nutrition.fat}g
-              </small>
-              <small>
-                <strong>Carbohydrate</strong>
-                ${nutrition.carbohydrate}g
-              </small>
-              <small>
-                <strong>Protein</strong>
-                ${nutrition.protein}g
-              </small>
-            </div>
+            <p class="card-text">${recipe.author}</p>
+            <p class="card-category"><i class="fas fa-tag"></i> ${categoryNames}</p>
+          </div>
+          <div class="card-footer border d-flex justify-content-between">
+            <small><strong>By</strong> 100g</small>
+            <small><strong>Energy</strong> ${nutrition.energy}kcal</small>
+            <small><strong>Fat</strong> ${nutrition.fat}g</small>
+            <small><strong>Carbohydrate</strong> ${nutrition.carbohydrate}g</small>
+            <small><strong>Protein</strong> ${nutrition.protein}g</small>
           </div>
         </div>
-    
+      </div>
     `;
+  });
+
+  renderPagination({
+    paginationID,
+    dataLength: data.length,
+    state,
+    onPageChange: (newPage) => {
+      state.currentPage = newPage;
+      renderRecipes({containerID, paginationID, data, state});
+    },
   });
 }
 
-renderRecipes();
+function renderPagination({paginationID, dataLength, state, onPageChange}) {
+  const totalPages = Math.ceil(dataLength / state.rowsPerPage);
+  const pagination = document.getElementById(paginationID);
+  pagination.innerHTML = "";
+
+  if (state.currentPage > 1) {
+    const firstBtn = document.createElement("button");
+    firstBtn.innerHTML = `<i class="fas fa-angle-double-left"></i>`;
+    firstBtn.addEventListener("click", () => onPageChange(1));
+    pagination.appendChild(firstBtn);
+
+    const prevBtn = document.createElement("button");
+    prevBtn.innerHTML = `<i class="fas fa-angle-left"></i>`;
+    prevBtn.addEventListener("click", () => onPageChange(state.currentPage - 1));
+    pagination.appendChild(prevBtn);
+  }
+
+  const maxVisiblePages = 5;
+  let startPage = Math.max(1, state.currentPage - 2);
+  let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+  if (endPage - startPage < maxVisiblePages - 1) {
+    startPage = Math.max(1, endPage - maxVisiblePages + 1);
+  }
+
+  if (startPage > 1) {
+    const dots = document.createElement("button");
+    dots.textContent = "...";
+    dots.classList.add("dots");
+    pagination.appendChild(dots);
+  }
+
+  for (let i = startPage; i <= endPage; i++) {
+    const pageBtn = document.createElement("button");
+    pageBtn.textContent = i;
+    if (i === state.currentPage) pageBtn.classList.add("active");
+    pageBtn.addEventListener("click", () => onPageChange(i));
+    pagination.appendChild(pageBtn);
+  }
+
+  if (endPage < totalPages) {
+    const dots = document.createElement("button");
+    dots.textContent = "...";
+    dots.classList.add("dots");
+    pagination.appendChild(dots);
+  }
+
+  if (state.currentPage < totalPages) {
+    const nextBtn = document.createElement("button");
+    nextBtn.innerHTML = `<i class="fas fa-angle-right"></i>`;
+    nextBtn.addEventListener("click", () => onPageChange(state.currentPage + 1));
+    pagination.appendChild(nextBtn);
+
+    const lastBtn = document.createElement("button");
+    lastBtn.innerHTML = `<i class="fas fa-angle-double-right"></i>`;
+    lastBtn.addEventListener("click", () => onPageChange(totalPages));
+    pagination.appendChild(lastBtn);
+  }
+}
 
 function showDetailRecipe(recipe) {
   let recipeDetail = document.getElementById("recipeDetail");
@@ -418,9 +480,12 @@ function showDetailRecipe(recipe) {
                     <span>Protein</span>
                   </div>
                   <div class="d-flex flex-column align-items-center">
-                    <div class="border-5 rounded-circle m-0 d-flex justify-content-center align-items-center" style="border: solid #6a7d93;width: 50px;height: 50px;">${
-                      100 - nutrition.fat - nutrition.carbohydrate - nutrition.protein
-                    }</div>
+                    <div class="border-5 rounded-circle m-0 d-flex justify-content-center align-items-center" style="border: solid #6a7d93;width: 50px;height: 50px;">${(
+                      100 -
+                      nutrition.fat -
+                      nutrition.carbohydrate -
+                      nutrition.protein
+                    ).toFixed(2)}</div>
                     <span>Fiber</span>
                   </div>
                 </div>
@@ -631,3 +696,162 @@ function addDetailRecipe() {
   document.getElementById("box-recipe").style.display = "none";
   document.getElementById("addNewRecipe").style.display = "block";
 }
+
+// let selectedRecipes =loadFromLocalStorage("selectedRecipes",selectedRecipes)
+
+// const recipeList = document.getElementById('recipeList')
+
+// recipeList.addEventListener("click",()=>{
+//   const index = selectedRecipes.findIndex(item => item.id === recipe.id);
+//     if (index === -1) {
+//       // Neu chua co thi them vao
+//       selectedRecipes.push(recipe);
+//       recipeList.style.backgroundColor = 'red';
+//       alert(`Đã thêm ${recipe.name} vào danh sách yêu thích`);
+//     } else {
+//       // Neu da co thi xoa ra
+//       selectedRecipes.splice(index, 1);
+//       recipeList.style.backgroundColor = '';
+//       alert(`Đã xóa khỏi danh sách yêu thích`);
+//     }
+//     localStorage.setItem('selectedRecipes', JSON.stringify(selectedRecipes));
+// })
+
+const changeMethod = document.getElementById("change-method");
+
+// 2 trạng thái nội dung
+const communityHTML = `
+  <i class="fas fa-users" style="margin-right: 5px;"></i>
+  <span class="text-nowrap" style="font-size: 12px; font-weight: 700;">
+    Community Recipes
+  </span>
+`;
+const myRecipesHTML = `
+  <i class="fa-solid fa-pen-to-square" style="color: #2196f3; margin-right: 5px;"></i>
+  <span style="font-size: 12px; font-weight: 700; color: #2196f3">
+    My recipes
+  </span>
+`;
+
+// bắt sự kiện click
+changeMethod.addEventListener("click", () => {
+  const isCommunity = changeMethod.innerHTML.trim() === communityHTML.trim();
+
+  if (isCommunity) {
+    // chuyển sang My recipes
+    changeMethod.innerHTML = myRecipesHTML;
+    changeMethod.classList.remove("bg-warning"); // bỏ nền vàng
+    changeMethod.classList.add("bg-transparent"); // trắng/transparent
+    // giữ lại border, rounded, shadow như ban đầu
+  } else {
+    // chuyển về Community Recipes
+    changeMethod.innerHTML = communityHTML;
+    changeMethod.classList.add("bg-warning"); // lại nền vàng
+    changeMethod.classList.remove("bg-transparent");
+  }
+});
+
+const selectInput = document.getElementById("selectInput");
+
+const labelHTML = `
+  <div class="card-category border border-1 p-1 rounded-3">
+    <i class="fa-solid fa-tags"></i>
+    New category
+  </div>
+`;
+
+const inputHTML = `
+  <div class="position-relative" style="max-width: 300px">
+    <input
+      type="text"
+      id="comboInput"
+      class="form-control"
+      placeholder="Thêm mới hoặc chọn từ dropdown"
+      autocomplete="off"
+    />
+    <ul
+      id="comboList"
+      class="list-group position-absolute w-100 shadow"
+      style="z-index: 1000; display: none;
+             max-height: 200px; overflow-y: auto"
+    ></ul>
+  </div>
+`;
+
+let isInputVisible = false;
+
+// Hàm khởi tạo lại combo mỗi lần render inputHTML
+function initCombo() {
+  const comboInput = document.getElementById("comboInput");
+  const comboList  = document.getElementById("comboList");
+  if (!comboInput || !comboList) return;
+
+  const options = [
+    "Desserts","Breakfast and snacks","Appetizers and side dishes",
+    "Soups","Meat dishes","Fish dishes","Vegetarian dishes"
+  ];
+
+  function renderDropdown(items) {
+    comboList.innerHTML = items
+      .map(o => `<li class="list-group-item list-group-item-action">${o}</li>`)
+      .join("");
+    comboList.style.display = items.length ? "block" : "none";
+  }
+
+  comboInput.addEventListener("focus", () => renderDropdown(options));
+  comboInput.addEventListener("input", () => {
+    const val = comboInput.value.trim().toLowerCase();
+    renderDropdown(options.filter(o => o.toLowerCase().includes(val)));
+  });
+
+  comboList.addEventListener("click", e => {
+    if (e.target.matches("li")) {
+      comboInput.value = e.target.textContent;
+      comboList.style.display = "none";
+    }
+  });
+
+  document.addEventListener("click", e => {
+    if (!comboInput.contains(e.target) && !comboList.contains(e.target)) {
+      comboList.style.display = "none";
+    }
+  });
+}
+
+// Toggle giữa label và input
+selectInput.addEventListener("dblclick", () => {
+  if (!isInputVisible) {
+    selectInput.innerHTML = inputHTML;
+    initCombo();             // 👉 bind lại comboInput/comboList
+  } else {
+    selectInput.innerHTML = labelHTML;
+  }
+  isInputVisible = !isInputVisible;
+});
+
+let upLoadUrl=document.getElementById("upLoadUrl")
+
+const imageHTML=`
+  <div class="border rounded-2" style="padding: 4px">
+    <i class="fas fa-pen-to-square" style="color: rgb(255, 136, 0); margin-right: 5px"></i>
+    <span style="font-size: 12px">Upload image</span>
+  </div>
+`
+
+const inputUrl=`
+  <input
+    type="text"
+    placeholder="Copy url của ảnh vào + Enter"
+    style="font-size: 12px; width: 100%" />
+`
+let flap=false;
+
+upLoadUrl.addEventListener("dblclick",()=>{
+  if(!flap){
+    upLoadUrl.innerHTML=inputUrl;
+  }
+  else{
+    upLoadUrl.innerHTML=imageHTML
+  }
+  flap=!flap
+})

@@ -1,8 +1,8 @@
 // Công thức
-const Recipe = [
+let Recipe = [
   {
     "id": 1,
-    "coverSrc": "https://example.com/images/recipe1.jpg",
+    "coverSrc": "/img/photo-1432139555190-58524dae6a55.avif",
     "name": "Grilled Tofu Skewers",
     "description": "Tofu skewers marinated in herbs and grilled to perfection.",
     "author": "Minh Cuong Tran",
@@ -19,7 +19,7 @@ const Recipe = [
   },
   {
     "id": 2,
-    "coverSrc": "https://example.com/images/recipe2.jpg",
+    "coverSrc": "/img/photo-1447078806655-40579c2520d6.avif",
     "name": "Chickpea Curry",
     "description": "A hearty vegan chickpea curry with rich spices.",
     "author": "Nguyen Bao Anh",
@@ -36,7 +36,7 @@ const Recipe = [
   },
   {
     "id": 3,
-    "coverSrc": "https://example.com/images/recipe3.jpg",
+    "coverSrc": "/img/photo-1465014925804-7b9ede58d0d7.avif",
     "name": "Avocado Toast Deluxe",
     "description": "Creamy avocado spread on toasted bread with toppings.",
     "author": "Linh Nguyen",
@@ -53,7 +53,7 @@ const Recipe = [
   },
   {
     "id": 4,
-    "coverSrc": "https://example.com/images/recipe4.jpg",
+    "coverSrc": "/img/photo-1504754524776-8f4f37790ca0.avif",
     "name": "Mango Chia Pudding",
     "description": "A sweet, creamy pudding made from chia seeds and fresh mango.",
     "author": "Tran Quoc Huy",
@@ -70,7 +70,7 @@ const Recipe = [
   },
   {
     "id": 5,
-    "coverSrc": "https://example.com/images/recipe5.jpg",
+    "coverSrc": "/img/photo-1516100882582-96c3a05fe590.avif",
     "name": "Baked Sweet Potato Fries",
     "description": "Healthy baked fries made with sweet potatoes and seasoning.",
     "author": "Dang Thanh Tam",
@@ -87,7 +87,7 @@ const Recipe = [
   },
   {
     "id": 6,
-    "coverSrc": "https://example.com/images/recipe6.jpg",
+    "coverSrc": "/img/photo-1520218508822-998633d997e6.avif",
     "name": "Lentil Soup",
     "description": "A warm, hearty soup packed with lentils and vegetables.",
     "author": "Nguyen Thi Mai",
@@ -103,7 +103,7 @@ const Recipe = [
   },
   {
     "id": 7,
-    "coverSrc": "https://example.com/images/recipe7.jpg",
+    "coverSrc": "/img/photo-1522666257812-173fdc2d11fe.avif",
     "name": "Spinach Mushroom Omelette",
     "description": "A protein-rich omelette filled with spinach and mushrooms.",
     "author": "Vo Thi Kim Oanh",
@@ -119,7 +119,7 @@ const Recipe = [
   },
   {
     "id": 8,
-    "coverSrc": "https://example.com/images/recipe8.jpg",
+    "coverSrc": "/img/photo-1540189549336-e6e99c3679fe.avif",
     "name": "Quinoa Salad with Avocado",
     "description": "A fresh salad combining quinoa, avocado, and a zesty lemon dressing.",
     "author": "Pham Tuan Anh",
@@ -136,7 +136,7 @@ const Recipe = [
   },
   {
     "id": 9,
-    "coverSrc": "https://example.com/images/recipe9.jpg",
+    "coverSrc": "/img/photo-1555939594-58d7cb561ad1.avif",
     "name": "Coconut Milk Rice Pudding",
     "description": "Creamy rice pudding with a tropical coconut flavor.",
     "author": "Le Thi Thao",
@@ -152,7 +152,7 @@ const Recipe = [
   },
   {
     "id": 10,
-    "coverSrc": "https://example.com/images/recipe10.jpg",
+    "coverSrc": "/img/photo-1559054663-e8d23213f55c.avif",
     "name": "Tofu Stir-Fry with Broccoli",
     "description": "Quick stir-fry dish with tofu and crunchy broccoli.",
     "author": "Hoang Minh Tuan",
@@ -168,7 +168,7 @@ const Recipe = [
   },
   {
     "id": 11,
-    "coverSrc": "https://example.com/images/recipe11.jpg",
+    "coverSrc": "/img/photo-1559742811-822873691df8.avif",
     "name": "Zucchini Noodles with Tomato Sauce",
     "description": "Low-carb alternative to pasta with fresh tomato sauce.",
     "author": "Nguyen Van Hieu",
@@ -185,7 +185,7 @@ const Recipe = [
   },
   {
     "id": 12,
-    "coverSrc": "https://example.com/images/recipe12.jpg",
+    "coverSrc": "/img/photo-1562967916-eb82221dfb92.avif",
     "name": "Roasted Beet Salad",
     "description": "Colorful salad with roasted beets and fresh greens.",
     "author": "Phan Thi Lan",
@@ -201,7 +201,7 @@ const Recipe = [
   },
   {
     "id": 13,
-    "coverSrc": "https://example.com/images/recipe13.jpg",
+    "coverSrc": "/img/photo-1569718212165-3a8278d5f624.avif",
     "name": "Vegetarian Sushi Rolls",
     "description": "Sushi rolls filled with vegetables and sticky rice.",
     "author": "Dang Quang Huy",
@@ -218,7 +218,7 @@ const Recipe = [
   },
   {
     "id": 14,
-    "coverSrc": "https://example.com/images/recipe14.jpg",
+    "coverSrc": "/img/photo-1580959375944-abd7e991f971.avif",
     "name": "Cucumber Mint Smoothie",
     "description": "A refreshing smoothie with cucumber, mint, and lime.",
     "author": "Vo Thi Thu Ha",
@@ -234,7 +234,7 @@ const Recipe = [
   },
   {
     "id": 15,
-    "coverSrc": "https://example.com/images/recipe15.jpg",
+    "coverSrc": "/img/photo-1744116432662-dbe90acb4a63.avif",
     "name": "Stuffed Bell Peppers",
     "description": "Baked bell peppers stuffed with rice and vegetables.",
     "author": "Le Van Long",

@@ -45,7 +45,6 @@
         <!-- Main Content -->
 
         <div id="mainContent" class="col-md-10 main-content">
-          
           <div class="menu border-bottom border-1">
             <div class="rounded" onclick="toggleSidebar()">
               <i class="fa-solid fa-bars"></i>
@@ -67,7 +66,6 @@
             </div>
             <div class="d-flex gap-4 mb-3" style="height: 40px">
               <input type="text" class="form-control" placeholder="Search food" />
-
               <div class="input-group">
                 <button class="btn btn-outline-secondary" type="button"><i class="fas fa-filter"></i></button>
                 <select class="form-select" id="inputGroupSelect03" aria-label="Example select with button addon">
@@ -109,7 +107,7 @@
 
             <div id="recipeList" class="row row-cols-1 row-cols-md-2 g-4"></div>
 
-            <div class="pagination" id="pagination"></div>
+            <div class="pagination" id="paginationRecipe"></div>
           </div>
 
           <!-- Add Recipe -->
@@ -119,26 +117,30 @@
                 <div class="border border-1 rounded-2" style="background-color: white; height: 300px; padding: 20px">
                   <div class="d-flex flex-column justify-content-between h-100">
                     <div class="d-flex align-items-center justify-content-between">
-                      <span class="border rounded-2 d-flex align-items-center shadow" style="padding: 4px">
-                        <i class="fas fa-pen-to-square" style="color: #2196f3; margin-right: 5px"></i>
-                        <span style="font-size: 12px; font-weight: 700; color: #2196f3">My recipes</span>
+                      <span
+                        class="border rounded-2 d-flex align-items-center shadow bg-warning me-2"
+                        style="padding: 4px"
+                        id="change-method">
+                        <i class="fas fa-users" style="margin-right: 5px"></i>
+                        <span class="text-nowrap" style="font-size: 12px; font-weight: 700">Community Recipes</span>
                       </span>
+
                       <div
                         class="d-flex border border-1 rounded-2 gap-1 align-items-center"
                         style="font-size: 12px; padding: 4px">
                         <i class="far fa-heart"></i>
-                        <span>37</span>
+                        <span>0</span>
                       </div>
                     </div>
 
-                    <div class="d-flex justify-content-center">
+                    <div class="d-flex justify-content-center" id="upLoadUrl">
                       <div class="border rounded-2" style="padding: 4px">
                         <i class="fas fa-pen-to-square" style="color: rgb(255, 136, 0); margin-right: 5px"></i>
                         <span style="font-size: 12px">Upload image</span>
                       </div>
                     </div>
 
-                    <div class="d-flex">
+                    <div class="d-flex" id="selectInput">
                       <div class="card-category border border-1 p-1 rounded-3">
                         <i class="fa-solid fa-tags"></i>
                         New category
