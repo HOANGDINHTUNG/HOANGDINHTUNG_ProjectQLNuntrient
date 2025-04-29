@@ -5,3 +5,4 @@ document.getElementById("closeForm").addEventListener("click", () => {
 document.getElementById("close-form").addEventListener("click", () => {
   window.location.href = "../food.html";
 });
+
