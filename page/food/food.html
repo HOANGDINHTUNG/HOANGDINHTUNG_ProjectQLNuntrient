@@ -56,10 +56,10 @@
             <h4>Foods</h4>
             <p>Search, consult and add new foods to the system</p>
             <div class="d-flex gap-4 mb-4" style="height: 40px">
-              <input type="text" class="form-control" placeholder="Search food" />
+              <input type="text" class="form-control" placeholder="Search food" id="searchFood"/>
 
               <div class="input-group">
-                <button class="btn btn-outline-secondary" type="button"><i class="fas fa-filter"></i></button>
+                <button class="btn btn-outline-secondary" id="sortCategoryFood"><i class="fas fa-filter"></i></button>
                 <select class="form-select" id="inputGroupSelect03" aria-label="Example select with button addon">
                   <option selected>Sort by nutrient</option>
                   <option value="Energy">Energy</option>
@@ -69,19 +69,22 @@
                 </select>
               </div>
 
-              <select class="form-select form-select-sm" aria-label="Small select example">
+              <select class="form-select form-select-sm" aria-label="Small select example" id="categoryFood">
                 <option selected value="">All categories</option>
-                <option value="1">Desserts</option>
-                <option value="2">Breakfast and snacks</option>
-                <option value="3">Appetizers and side dishes</option>
-                <option value="4">Soups</option>
-                <option value="5">Meat dishes</option>
-                <option value="6">Fish dishes</option>
-                <option value="7">Vegetarian dishes</option>
+                <option value="vegeterian">vegeterian</option>
+                <option value="appetizer">appetizer</option>
+                <option value="vegan">vegan</option>
+                <option value="main course">main course</option>
+                <option value="dessert">dessert</option>
+                <option value="low-carb">low-carb</option>
+                <option value="gluten-free">gluten-free</option>
+                <option value="breakfast">breakfast</option>
+                <option value="salad">salad</option>
+                <option value="soup">soup</option>
               </select>
             </div>
 
-            <div class="card-food"></div>
+            <div id="card-food"></div>
 
             <div class="border border-1 p-3 d-flex gap-3 align-items-center" id="openFormBtn">
               <i class="fa-solid fa-plus"></i>

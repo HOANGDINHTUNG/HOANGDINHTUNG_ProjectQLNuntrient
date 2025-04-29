@@ -3,7 +3,7 @@ let Food = [
     id: 1,
     name: "Ackee, canned, drained",
     source: "Minh Cuong Tran",
-    category: "Vegetables and Vegetable Products",
+    category: "vegeterian, vegan and appetizer",
     quantity: "100g",
     macronutrients: {
       energy: 151,
@@ -16,7 +16,7 @@ let Food = [
     id: 2,
     name: "Broccoli, raw",
     source: "Nutrition DB",
-    category: "Vegetables",
+    category: "vegan and main course",
     quantity: "100g",
     macronutrients: {
       energy: 34,
@@ -29,7 +29,7 @@ let Food = [
     id: 3,
     name: "Apple, with skin",
     source: "Fruit Facts",
-    category: "Fruits",
+    category: "salad, dessert and breakfast",
     quantity: "100g",
     macronutrients: {
       energy: 52,
@@ -42,7 +42,7 @@ let Food = [
     id: 4,
     name: "Banana, raw",
     source: "Minh Cuong Tran",
-    category: "Fruits",
+    category: "gluten-free, dessert ,vegeterian and appetizer",
     quantity: "100g",
     macronutrients: {
       energy: 89,
@@ -55,7 +55,7 @@ let Food = [
     id: 5,
     name: "Carrot, raw",
     source: "Healthy Food DB",
-    category: "Vegetables",
+    category: "low-carb, soup and breakfast",
     quantity: "100g",
     macronutrients: {
       energy: 41,
@@ -68,7 +68,7 @@ let Food = [
     id: 6,
     name: "Chicken breast, grilled",
     source: "Protein Source",
-    category: "Meat",
+    category: "main course, gluten-free and low-carb",
     quantity: "100g",
     macronutrients: {
       energy: 165,
@@ -81,7 +81,7 @@ let Food = [
     id: 7,
     name: "Salmon, baked",
     source: "Fish Nutrition",
-    category: "Fish",
+    category: "main course and vegeterian",
     quantity: "100g",
     macronutrients: {
       energy: 206,
@@ -94,7 +94,7 @@ let Food = [
     id: 8,
     name: "Brown rice, cooked",
     source: "Whole Grains DB",
-    category: "Grains",
+    category: "low-carb, gluten-free and soup",
     quantity: "100g",
     macronutrients: {
       energy: 123,
@@ -107,7 +107,7 @@ let Food = [
     id: 9,
     name: "White bread",
     source: "Bakery",
-    category: "Grains",
+    category: "dessert, breakfast and appetizer",
     quantity: "100g",
     macronutrients: {
       energy: 265,
@@ -146,7 +146,7 @@ let Food = [
     id: 12,
     name: "Almonds",
     source: "Nuts & Seeds",
-    category: "Snacks",
+    category: "main course",
     quantity: "100g",
     macronutrients: {
       energy: 579,
@@ -159,7 +159,7 @@ let Food = [
     id: 13,
     name: "Cheddar cheese",
     source: "Dairy Base",
-    category: "Dairy",
+    category: "salad",
     quantity: "100g",
     macronutrients: {
       energy: 403,
@@ -172,7 +172,7 @@ let Food = [
     id: 14,
     name: "Greek yogurt, plain",
     source: "Dairy Base",
-    category: "Dairy",
+    category: "vegan",
     quantity: "100g",
     macronutrients: {
       energy: 59,
@@ -185,7 +185,7 @@ let Food = [
     id: 15,
     name: "Lentils, boiled",
     source: "Plant Protein",
-    category: "Legumes",
+    category: "soup and breakfast",
     quantity: "100g",
     macronutrients: {
       energy: 116,
@@ -198,7 +198,7 @@ let Food = [
     id: 16,
     name: "Sweet potato, baked",
     source: "Root Veggies",
-    category: "Vegetables",
+    category: "gluten-free and breakfast",
     quantity: "100g",
     macronutrients: {
       energy: 90,
@@ -211,7 +211,7 @@ let Food = [
     id: 17,
     name: "Avocado",
     source: "Healthy Fats",
-    category: "Fruits",
+    category: "main course and dessert",
     quantity: "100g",
     macronutrients: {
       energy: 160,
@@ -223,8 +223,8 @@ let Food = [
   {
     id: 18,
     name: "Beef, ground, cooked",
-    source: "Meat Source",
-    category: "Meat",
+    source: "Meat",
+    category: "breakfast and vegeterian",
     quantity: "100g",
     macronutrients: {
       energy: 250,
@@ -236,8 +236,8 @@ let Food = [
   {
     id: 19,
     name: "Shrimp, cooked",
-    source: "Seafood",
-    category: "Fish",
+    source: "Fish",
+    category: "dessert and gluten-free",
     quantity: "100g",
     macronutrients: {
       energy: 99,
@@ -250,7 +250,7 @@ let Food = [
     id: 20,
     name: "Pumpkin, cooked",
     source: "Vegetable Base",
-    category: "Vegetables",
+    category: "vegeterian and soup",
     quantity: "100g",
     macronutrients: {
       energy: 26,
@@ -262,8 +262,8 @@ let Food = [
   {
     id: 21,
     name: "Mango, raw",
-    source: "Tropical Fruits",
-    category: "Fruits",
+    source: "Fruits",
+    category: "main course and ow-carb",
     quantity: "100g",
     macronutrients: {
       energy: 60,
@@ -276,7 +276,7 @@ let Food = [
     id: 22,
     name: "Almonds, raw",
     source: "Minh Cuong Tran",
-    category: "Nuts and Seeds",
+    category: "dessert and appetizer",
     quantity: "100g",
     macronutrients: {
       energy: 579,
@@ -289,7 +289,7 @@ let Food = [
     id: 23,
     name: "Apple, raw",
     source: "Minh Cuong Tran",
-    category: "Fruits and Fruit Products",
+    category: "gluten-free and breakfast",
     quantity: "100g",
     macronutrients: {
       energy: 52,
@@ -302,7 +302,7 @@ let Food = [
     id: 24,
     name: "Avocado, raw",
     source: "Minh Cuong Tran",
-    category: "Fruits and Fruit Products",
+    category: "salad and soup",
     quantity: "100g",
     macronutrients: {
       energy: 160,
@@ -315,7 +315,7 @@ let Food = [
     id: 25,
     name: "Banana, raw",
     source: "Minh Cuong Tran",
-    category: "Fruits and Fruit Products",
+    category: "dessert",
     quantity: "100g",
     macronutrients: {
       energy: 89,
@@ -328,7 +328,7 @@ let Food = [
     id: 26,
     name: "Beef, cooked",
     source: "Minh Cuong Tran",
-    category: "Meat, Poultry, and Fish Products",
+    category: "main course",
     quantity: "100g",
     macronutrients: {
       energy: 250,
@@ -341,7 +341,7 @@ let Food = [
     id: 27,
     name: "Broccoli, raw",
     source: "Minh Cuong Tran",
-    category: "Vegetables and Vegetable Products",
+    category: "appetizer",
     quantity: "100g",
     macronutrients: {
       energy: 34,
@@ -354,7 +354,7 @@ let Food = [
     id: 28,
     name: "Carrot, raw",
     source: "Minh Cuong Tran",
-    category: "Vegetables and Vegetable Products",
+    category: "vegeterian",
     quantity: "100g",
     macronutrients: {
       energy: 41,
@@ -367,7 +367,7 @@ let Food = [
     id: 29,
     name: "Chicken breast, cooked",
     source: "Minh Cuong Tran",
-    category: "Meat, Poultry, and Fish Products",
+    category: "main course and gluten-free",
     quantity: "100g",
     macronutrients: {
       energy: 165,
@@ -380,7 +380,7 @@ let Food = [
     id: 30,
     name: "Chickpeas, cooked",
     source: "Minh Cuong Tran",
-    category: "Legumes and Legume Products",
+    category: "breakfast",
     quantity: "100g",
     macronutrients: {
       energy: 164,
@@ -393,7 +393,7 @@ let Food = [
     id: 31,
     name: "Cucumber, raw",
     source: "Minh Cuong Tran",
-    category: "Vegetables and Vegetable Products",
+    category: "appetizer and vegan",
     quantity: "100g",
     macronutrients: {
       energy: 16,
@@ -406,7 +406,7 @@ let Food = [
     id: 32,
     name: "Egg, whole, raw",
     source: "Minh Cuong Tran",
-    category: "Eggs and Egg Products",
+    category: "main course, low-carb and gluten-free",
     quantity: "100g",
     macronutrients: {
       energy: 143,
@@ -419,7 +419,7 @@ let Food = [
     id: 33,
     name: "Garlic, raw",
     source: "Minh Cuong Tran",
-    category: "Vegetables and Vegetable Products",
+    category: "gluten-free, breakfast and vegeterian",
     quantity: "100g",
     macronutrients: {
       energy: 149,
@@ -432,7 +432,7 @@ let Food = [
     id: 34,
     name: "Greek yogurt, plain",
     source: "Minh Cuong Tran",
-    category: "Dairy Products",
+    category: "dessert, salad and low-carb",
     quantity: "100g",
     macronutrients: {
       energy: 59,
@@ -445,7 +445,7 @@ let Food = [
     id: 35,
     name: "Kale, raw",
     source: "Minh Cuong Tran",
-    category: "Vegetables and Vegetable Products",
+    category: "vegeterian and appetizer",
     quantity: "100g",
     macronutrients: {
       energy: 49,
@@ -458,7 +458,7 @@ let Food = [
     id: 36,
     name: "Lentils, cooked",
     source: "Minh Cuong Tran",
-    category: "Legumes and Legume Products",
+    category: "gluten-free, appetizer and soup",
     quantity: "100g",
     macronutrients: {
       energy: 116,
@@ -471,7 +471,7 @@ let Food = [
     id: 37,
     name: "Lettuce, raw",
     source: "Minh Cuong Tran",
-    category: "Vegetables and Vegetable Products",
+    category: "vegeterian, appetizer and dessert",
     quantity: "100g",
     macronutrients: {
       energy: 15,
@@ -484,7 +484,7 @@ let Food = [
     id: 38,
     name: "Mango, raw",
     source: "Minh Cuong Tran",
-    category: "Fruits and Fruit Products",
+    category: "dessert and salad",
     quantity: "100g",
     macronutrients: {
       energy: 60,
@@ -497,7 +497,7 @@ let Food = [
     id: 39,
     name: "Oats, raw",
     source: "Minh Cuong Tran",
-    category: "Cereal Grains and Pasta",
+    category: "dessert, vegeterian and low-carb",
     quantity: "100g",
     macronutrients: {
       energy: 389,
@@ -510,7 +510,7 @@ let Food = [
     id: 40,
     name: "Orange, raw",
     source: "Minh Cuong Tran",
-    category: "Fruits and Fruit Products",
+    category: "salad and appetizer",
     quantity: "100g",
     macronutrients: {
       energy: 47,
@@ -523,7 +523,7 @@ let Food = [
     id: 41,
     name: "Salmon, cooked",
     source: "Minh Cuong Tran",
-    category: "Meat, Poultry, and Fish Products",
+    category: "gluten-free, vegan and vegeterian",
     quantity: "100g",
     macronutrients: {
       energy: 208,

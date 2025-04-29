@@ -39,7 +39,7 @@ renderRecipes({
 });
 
 // tìm kiếm recipe yêu thích
-function filterBooks(keyword) {
+function filterRecipe(keyword) {
   const filtered = Recipe.filter((recipe) => recipe.name.toLowerCase().includes(keyword.toLowerCase()));
   renderRecipes({
     containerID: "recipeHome",
@@ -52,7 +52,8 @@ function filterBooks(keyword) {
 
 document.getElementById("searchInput").addEventListener("input", function () {
   const keyword = this.value;
-  filterBooks(keyword);
+  currentPage = 1; 
+  filterRecipe(keyword);
 });
 
 // sắp xếp theo nutrient
@@ -121,4 +122,3 @@ categorySelect.addEventListener("change", function () {
     img: "."
   });
 });
-

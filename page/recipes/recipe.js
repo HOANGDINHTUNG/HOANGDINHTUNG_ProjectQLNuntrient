@@ -697,26 +697,6 @@ function addDetailRecipe() {
   document.getElementById("addNewRecipe").style.display = "block";
 }
 
-// let selectedRecipes =loadFromLocalStorage("selectedRecipes",selectedRecipes)
-
-// const recipeList = document.getElementById('recipeList')
-
-// recipeList.addEventListener("click",()=>{
-//   const index = selectedRecipes.findIndex(item => item.id === recipe.id);
-//     if (index === -1) {
-//       // Neu chua co thi them vao
-//       selectedRecipes.push(recipe);
-//       recipeList.style.backgroundColor = 'red';
-//       alert(`Đã thêm ${recipe.name} vào danh sách yêu thích`);
-//     } else {
-//       // Neu da co thi xoa ra
-//       selectedRecipes.splice(index, 1);
-//       recipeList.style.backgroundColor = '';
-//       alert(`Đã xóa khỏi danh sách yêu thích`);
-//     }
-//     localStorage.setItem('selectedRecipes', JSON.stringify(selectedRecipes));
-// })
-
 const changeMethod = document.getElementById("change-method");
 
 // 2 trạng thái nội dung
