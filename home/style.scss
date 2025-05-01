@@ -69,7 +69,7 @@ body {
   margin-right: 10px;
 }
 
-.input-group,
+// .input-group,
 .form-select {
   width: 500px;
 }
@@ -106,10 +106,10 @@ body {
   color: white;
 }
 
-.box-content{
+.box-content {
   margin: 30px 20px;
   display: flex;
-  gap: 30px
+  gap: 30px;
 }
 
 textarea.form-control {
@@ -124,12 +124,12 @@ input.form-control::placeholder {
   font-style: italic;
 }
 
-.statistical{
-  width:60%;
+.statistical {
+  width: 60%;
 }
 
-.chart{
-  width:40%
+.chart {
+  width: 40%;
 }
 
 #legend {
@@ -162,7 +162,7 @@ input.form-control::placeholder {
   display: flex;
 }
 
-#box-recipe{
+#box-recipe {
   display: block;
 }
 
@@ -174,7 +174,118 @@ input.form-control::placeholder {
   background-color: #f8f9fa; /* sáng hơn khi hover */
 }
 
-.toggle-overlay{
+.toggle-overlay {
   display: none;
 }
 
+.btn-form-delete {
+  position: absolute;
+  top: 0;
+  right: 30px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.overlay-form {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.overlay-form-detail{
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+
+
+.container-form {
+  border-radius: 20px;
+  padding: 20px;
+  width: 90%;
+  max-width: 1000px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #fff;
+  position: relative;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+
+.form-container h2 {
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.form-container p {
+  font-size: 14px;
+  text-align: center;
+  color: gray;
+}
+
+.form-title {
+  text-align: center;
+  color: #00b894;
+  font-weight: 600;
+  margin: 20px 0 10px;
+}
+
+.section-title {
+  font-size: 28px;
+  font-weight: 300;
+  margin: 20px 0 10px;
+}
+
+.grid-2,
+.grid-3 {
+  display: grid;
+  gap: 10px;
+}
+
+.grid-2 {
+  grid-template-columns: 1fr 1fr;
+}
+
+.grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.input-group-text {
+  white-space: nowrap;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.footer-btns {
+  display: flex;
+  justify-content: end;
+  gap: 10px;
+  margin-top: 20px;
+}

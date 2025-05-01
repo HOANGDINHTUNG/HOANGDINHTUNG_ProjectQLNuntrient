@@ -24,7 +24,7 @@ function getFormData(formEL) {
     if (element.name != "") {
       data[element.name] = element.value;
     }
-  }
+  } 
   return data;
 }
 
@@ -58,16 +58,16 @@ function validateForm(formEl) {
       continue;
     }
 
-    // Kiểm tra nếu là energy, fat, carbohydrate, protein thì bắt buộc phải nhập và chỉ cho phép nhập số
     if (["energy", "fat", "carbohydrate", "protein"].includes(input.name)) {
-      if (value === "" || isNaN(value)) {
-        alert(`${input.placeholder || input.name} là bắt buộc và phải là số!`);
+      let num = Number(value);
+      if (value === "" || isNaN(num) || num < 0) {
+        alert(`${input.placeholder || input.name} là bắt buộc, phải là số và không được âm!`);
         input.focus();
         return false;
       }
       continue;
     }
-
+    
     // Kiểm tra các input khác: nếu có giá trị thì phải là số
     if (value !== "" && isNaN(value)) {
       alert(`${input.placeholder || input.name} phải là số!`);

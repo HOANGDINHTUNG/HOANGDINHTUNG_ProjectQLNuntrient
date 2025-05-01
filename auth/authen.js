@@ -53,7 +53,6 @@ function register(e) {
     return;
   }
 
-  console.log(data.email.length)
 
   if(data.password.length<8){
     alert("Mật khẩu tối thiệu 8 kí tự")
