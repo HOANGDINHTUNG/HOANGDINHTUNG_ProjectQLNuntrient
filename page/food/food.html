@@ -85,7 +85,7 @@
 
             <div id="card-food"></div>
 
-            <div class="border border-1 p-3 d-flex gap-3 align-items-center" id="openFormBtn">
+            <div class="border border-1 p-3 d-flex gap-3 align-items-center" onclick="showFormFood()">
               <i class="fa-solid fa-plus"></i>
               <span>Create food</span>
             </div>
@@ -100,10 +100,10 @@
     <div class="overlay-form" id="overlay">
       <div class="container-form">
         <button id="closeOverlay" class="btn-form-delete">&times;</button>
-        <form onsubmit="addNewFood(event)">
+        <form onsubmit="addNewFood(event)" id="foodForm">
           <div>
-            <h2 class="text-center">Add new food</h2>
-            <p class="text-center">Fill in the fields below with the food information</p>
+            <h2 id="title-form-food" class="text-center"></h2>
+            <p id="note-form-food" class="text-center"></p>
 
             <!-- Basic Info -->
             <div class="grid-2 mb-3">
@@ -124,7 +124,7 @@
               </div>
               <div class="input-group">
                 <span class="input-group-text w-25 text-wrap">Quanlity</span>
-                <input type="number" class="form-control" name="quanlity" value="100" />
+                <input type="text" class="form-control" name="quanlity" value="100" />
                 <span class="input-group-text">grams</span>
               </div>
             </div>
@@ -135,22 +135,22 @@
             <div class="grid-2 mb-3">
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Energy</span>
-                <input type="number" class="form-control" name="energy" />
+                <input type="text" class="form-control" name="macronutrients.energy" />
                 <span class="input-group-text">kcal</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Fat</span>
-                <input type="number" class="form-control" name="fat" />
+                <input type="text" class="form-control" name="macronutrients.fat" />
                 <span class="input-group-text">g</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Carbohydrate</span>
-                <input type="number" class="form-control" name="carbohydrate" />
+                <input type="text" class="form-control" name="macronutrients.carbohydrate" />
                 <span class="input-group-text">g</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Protein</span>
-                <input type="number" class="form-control" name="protein" />
+                <input type="text" class="form-control" name="macronutrients.protein" />
                 <span class="input-group-text">g</span>
               </div>
             </div>
@@ -160,187 +160,187 @@
               <!-- Micronutrient fields -->
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Cholesterol</span>
-                <input type="number" class="form-control" name="cholesterol" />
+                <input type="text" class="form-control" name="micronutrients.cholesterol" />
                 <span class="input-group-text">mg</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Fiber</span>
-                <input type="number" class="form-control" name="fiber" />
+                <input type="text" class="form-control" name="micronutrients.fiber" />
                 <span class="input-group-text">g</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Sodium</span>
-                <input type="number" class="form-control" name="sodium" />
+                <input type="text" class="form-control" name="micronutrients.sodium" />
                 <span class="input-group-text">mg</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Water</span>
-                <input type="number" class="form-control" name="water" />
+                <input type="text" class="form-control" name="micronutrients.water" />
                 <span class="input-group-text">g</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Vitamin A</span>
-                <input type="number" class="form-control" name="vitaminA" />
+                <input type="text" class="form-control" name="micronutrients.vitaminA" />
                 <span class="input-group-text">ug</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Vitamin B-6</span>
-                <input type="number" class="form-control" name="vitaminB6" />
+                <input type="text" class="form-control" name="micronutrients.vitaminB6" />
                 <span class="input-group-text">mg</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Vitamin B-12</span>
-                <input type="number" class="form-control" name="vitaminB12" />
+                <input type="text" class="form-control" name="micronutrients.vitaminB12" />
                 <span class="input-group-text">ug</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Vitamin C</span>
-                <input type="number" class="form-control" name="vitaminC" />
+                <input type="text" class="form-control" name="micronutrients.vitaminC" />
                 <span class="input-group-text">mg</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Vitamin D (D2 + D3)</span>
-                <input type="number" class="form-control" name="vitaminD" />
+                <input type="text" class="form-control" name="micronutrients.vitaminD" />
                 <span class="input-group-text">ug</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Vitamin E</span>
-                <input type="number" class="form-control" name="vitaminE" />
+                <input type="text" class="form-control" name="micronutrients.vitaminE" />
                 <span class="input-group-text">mg</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Vitamin K</span>
-                <input type="number" class="form-control" name="vitaminK" />
+                <input type="text" class="form-control" name="micronutrients.vitaminK" />
                 <span class="input-group-text">ug</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Starch</span>
-                <input type="number" class="form-control" name="starch" />
+                <input type="text" class="form-control" name="micronutrients.starch" />
                 <span class="input-group-text">g</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Lactose</span>
-                <input type="number" class="form-control" name="lactose" />
+                <input type="text" class="form-control" name="micronutrients.lactose" />
                 <span class="input-group-text">g</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Alcohol</span>
-                <input type="number" class="form-control" name="alcohol" />
+                <input type="text" class="form-control" name="micronutrients.alcohol" />
                 <span class="input-group-text">g</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Caffeine</span>
-                <input type="number" class="form-control" name="caffeine" />
+                <input type="text" class="form-control" name="micronutrients.caffeine" />
                 <span class="input-group-text">mg</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Sugars</span>
-                <input type="number" class="form-control" name="sugars" />
+                <input type="text" class="form-control" name="micronutrients.sugars" />
                 <span class="input-group-text">g</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Calcium</span>
-                <input type="number" class="form-control" name="calcium" />
+                <input type="text" class="form-control" name="micronutrients.calcium" />
                 <span class="input-group-text">mg</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Iron</span>
-                <input type="number" class="form-control" name="iron" />
+                <input type="text" class="form-control" name="micronutrients.iron" />
                 <span class="input-group-text">mg</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Magnesium</span>
-                <input type="number" class="form-control" name="magnesium" />
+                <input type="text" class="form-control" name="micronutrients.magnesium" />
                 <span class="input-group-text">mg</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Phosphorus</span>
-                <input type="number" class="form-control" name="phosphorus" />
+                <input type="text" class="form-control" name="micronutrients.phosphorus" />
                 <span class="input-group-text">mg</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Potassium</span>
-                <input type="number" class="form-control" name="potassium" />
+                <input type="text" class="form-control" name="micronutrients.potassium" />
                 <span class="input-group-text">mg</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Zinc</span>
-                <input type="number" class="form-control" name="zinc" />
+                <input type="text" class="form-control" name="micronutrients.zinc" />
                 <span class="input-group-text">mg</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Copper</span>
-                <input type="number" class="form-control" name="copper" />
+                <input type="text" class="form-control" name="micronutrients.copper" />
                 <span class="input-group-text">mg</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Fluoride</span>
-                <input type="number" class="form-control" name="fluoride" />
+                <input type="text" class="form-control" name="micronutrients.fluoride" />
                 <span class="input-group-text">ug</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Manganese</span>
-                <input type="number" class="form-control" name="manganese" />
+                <input type="text" class="form-control" name="micronutrients.manganese" />
                 <span class="input-group-text">mg</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Selenium</span>
-                <input type="number" class="form-control" name="selenium" />
+                <input type="text" class="form-control" name="micronutrients.selenium" />
                 <span class="input-group-text">ug</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Thiamin</span>
-                <input type="number" class="form-control" name="thiamin" />
+                <input type="text" class="form-control" name="micronutrients.thiamin" />
                 <span class="input-group-text">mg</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Riboflavin</span>
-                <input type="number" class="form-control" name="riboflavin" />
+                <input type="text" class="form-control" name="micronutrients.riboflavin" />
                 <span class="input-group-text">mg</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Niacin</span>
-                <input type="number" class="form-control" name="niacin" />
+                <input type="text" class="form-control" name="micronutrients.niacin" />
                 <span class="input-group-text">mg</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Pantothenic acid</span>
-                <input type="number" class="form-control" name="pantothenicAcid" />
+                <input type="text" class="form-control" name="micronutrients.pantothenicAcid" />
                 <span class="input-group-text">mg</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Folate, total</span>
-                <input type="number" class="form-control" name="folateTotal" />
+                <input type="text" class="form-control" name="micronutrients.folateTotal" />
                 <span class="input-group-text">ug</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Folic acid</span>
-                <input type="number" class="form-control" name="folicAcid" />
+                <input type="text" class="form-control" name="micronutrients.folicAcid" />
                 <span class="input-group-text">ug</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Fatty acids, total trans</span>
-                <input type="number" class="form-control" name="fattyAcidsTrans" />
+                <input type="text" class="form-control" name="micronutrients.fattyAcidsTrans" />
                 <span class="input-group-text">g</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Fatty acids, total saturated</span>
-                <input type="number" class="form-control" name="fattyAcidsSaturated" />
+                <input type="text" class="form-control" name="micronutrients.fattyAcidsSaturated" />
                 <span class="input-group-text">g</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Fatty acids, total monounsaturated</span>
-                <input type="number" class="form-control" name="fattyAcidsMonounsaturated" />
+                <input type="text" class="form-control" name="micronutrients.fattyAcidsMonounsaturated" />
                 <span class="input-group-text">g</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Fatty acids, total polyunsaturated</span>
-                <input type="number" class="form-control" name="fattyAcidsPolyunsaturated" />
+                <input type="text" class="form-control" name="micronutrients.fattyAcidsPolyunsaturated" />
                 <span class="input-group-text">g</span>
               </div>
               <div class="input-group">
                 <span class="input-group-text w-50 text-wrap">Chloride</span>
-                <input type="number" class="form-control" name="chloride" />
+                <input type="text" class="form-control" name="micronutrients.chloride" />
                 <span class="input-group-text">mg</span>
               </div>
             </div>
@@ -355,8 +355,6 @@
       </div>
     </div>
 
-    <!-- Show detail food -->
-    <div id="foodDetail" style="display: none"></div>
 
     <!--=============== JS ===============-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

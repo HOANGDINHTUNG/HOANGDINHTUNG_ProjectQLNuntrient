@@ -1,5 +1,6 @@
 const rowsPerPage = 5;
 let currentPage = 1;
+Food=loadFromLocalStorage("Food",Food);
 
 function renderFood(data = Food) {
   const start = (currentPage - 1) * rowsPerPage;
@@ -9,11 +10,10 @@ function renderFood(data = Food) {
 
   const pageItems = data.slice(start, end);
 
-  pageItems.forEach((f) => {
-    if (!f || typeof f.id === "undefined") return; // Bỏ qua nếu không có id
-
+  pageItems.forEach((f, index) => {
+    const actualIndex = Food.findIndex(item => item.id === f.id);
     const row = `
-      <div class="border border-1 p-2 d-flex justify-content-between mb-3 card-detail-food" data-id="${f.id}">
+      <div class="border border-1 p-2 d-flex justify-content-between mb-3" onclick="editFoodItem(${actualIndex})">
         <div class="d-flex flex-column">
           <h5>${f.name}</h5>
           <span>${f.source || "McCance and Widdowson's"}</span>
@@ -115,18 +115,96 @@ function changePage(data, page) {
   renderFood(data);
 }
 
+function populateForm(form, data, parentKey = "") {
+  for (let key in data) {
+    const fullKey = parentKey ? `${parentKey}.${key}` : key;
+    const value = data[key];
+
+    if (value !== null && typeof value === "object") {
+      populateForm(form, value, fullKey); // đệ quy cho object con
+    } else {
+      if (form.elements[fullKey]) {
+        form.elements[fullKey].value = value ?? "";
+      }
+    }
+  }
+}
+
+
 function addNewFood(e) {
   e.preventDefault();
-  let formFoodEl = e.target;
-  let data = getFormData(formFoodEl);
-  if (validateForm(data)) {
-    alert("Thông tin đã nhập vào đầy đủ");
-  }
-  Food.push(data);
-  saveDataToLocal("Food", Food);
-  alert("Thêm thành công");
-
   
+  let formFoodEl = document.getElementById("foodForm");
+  
+  if (validateForm(formFoodEl)) {
+    let formData = getFormData(formFoodEl);
+    
+    if (editingIndex !== null && editingIndex >= 0 && editingIndex < Food.length) {
+      const originalId = Food[editingIndex].id;
+      const updatedFood = {
+        id: originalId,
+        name: formData.name,
+        source: formData.source,
+        category: formData.category,
+        quanlity: formData.quanlity,
+        macronutrients: formData.macronutrients || {},
+        micronutrients: formData.micronutrients || {}
+      };
+      Food[editingIndex] = updatedFood;
+      alert("Thực phẩm đã cập nhật thành công");
+    } else {
+      const newId = Food.length > 0 ? Math.max(...Food.map(item => item.id || 0)) + 1 : 1;
+      const newFood = {
+        id: newId,
+        name: formData.name,
+        source: formData.source,
+        category: formData.category,
+        quanlity: formData.quanlity,
+        macronutrients: formData.macronutrients || {},
+        micronutrients: formData.micronutrients || {}
+      };
+      
+      Food.push(newFood);
+      alert("Thực phẩm đã thêm thành công");
+    }
+    
+    // Save to localStorage and update UI
+    saveDataToLocal("Food", Food);
+    renderFood();
+    
+    // Reset form and state
+    formFoodEl.reset();
+    editingIndex = null;
+    overlay.style.display = "none";
+  }
+}
+
+
+
+let editingIndex = null;
+
+function showFormFood() {
+  overlay.style.display = "flex";
+  document.querySelector(".container-form").style.display = "flex";
+  document.getElementById("title-form-food").innerHTML = "Add new food";
+  document.getElementById("note-form-food").innerHTML = "Fill in the fields below with the food information";
+  editingIndex = null;
+}
+
+function editFoodItem(index) {
+  if (index >= 0 && index < Food.length) {
+    overlay.style.display = "flex";
+    document.getElementById("title-form-food").innerHTML = "Food information";
+    document.getElementById("note-form-food").innerHTML = "Check and update the information about the food";
+    
+    const food = Food[index];
+    const foodForm = document.getElementById("foodForm");
+    foodForm.reset(); // Clear form first
+    populateForm(foodForm, food);
+    editingIndex = index;
+  } else {
+    alert("Không tìm thấy thực phẩm này!");
+  }
 }
 
 function filterFood(keyword) {
@@ -139,29 +217,25 @@ document.getElementById("searchFood").addEventListener("input", function () {
   filterFood(keyword);
 });
 
-// sắp xếp theo nutrient
-
 let sortCategoryFood = document.getElementById("sortCategoryFood");
-
 sortCategoryFood.addEventListener("click", () => {
   let sortFoods = [...Food];
   const value = document.querySelectorAll("select")[0].value;
+  
   if (value === "Energy") {
-    sortFoods.sort((a, b) => a.macronutrients.energy - b.macronutrients.energy); // Sử dụng toán tử trừ để so sánh số
+    sortFoods.sort((a, b) => Number(a.macronutrients.energy) - Number(b.macronutrients.energy));
   } else if (value === "Fat") {
-    sortFoods.sort((a, b) => a.macronutrients.fat - b.macronutrients.fat); // Sử dụng toán tử trừ để so sánh số
+    sortFoods.sort((a, b) => Number(a.macronutrients.fat) - Number(b.macronutrients.fat));
   } else if (value === "Carbohydrate") {
-    sortFoods.sort((a, b) => a.macronutrients.carbohydrate - b.macronutrients.carbohydrate); // Sử dụng toán tử trừ để so sánh số
+    sortFoods.sort((a, b) => Number(a.macronutrients.carbohydrate) - Number(b.macronutrients.carbohydrate));
   } else if (value === "Protein") {
-    sortFoods.sort((a, b) => a.macronutrients.protein - b.macronutrients.protein); // Sử dụng toán tử trừ để so sánh số
+    sortFoods.sort((a, b) => Number(a.macronutrients.protein) - Number(b.macronutrients.protein));
   }
+  
   renderFood(sortFoods);
 });
 
-// tìm kiếm theo thẻ loại
-
 const categoryFood = document.getElementById("categoryFood");
-
 categoryFood.addEventListener("change", function () {
   const value = this.value;
   const filtered =
@@ -169,357 +243,34 @@ categoryFood.addEventListener("change", function () {
       ? Food
       : Food.filter((food) => {
           const categoryNames = food.category;
-          // so sánh với value đã chọn (cũng lowercase)
-          return categoryNames.includes(value.toLowerCase());
+          return categoryNames && categoryNames.toLowerCase().includes(value.toLowerCase());
         });
 
   renderFood(filtered);
 });
-
 // form
-const openBtn = document.getElementById("openFormBtn");
 const overlay = document.getElementById("overlay");
 const closeOverlay = document.getElementById("closeOverlay");
 
-openBtn.addEventListener("click", () => {
-  overlay.style.display = "flex";
-});
-
 closeOverlay.addEventListener("click", () => {
   overlay.style.display = "none";
+  document.getElementById("foodForm").reset();
 });
 
 overlay.addEventListener("click", (e) => {
   if (e.target === overlay) {
     overlay.style.display = "none";
-  }
-});
-
-function showDetailFood(food) {
-  let foodDetail = document.getElementById("foodDetail");
-  foodDetail.innerHTML = `
-  <div class="overlay-form-detail" id="overlay-item">
-      <div class="container-form">
-        <button id="closeOverlayItem" class="btn-form-delete">&times;</button>
-        <form onsubmit="addNewFood(event)">
-            <div>
-              <h2 class="text-center">Food information</h2>
-              <p class="text-center">Check and update the information about the food</p>
-
-              <!-- Basic Info -->
-              <div class="grid-2 mb-3">
-                <div class="input-group">
-                  <span class="input-group-text w-25 text-wrap">Name</span>
-                  <input type="text" class="form-control" name="name" value="${food.name}">
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-25 text-wrap">Source</span>
-                  <input type="text" class="form-control" placeholder="My foods" name="source" value="${food.source}"/>
-                </div>
-              </div>
-
-              <div class="grid-2 mb-3">
-                <div class="input-group">
-                  <span class="input-group-text w-25 text-wrap">Category</span>
-                  <input type="text" class="form-control" placeholder="Select the food group" name="category" value="${
-                    food.category
-                  }"/>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-25 text-wrap">Quanlity</span>
-                  <input type="number" class="form-control" value="100" />
-                  <span class="input-group-text">grams</span>
-                </div>
-              </div>
-
-              <div class="form-title border border-1 p-2">Nutritional value per 100 g</div>
-
-              <div class="section-title text-center">Macronutrients</div>
-              <div class="grid-2 mb-3">
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Energy</span>
-                  <input type="number" class="form-control" name="energy" value="${food.macronutrients.energy.toFixed(
-                    2
-                  )}"/>
-                  <span class="input-group-text">kcal</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Fat</span>
-                  <input type="number" class="form-control" name="fat" value="${food.macronutrients.fat.toFixed(2)}"/>
-                  <span class="input-group-text">g</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Carbohydrate</span>
-                  <input type="number" class="form-control" name="carbohydrate" value="${food.macronutrients.carbohydrate.toFixed(
-                    2
-                  )}"/>
-                  <span class="input-group-text">g</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Protein</span>
-                  <input type="number" class="form-control" name="protein" value="${food.macronutrients.protein.toFixed(
-                    2
-                  )}"/>
-                  <span class="input-group-text">g</span>
-                </div>
-              </div>
-
-              <div class="section-title text-center">Micronutrients</div>
-              <div class="grid-3">
-                <!-- Micronutrient fields -->
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Cholesterol</span>
-                  <input type="text" class="form-control" name="cholesterol" value="${food.micronutrients?.cholesterol ?? ''}"
-/>
-                  <span class="input-group-text">mg</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Fiber</span>
-                  <input type="text" class="form-control" name="fiber" value="${food.micronutrients?.fiber ?? ''}"
-/>
-                  <span class="input-group-text">g</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Sodium</span>
-                  <input type="text" class="form-control" name="sodium" value="${food.micronutrients?.sodium ?? ''}"/>
-                  <span class="input-group-text">mg</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Water</span>
-                  <input type="text" class="form-control" name="water" value="${food.micronutrients?.water ?? ''}"/>
-                  <span class="input-group-text">g</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Vitamin A</span>
-                  <input type="text" class="form-control" name="vitaminA" value="${food.micronutrients?.vitaminA ?? ''}"/>
-                  <span class="input-group-text">ug</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Vitamin B-6</span>
-                  <input type="text" class="form-control" name="vitaminB6" value="${food.micronutrients?.vitaminB6 ?? ''}"/>
-                  <span class="input-group-text">mg</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Vitamin B-12</span>
-                  <input type="text" class="form-control" name="vitaminB12" value="${food.micronutrients?.vitaminB12 ?? ''}"/>
-                  <span class="input-group-text">ug</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Vitamin C</span>
-                  <input type="text" class="form-control" name="vitaminC" value="${food.micronutrients?.vitaminC ?? ''}"/>
-                  <span class="input-group-text">mg</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Vitamin D (D2 + D3)</span>
-                  <input type="text" class="form-control" name="vitaminD" value="${food.micronutrients?.vitaminD ?? ''}"/>
-                  <span class="input-group-text">ug</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Vitamin E</span>
-                  <input type="text" class="form-control" name="vitaminE" value="${food.micronutrients?.vitaminE ?? ''}"/>
-                  <span class="input-group-text">mg</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Vitamin K</span>
-                  <input type="text" class="form-control" name="vitaminK" value="${food.micronutrients?.vitaminK ?? ''}"/>
-                  <span class="input-group-text">ug</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Starch</span>
-                  <input type="text" class="form-control" name="starch" value="${food.micronutrients?.starch ?? ''}"/>
-                  <span class="input-group-text">g</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Lactose</span>
-                  <input type="text" class="form-control" name="lactose" value="${food.micronutrients?.lactose ?? ''}"/>
-                  <span class="input-group-text">g</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Alcohol</span>
-                  <input type="text" class="form-control" name="alcohol" value="${food.micronutrients?.alcohol ?? ''}"/>
-                  <span class="input-group-text">g</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Caffeine</span>
-                  <input type="text" class="form-control" name="caffeine" value="${food.micronutrients?.caffeine ?? ''}"/>
-                  <span class="input-group-text">mg</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Sugars</span>
-                  <input type="text" class="form-control" name="sugars" value="${food.micronutrients?.sugars ?? ''}"/>
-                  <span class="input-group-text">g</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Calcium</span>
-                  <input type="text" class="form-control" name="calcium" value="${food.micronutrients?.calcium ?? ''}"/>
-                  <span class="input-group-text">mg</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Iron</span>
-                  <input type="text" class="form-control" name="iron" value="${food.micronutrients?.iron ?? ''}"/>
-                  <span class="input-group-text">mg</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Magnesium</span>
-                  <input type="text" class="form-control" name="magnesium" value="${food.micronutrients?.magnesium ?? ''}"/>
-                  <span class="input-group-text">mg</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Phosphorus</span>
-                  <input type="text" class="form-control" name="phosphorus" value="${food.micronutrients?.phosphorus ?? ''}"/>
-                  <span class="input-group-text">mg</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Potassium</span>
-                  <input type="text" class="form-control" name="potassium" value="${food.micronutrients?.potassium ?? ''}"/>
-                  <span class="input-group-text">mg</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Zinc</span>
-                  <input type="text" class="form-control" name="zinc" value="${food.micronutrients?.zinc ?? ''}"/>
-                  <span class="input-group-text">mg</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Copper</span>
-                  <input type="text" class="form-control" name="copper" value="${food.micronutrients?.copper ?? ''}"/>
-                  <span class="input-group-text">mg</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Fluoride</span>
-                  <input type="text" class="form-control" name="fluoride" value="${food.micronutrients?.fluoride ?? ''}"/>
-                  <span class="input-group-text">ug</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Manganese</span>
-                  <input type="text" class="form-control" name="manganese" value="${food.micronutrients?.manganese ?? ''}"/>
-                  <span class="input-group-text">mg</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Selenium</span>
-                  <input type="text" class="form-control" name="selenium" value="${food.micronutrients?.selenium ?? ''}"/>
-                  <span class="input-group-text">ug</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Thiamin</span>
-                  <input type="text" class="form-control" name="thiamin" value="${food.micronutrients?.thiamin ?? ''}"/>
-                  <span class="input-group-text">mg</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Riboflavin</span>
-                  <input type="text" class="form-control" name="riboflavin" value="${food.micronutrients?.riboflavin ?? ''}"/>
-                  <span class="input-group-text">mg</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Niacin</span>
-                  <input type="text" class="form-control" name="niacin" value="${food.micronutrients?.niacin ?? ''}"/>
-                  <span class="input-group-text">mg</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Pantothenic acid</span>
-                  <input type="text" class="form-control" name="pantothenicAcid" value="${
-                    food.micronutrients?.pantothenicAcid
-                   ?? ''}"/>
-                  <span class="input-group-text">mg</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Folate, total</span>
-                  <input type="text" class="form-control" name="folateTotal" value="${
-                    food.micronutrients?.folateTotal
-                   ?? ''}"/>
-                  <span class="input-group-text">ug</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Folic acid</span>
-                  <input type="text" class="form-control" name="folicAcid" value="${food.micronutrients?.folicAcid ?? ''}"/>
-                  <span class="input-group-text">ug</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Fatty acids, total trans</span>
-                  <input type="text" class="form-control" name="fattyAcidsTrans" value="${
-                    food.micronutrients?.fattyAcidsTrans
-                   ?? ''}"/>
-                  <span class="input-group-text">g</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Fatty acids, total saturated</span>
-                  <input type="text" class="form-control" name="fattyAcidsSaturated" value="${
-                    food.micronutrients?.fattyAcidsSaturated
-                   ?? ''}"/>
-                  <span class="input-group-text">g</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Fatty acids, total monounsaturated</span>
-                  <input type="text" class="form-control" name="fattyAcidsMonounsaturated" value="${
-                    food.micronutrients?.fattyAcidsMonounsaturated
-                   ?? ''}"/>
-                  <span class="input-group-text">g</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Fatty acids, total polyunsaturated</span>
-                  <input type="text" class="form-control" name="fattyAcidsPolyunsaturated" value="${
-                    food.micronutrients?.fattyAcidsPolyunsaturated
-                   ?? ''}"/>
-                  <span class="input-group-text">g</span>
-                </div>
-                <div class="input-group">
-                  <span class="input-group-text w-50 text-wrap">Chloride</span>
-                  <input type="text" class="form-control" name="chloride" value="${food.micronutrients?.chloride ?? ''}"/>
-                  <span class="input-group-text">mg</span>
-                </div>
-              </div>
-
-              <!-- Footer -->
-              <div class="footer-btns">
-                <button class="btn btn-outline-secondary">Cancel</button>
-                <button type="submit" class="btn btn-success">Save and close</button>
-              </div>
-            </div>
-          </form>
-        </div>
-    </div>
-  `;
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  const cardFood = document.getElementById("card-food");
-  cardFood.addEventListener("click", (e) => {
-    const card = e.target.closest(".card-detail-food");
-    if (card && card.dataset.id) {
-      const id = Number(card.dataset.id);
-      const food = Food.find((r) => r.id === id);
-      console.log("Clicked ID:", id); // Kiểm tra debug
-      if (food) {
-        showDetailFood(food);
-        document.getElementById("foodDetail").style.display = "block";
-      }
-    }
-  });
-  renderFood();
-});
-
-document.addEventListener("click", (e) => {
-  if (e.target.id === "closeOverlayItem") {
-    document.getElementById("foodDetail").style.display = "none";
+    document.getElementById("foodForm").reset();
   }
 });
 
 document.getElementById("close-form").addEventListener("click", () => {
   if (confirm("Dữ liệu sẽ mất, bạn có chắc đóng form chứ!!!")) {
     overlay.style.display = "none";
+    document.getElementById("foodForm").reset();
   }
 });
 
-function addNewFood(e) {
-  e.preventDefault();
-  let formFoodEl = e.target;
-  // ✅ validateForm nhận chính form DOM
-  if (validateForm(formFoodEl)) {
-    let data = getFormData(formFoodEl);
-    Food.push({id: Food.length + 1, ...data});
-    saveDataToLocal("Food", Food);
-    alert("Thêm Food thành công");
-    formFoodEl.reset();
-    renderFood();
-    overlay.style.display = "none";
-  }
-}
+document.getElementById("foodForm").addEventListener("submit", addNewFood);
+
+renderFood();

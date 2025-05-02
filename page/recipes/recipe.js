@@ -1,5 +1,4 @@
-const rowsPerPage = 4;
-let currentPage = 1;
+const baseImagePath = "../..";
 
 document.addEventListener("DOMContentLoaded", () => {
   const inputs = document.querySelectorAll(".nutrition-row input");
@@ -42,10 +41,10 @@ renderRecipes({
   paginationID: "paginationRecipe",
   data: Recipe,
   state: recipeState,
-  img: "../..",
+  img: baseImagePath,
 });
 
-function renderRecipes({containerID, paginationID, data, state, img}) {
+function renderRecipes({containerID, paginationID, data, state, img = baseImagePath}) {
   const start = (state.currentPage - 1) * state.rowsPerPage;
   const end = start + state.rowsPerPage;
   const recipeList = document.getElementById(containerID);
@@ -57,6 +56,8 @@ function renderRecipes({containerID, paginationID, data, state, img}) {
       const recipe = data.find((r) => r.id == id);
       document.getElementById("box-recipe").style.display = "none";
       document.getElementById("recipeDetail").style.display = "block";
+      const detailContainer = document.getElementById("recipeDetail");
+      detailContainer.dataset.imagePath = img;
       updateRecipeWithChart(recipe);
     }
   });
@@ -73,11 +74,13 @@ function renderRecipes({containerID, paginationID, data, state, img}) {
       })
       .join(", ");
 
+    const imagePath = `${img}${recipe.coverSrc}`;
+
     recipeList.innerHTML += `
       <div class="col">
         <div class="card h-100 shadow-lg" data-id="${recipe.id}"
           style="
-            background-image: url('${img}${recipe.coverSrc}');
+            background-image: url('${imagePath}');
             color:white;
             background-size: cover;
             background-position: center;
@@ -115,7 +118,7 @@ function renderRecipes({containerID, paginationID, data, state, img}) {
     state,
     onPageChange: (newPage) => {
       state.currentPage = newPage;
-      renderRecipes({containerID, paginationID, data, state});
+      renderRecipes({containerID, paginationID, data, state, img});
     },
   });
 }
@@ -182,6 +185,8 @@ function renderPagination({paginationID, dataLength, state, onPageChange}) {
 function showDetailRecipe(recipe) {
   let recipeDetail = document.getElementById("recipeDetail");
   const nutrition = getNutrition(recipe.ingredients[0]);
+
+  const imgPath = recipeDetail.dataset.imagePath || baseImagePath;
   // Lấy danh sách category
   const categoryNames = recipe.category
     .map((cat) => {
@@ -189,11 +194,15 @@ function showDetailRecipe(recipe) {
       return found ? found.name : "Unknown";
     })
     .join(", ");
+
+  const headerStyle = recipe.coverSrc
+    ? `background-image: url('${imgPath}${recipe.coverSrc}'); background-size: cover; background-position: center;`
+    : "";
   recipeDetail.innerHTML = `
     <div class="box-content mb-4">
             <div class="w-25">
               <div class="d-flex flex-column gap-4">
-                <div class="border border-1 rounded-2" style="background-color: white; height: 300px; padding: 20px">
+                <div class="border border-1 rounded-2" style="background-color: white; height: 300px; padding: 20px; ${headerStyle}">
                   <div class="d-flex flex-column justify-content-between h-100">
                     <div class="d-flex align-items-center gap-2">
                       <span class="badge text-bg-warning p-2">
@@ -203,8 +212,8 @@ function showDetailRecipe(recipe) {
                       <div
                         class="d-flex border border-1 rounded-2 gap-1 align-items-center"
                         style="font-size: 12px; padding: 4px">
-                        <i class="far fa-heart"></i>
-                        <span>37</span>
+                        <i class="far fa-heart" style="color:white;"></i>
+                        <span style="color:white;">${getRandomNumber()}</span>
                       </div>
                     </div>
 
@@ -216,8 +225,8 @@ function showDetailRecipe(recipe) {
                 </div>
                 <div
                   class="d-flex border border-1 rounded-2 gap-1 align-items-center"
-                  style="font-size: 12px; padding: 4px; width: 130px">
-                  <i class="fa-solid fa-heart" style="color: red"></i>
+                  style="font-size: 12px; padding: 4px; width: 130px" >
+                  <i class="fa-solid fa-heart" style="color: white"></i>
                   <span>Add to favourite</span>
                 </div>
               </div>
@@ -512,6 +521,7 @@ function showDetailRecipe(recipe) {
             </div>
           </div>
   `;
+  document.getElementById("recipeDetail").dataset.imagePath = imgPath;
 }
 
 function pieChart(food) {
@@ -651,35 +661,38 @@ let isInputVisible = false;
 // Hàm khởi tạo lại combo mỗi lần render inputHTML
 function initCombo() {
   const comboInput = document.getElementById("comboInput");
-  const comboList  = document.getElementById("comboList");
+  const comboList = document.getElementById("comboList");
   if (!comboInput || !comboList) return;
 
   const options = [
-    "Desserts","Breakfast and snacks","Appetizers and side dishes",
-    "Soups","Meat dishes","Fish dishes","Vegetarian dishes"
+    "Desserts",
+    "Breakfast and snacks",
+    "Appetizers and side dishes",
+    "Soups",
+    "Meat dishes",
+    "Fish dishes",
+    "Vegetarian dishes",
   ];
 
   function renderDropdown(items) {
-    comboList.innerHTML = items
-      .map(o => `<li class="list-group-item list-group-item-action">${o}</li>`)
-      .join("");
+    comboList.innerHTML = items.map((o) => `<li class="list-group-item list-group-item-action">${o}</li>`).join("");
     comboList.style.display = items.length ? "block" : "none";
   }
 
   comboInput.addEventListener("focus", () => renderDropdown(options));
   comboInput.addEventListener("input", () => {
     const val = comboInput.value.trim().toLowerCase();
-    renderDropdown(options.filter(o => o.toLowerCase().includes(val)));
+    renderDropdown(options.filter((o) => o.toLowerCase().includes(val)));
   });
 
-  comboList.addEventListener("click", e => {
+  comboList.addEventListener("click", (e) => {
     if (e.target.matches("li")) {
       comboInput.value = e.target.textContent;
       comboList.style.display = "none";
     }
   });
 
-  document.addEventListener("click", e => {
+  document.addEventListener("click", (e) => {
     if (!comboInput.contains(e.target) && !comboList.contains(e.target)) {
       comboList.style.display = "none";
     }
@@ -690,36 +703,35 @@ function initCombo() {
 selectInput.addEventListener("dblclick", () => {
   if (!isInputVisible) {
     selectInput.innerHTML = inputHTML;
-    initCombo();             // 👉 bind lại comboInput/comboList
+    initCombo(); // 👉 bind lại comboInput/comboList
   } else {
     selectInput.innerHTML = labelHTML;
   }
   isInputVisible = !isInputVisible;
 });
 
-let upLoadUrl=document.getElementById("upLoadUrl")
+let upLoadUrl = document.getElementById("upLoadUrl");
 
-const imageHTML=`
+const imageHTML = `
   <div class="border rounded-2" style="padding: 4px">
     <i class="fas fa-pen-to-square" style="color: rgb(255, 136, 0); margin-right: 5px"></i>
     <span style="font-size: 12px">Upload image</span>
   </div>
-`
+`;
 
-const inputUrl=`
+const inputUrl = `
   <input
     type="text"
     placeholder="Copy url của ảnh vào + Enter"
     style="font-size: 12px; width: 100%" />
-`
-let flap=false;
+`;
+let flap = false;
 
-upLoadUrl.addEventListener("dblclick",()=>{
-  if(!flap){
-    upLoadUrl.innerHTML=inputUrl;
+upLoadUrl.addEventListener("dblclick", () => {
+  if (!flap) {
+    upLoadUrl.innerHTML = inputUrl;
+  } else {
+    upLoadUrl.innerHTML = imageHTML;
   }
-  else{
-    upLoadUrl.innerHTML=imageHTML
-  }
-  flap=!flap
-})
+  flap = !flap;
+});

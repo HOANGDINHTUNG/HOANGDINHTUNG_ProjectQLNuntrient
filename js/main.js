@@ -18,16 +18,24 @@ Recipe=loadFromLocalStorage("Recipe",Recipe);
 
 
 // làm lấy dữ liệu từ form (cụ thể hơn là lấy thông tin từ input)
-function getFormData(formEL) {
+function getFormData(formEl) {
   let data = {};
-  for (element of formEL.elements) {
-    if (element.name != "") {
-      data[element.name] = element.value;
+  
+  for (let element of formEl.elements) {
+    if (element.name) {
+      if (element.name.includes('.')) {
+        const parts = element.name.split('.');
+        if (!data[parts[0]]) {
+          data[parts[0]] = {};
+        }
+        data[parts[0]][parts[1]] = element.value === '' ? '' : isNaN(element.value) ? element.value : Number(element.value);
+      } else {
+        data[element.name] = element.value;
+      }
     }
-  } 
+  }
   return data;
 }
-
 // Lưu dữ liệu lên hệ thống
 function saveDataToLocal(key, data) {
   localStorage.setItem(key, JSON.stringify(data));
@@ -47,42 +55,53 @@ function validateEmail(email) {
   return re.test(email);
 }
 
+function validateEmail(email) {
+  var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(email);
+}
+
+
 function validateForm(formEl) {
   let inputs = formEl.querySelectorAll("input[name]");
-
+  
   for (let input of inputs) {
     let value = input.value.trim();
+    let name = input.name;
 
-    // Kiểm tra nếu name là 'name', 'source', hoặc 'category' thì cho phép bất kỳ chuỗi hoặc số
-    if (["name", "source", "category"].includes(input.name)) {
-      continue;
-    }
-
-    if (["energy", "fat", "carbohydrate", "protein"].includes(input.name)) {
-      let num = Number(value);
-      if (value === "" || isNaN(num) || num < 0) {
-        alert(`${input.placeholder || input.name} là bắt buộc, phải là số và không được âm!`);
+    // Basic fields can be any string
+    if (["name", "source", "category"].includes(name)) {
+      if (name === "name" && value === "") {
+        alert("Tên thực phẩm không được để trống!");
         input.focus();
         return false;
       }
       continue;
     }
-    
-    // Kiểm tra các input khác: nếu có giá trị thì phải là số
-    if (value !== "" && isNaN(value)) {
-      alert(`${input.placeholder || input.name} phải là số!`);
-      input.focus();
-      return false;
-    }
 
-    // Kiểm tra nếu bắt buộc nhập mà trống
-    if (value === "") {
-      alert(`Vui lòng nhập ${input.placeholder || input.name}`);
-      input.focus();
-      return false;
+    // Check main macronutrients
+    if (name.includes('.')) {
+      const parts = name.split('.');
+      if (parts[0] === "macronutrients" && ["energy", "fat", "carbohydrate", "protein"].includes(parts[1])) {
+        if (value === "") {
+          alert(`${parts[1]} là bắt buộc, không được để trống!`);
+          input.focus();
+          return false;
+        }
+        
+        let num = Number(value);
+        if (isNaN(num) || num < 0) {
+          alert(`${parts[1]} phải là số dương!`);
+          input.focus();
+          return false;
+        }
+      }
+      // For other nutrient values, just check that they're numbers if provided
+      else if (value !== "" && isNaN(Number(value))) {
+        alert(`${parts[1]} phải là số!`);
+        input.focus();
+        return false;
+      }
     }
   }
-
   return true;
 }
-

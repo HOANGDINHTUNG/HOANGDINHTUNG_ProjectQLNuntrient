@@ -201,21 +201,6 @@ input.form-control::placeholder {
   z-index: 1000;
 }
 
-.overlay-form-detail{
-  display: flex;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-
-
 .container-form {
   border-radius: 20px;
   padding: 20px;
