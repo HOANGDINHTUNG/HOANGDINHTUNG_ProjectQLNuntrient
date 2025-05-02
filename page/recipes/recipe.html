@@ -9,10 +9,8 @@
     <link rel="stylesheet" href="../../home/style.css" />
   </head>
   <body>
-    <script src="../../auth/authen.js"></script>
     <script src="../../js/main.js"></script>
     <script src="../../home/home.js"></script>
-    <script src="../../resource/userList.js"></script>
     <div class="container-fluid Home">
       <div class="row">
         <!-- Sidebar -->
@@ -96,7 +94,7 @@
               <div class="border border-1 p-2 d-flex gap-2 align-items-center">
                 <i class="fa-solid fa-heart" style="color: red"></i>
                 <span>Favorites</span>
-                <span class="opacity-50">0</span>
+                <span class="opacity-50" id="numberFavorite">0</span>
               </div>
               <div class="p-2 d-flex align-items-center">
                 <i class="fas fa-check-square" style="font-size: 20px; color: #2196f3"></i>
@@ -129,7 +127,7 @@
                         class="d-flex border border-1 rounded-2 gap-1 align-items-center"
                         style="font-size: 12px; padding: 4px">
                         <i class="far fa-heart"></i>
-                        <span>0</span>
+                        <span id="numberFavorite"></span>
                       </div>
                     </div>
 
@@ -703,6 +701,7 @@
     <script src="../../resource/category.js"></script>
     <script src="../../resource/Food.js"></script>
     <script src="../../resource/RecipeList.js"></script>
+    <script src="../../js/main.js"></script>
     <script src="./recipe.js"></script>
     <script src="../../js/effect.js"></script>
   </body>

@@ -1,4 +1,5 @@
 let userLogin = null;
+
 function checkAuthen() {
   userLogin = JSON.parse(localStorage.getItem("userLogin"));
 }
@@ -30,25 +31,25 @@ const homeState = {
   rowsPerPage: 4,
 };
 
-renderRecipes({
-  containerID: "recipeHome",
-  paginationID: "paginationHome",
-  data: Recipe,
-  state: homeState,
-  img: ".",
-});
-
-// tìm kiếm recipe yêu thích
-function filterRecipe(keyword) {
-  const filtered = Recipe.filter((recipe) => recipe.name.toLowerCase().includes(keyword.toLowerCase()));
+// 1. Khởi tạo đúng cách với xử lý trường hợp rỗng
+let favoriteRecipe = loadFromLocalStorage("favoriteRecipe") || [];
+// console.log(favoriteRecipe.length)
+console.log(favoriteRecipe)
+if (favoriteRecipe.length > 0) {
   renderRecipes({
     containerID: "recipeHome",
     paginationID: "paginationHome",
-    data: filtered,
+    data: favoriteRecipe,
     state: homeState,
-    img: ".",
+    img: "."
   });
+} else {
+  const recipeHomeElement = document.getElementById("recipeHome");
+  if (recipeHomeElement) {
+    recipeHomeElement.innerHTML = "<div class='col-12 text-center p-3'>Chưa có công thức yêu thích nào. Hãy thêm công thức yêu thích!</div>";
+  }
 }
+
 
 document.getElementById("searchInput").addEventListener("input", function () {
   const keyword = this.value;
@@ -61,12 +62,9 @@ let recipeHome = document.getElementById("recipeHome");
 let sortSelect = document.getElementById("sortSelect");
 
 sortSelect.addEventListener("click", () => {
-  // Sao chép lại mảng Recipe
-  let sortedRecipes = [...Recipe];
-
+  let sortedRecipes = [...favoriteRecipe];
   // Lấy giá trị chọn từ select
-  const value = document.querySelectorAll("select")[0].value; // Đây là cách lấy giá trị chọn
-
+  const value = document.querySelectorAll("select")[0].value; 
   // Tiến hành sắp xếp theo giá trị chọn
   if (value === "Energy") {
     sortedRecipes.sort((a, b) => a.ingredients[0].macronutrients.energy - b.ingredients[0].macronutrients.energy); // Sử dụng toán tử trừ để so sánh số
@@ -99,8 +97,8 @@ categorySelect.addEventListener("change", function () {
 
   // Lọc Recipe: nếu value = '' thì giữ nguyên mảng gốc
   const filtered = value === ""
-    ? Recipe
-    : Recipe.filter(recipe => {
+    ? favoriteRecipe
+    : favoriteRecipe.filter(recipe => {
         // Với mỗi recipe, ánh xạ qua mảng recipe.category để lấy tên
         const categoryNames = recipe.category
           .map(cat => {

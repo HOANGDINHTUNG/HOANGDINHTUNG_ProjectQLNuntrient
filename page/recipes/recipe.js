@@ -56,8 +56,8 @@ function renderRecipes({containerID, paginationID, data, state, img = baseImageP
       const recipe = data.find((r) => r.id == id);
       document.getElementById("box-recipe").style.display = "none";
       document.getElementById("recipeDetail").style.display = "block";
-      const detailContainer = document.getElementById("recipeDetail");
-      detailContainer.dataset.imagePath = img;
+      // const detailContainer = document.getElementById("recipeDetail");
+      // detailContainer.dataset.imagePath = img;
       updateRecipeWithChart(recipe);
     }
   });
@@ -121,6 +121,8 @@ function renderRecipes({containerID, paginationID, data, state, img = baseImageP
       renderRecipes({containerID, paginationID, data, state, img});
     },
   });
+
+  updateFavoriteCount()
 }
 
 function renderPagination({paginationID, dataLength, state, onPageChange}) {
@@ -223,10 +225,10 @@ function showDetailRecipe(recipe) {
                     </div>
                   </div>
                 </div>
-                <div
+                <div onclick="addFavoriteFoodToHomepage(${recipe.id})"
                   class="d-flex border border-1 rounded-2 gap-1 align-items-center"
                   style="font-size: 12px; padding: 4px; width: 130px" >
-                  <i class="fa-solid fa-heart" style="color: white"></i>
+                  <i id="heart-${recipe.id}" class="fa-solid fa-heart" style="color: white"></i>
                   <span>Add to favourite</span>
                 </div>
               </div>
@@ -521,7 +523,9 @@ function showDetailRecipe(recipe) {
             </div>
           </div>
   `;
-  document.getElementById("recipeDetail").dataset.imagePath = imgPath;
+  // document.getElementById("recipeDetail").dataset.imagePath = imgPath;
+  markFavoriteHearts()
+
 }
 
 function pieChart(food) {
@@ -630,14 +634,12 @@ changeMethod.addEventListener("click", () => {
 });
 
 const selectInput = document.getElementById("selectInput");
-
 const labelHTML = `
   <div class="card-category border border-1 p-1 rounded-3">
     <i class="fa-solid fa-tags"></i>
     New category
   </div>
 `;
-
 const inputHTML = `
   <div class="position-relative" style="max-width: 300px">
     <input
@@ -655,15 +657,12 @@ const inputHTML = `
     ></ul>
   </div>
 `;
-
 let isInputVisible = false;
-
 // Hàm khởi tạo lại combo mỗi lần render inputHTML
 function initCombo() {
   const comboInput = document.getElementById("comboInput");
   const comboList = document.getElementById("comboList");
   if (!comboInput || !comboList) return;
-
   const options = [
     "Desserts",
     "Breakfast and snacks",
@@ -673,25 +672,21 @@ function initCombo() {
     "Fish dishes",
     "Vegetarian dishes",
   ];
-
   function renderDropdown(items) {
     comboList.innerHTML = items.map((o) => `<li class="list-group-item list-group-item-action">${o}</li>`).join("");
     comboList.style.display = items.length ? "block" : "none";
   }
-
   comboInput.addEventListener("focus", () => renderDropdown(options));
   comboInput.addEventListener("input", () => {
     const val = comboInput.value.trim().toLowerCase();
     renderDropdown(options.filter((o) => o.toLowerCase().includes(val)));
   });
-
   comboList.addEventListener("click", (e) => {
     if (e.target.matches("li")) {
       comboInput.value = e.target.textContent;
       comboList.style.display = "none";
     }
   });
-
   document.addEventListener("click", (e) => {
     if (!comboInput.contains(e.target) && !comboList.contains(e.target)) {
       comboList.style.display = "none";
@@ -711,14 +706,12 @@ selectInput.addEventListener("dblclick", () => {
 });
 
 let upLoadUrl = document.getElementById("upLoadUrl");
-
 const imageHTML = `
   <div class="border rounded-2" style="padding: 4px">
     <i class="fas fa-pen-to-square" style="color: rgb(255, 136, 0); margin-right: 5px"></i>
     <span style="font-size: 12px">Upload image</span>
   </div>
 `;
-
 const inputUrl = `
   <input
     type="text"
@@ -726,7 +719,6 @@ const inputUrl = `
     style="font-size: 12px; width: 100%" />
 `;
 let flap = false;
-
 upLoadUrl.addEventListener("dblclick", () => {
   if (!flap) {
     upLoadUrl.innerHTML = inputUrl;
@@ -735,3 +727,56 @@ upLoadUrl.addEventListener("dblclick", () => {
   }
   flap = !flap;
 });
+
+//Thêm vào danh sách yêu thích
+function addFavoriteFoodToHomepage(idFood) {
+  const heart = document.getElementById(`heart-${idFood}`);
+  // Đảm bảo lấy mảng hiện tại hoặc khởi tạo mảng rỗng
+  const favoriteRecipe = loadFromLocalStorage("favoriteRecipe", []);
+
+  const index = favoriteRecipe.findIndex(food => food.id === idFood);
+  const isFavorite = index !== -1;
+
+  if (isFavorite) {
+    // Xóa khỏi yêu thích
+    favoriteRecipe.splice(index, 1);
+    heart.style.color = "white";
+    alert("Đã xóa khỏi danh sách yêu thích");
+  } else {
+    // Sửa lỗi: thay Food thành Recipe
+    const foodToAdd = Recipe.find(f => f.id === idFood);
+    if (foodToAdd) {
+      favoriteRecipe.push(foodToAdd);
+      heart.style.color = "red";
+      alert("Đã thêm vào danh sách yêu thích");
+    } else {
+      alert("Không tìm thấy công thức này!");
+      return;
+    }
+  }
+
+  // Lưu vào localStorage
+  saveDataToLocal("favoriteRecipe", favoriteRecipe);
+  updateFavoriteCount()
+}
+
+// Hiệu ứng tim
+function markFavoriteHearts() {
+  let favoriteRecipe = loadFromLocalStorage("favoriteRecipe");
+  favoriteRecipe.forEach(food => {
+    const heart = document.getElementById(`heart-${food.id}`);
+    if (heart) {
+      heart.style.color = "red";
+    }
+  });
+}
+
+// tổng số lượng thích
+function updateFavoriteCount() {
+  const favoriteRecipe = loadFromLocalStorage("favoriteRecipe", []);
+  const countEl = document.getElementById("numberFavorite");
+  if (countEl) {
+    countEl.innerText = favoriteRecipe.length;
+  }
+}
+

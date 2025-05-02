@@ -8,15 +8,6 @@ function loadFromLocalStorage(key, defaultValue = []) {
   }
 }
 
-userList=loadFromLocalStorage("userList",userList);
-
-Food=loadFromLocalStorage("Food",Food);
-
-category=loadFromLocalStorage("category",category);
-
-Recipe=loadFromLocalStorage("Recipe",Recipe);
-
-
 // làm lấy dữ liệu từ form (cụ thể hơn là lấy thông tin từ input)
 function getFormData(formEl) {
   let data = {};
