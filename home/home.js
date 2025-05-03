@@ -50,48 +50,65 @@ if (favoriteRecipe.length > 0) {
   }
 }
 
-
+// Tìm kiếm băng input
 document.getElementById("searchInput").addEventListener("input", function () {
   const keyword = this.value;
   currentPage = 1; 
   filterRecipe(keyword);
 });
-
-// sắp xếp theo nutrient
-let recipeHome = document.getElementById("recipeHome");
-let sortSelect = document.getElementById("sortSelect");
-
-sortSelect.addEventListener("click", () => {
-  let sortedRecipes = [...favoriteRecipe];
-  // Lấy giá trị chọn từ select
-  const value = document.querySelectorAll("select")[0].value; 
-  // Tiến hành sắp xếp theo giá trị chọn
-  if (value === "Energy") {
-    sortedRecipes.sort((a, b) => a.ingredients[0].macronutrients.energy - b.ingredients[0].macronutrients.energy); // Sử dụng toán tử trừ để so sánh số
-  } else if (value === "Fat") {
-    sortedRecipes.sort((a, b) => a.ingredients[0].macronutrients.fat - b.ingredients[0].macronutrients.fat); // Sử dụng toán tử trừ để so sánh số
-  } else if (value === "Carbohydrate") {
-    sortedRecipes.sort(
-      (a, b) => a.ingredients[0].macronutrients.carbohydrate - b.ingredients[0].macronutrients.carbohydrate
-    ); // Sử dụng toán tử trừ để so sánh số
-  } else if (value === "Protein") {
-    sortedRecipes.sort((a, b) => a.ingredients[0].macronutrients.protein - b.ingredients[0].macronutrients.protein); // Sử dụng toán tử trừ để so sánh số
-  }
-
-  // Render lại công thức đã sắp xếp
+function filterRecipe(keyword) {
+  const filtered = favoriteRecipe.filter((recipe) => recipe.name.toLowerCase().includes(keyword.toLowerCase()));
   renderRecipes({
     containerID: "recipeHome",
     paginationID: "paginationHome",
-    data: sortedRecipes,
-    state: homeState,
-    img: ".",
+    data: filtered,
+    state: homeState, 
+    img: "."
   });
+}
+
+// sắp xếp theo nutrient
+let isSortAscending = true;
+const sortButton = document.getElementById("sortButton");
+const sortIcon = document.getElementById("sortIcon");
+const sortSelect = document.getElementById("sortSelect");
+sortButton.addEventListener("click", () => {
+  isSortAscending = !isSortAscending;
+  // Cập nhật icon
+  sortIcon.className = isSortAscending
+    ? "fas fa-sort-amount-up m-0"
+    : "fas fa-sort-amount-down m-0";
+
+  // Gọi lại hàm sắp xếp nếu đã chọn nutrient
+  if (sortSelect.value && sortSelect.value !== "Sort by nutrient") {
+    sortRecipes();
+  }
+});
+sortSelect.addEventListener("change", () => {
+  sortRecipes();
 });
 
+function sortRecipes() {
+  const nutrient = sortSelect.value;
+  if (!nutrient) return;
+
+  const sorted = [...favoriteRecipe].sort((a, b) => {
+    const valA = a.ingredients[0].macronutrients[nutrient];
+    const valB = b.ingredients[0].macronutrients[nutrient];
+    return isSortAscending ? valA - valB : valB - valA;
+  });
+
+  renderRecipes({
+    containerID: "recipeHome",
+    paginationID: "paginationHome",
+    data: sorted,
+    state: homeState,
+    img: "."
+  });
+}
+
 // tìm kiếm theo danh mục
-
 const categorySelect = document.getElementById("categorySelect");
-
 categorySelect.addEventListener("change", function () {
   const value = this.value;  // Lấy đúng giá trị của <select>
 

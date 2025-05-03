@@ -122,7 +122,7 @@ function renderRecipes({containerID, paginationID, data, state, img = baseImageP
     },
   });
 
-  updateFavoriteCount()
+  updateFavoriteCount();
 }
 
 function renderPagination({paginationID, dataLength, state, onPageChange}) {
@@ -335,16 +335,18 @@ function showDetailRecipe(recipe) {
                   <span class="fs-4">Cooking method</span>
                   <span style="opacity: 0.5; font-size: 14px">Give instructions to prepare this recipe</span>
                 </div>
-                <div class="d-flex mt-3">
-                  <span
-                    class="border border-end-0 p-3 text-center rounded-start-0 ps-2 align-items-center d-flex fs-5 fw-light"
-                    style="background-color: #fafafb">
-                    1
-                  </span>
-                  <p class="form-control rounded-0 fw-light mb-0">
-                    ${recipe.cookingMethods[0].content}
-                  </p>
-                </div>
+                ${recipe.cookingMethods.map((m, index) => `
+                  <div class="d-flex mt-2">
+                    <span
+                      class="border border-end-0 p-2 text-center rounded-start-0 ps-2 align-items-center d-flex fs-5 fw-light justify-content-center"
+                      style="background-color: #fafafb; min-width: 50px;">
+                      ${index + 1}
+                    </span>
+                    <div class="form-control rounded-0 fw-light mb-0 d-flex align-items-center">
+                      ${m.content}
+                    </div>
+                  </div>
+                `).join('')}                
               </div>
             </div>
 
@@ -524,8 +526,7 @@ function showDetailRecipe(recipe) {
           </div>
   `;
   // document.getElementById("recipeDetail").dataset.imagePath = imgPath;
-  markFavoriteHearts()
-
+  markFavoriteHearts();
 }
 
 function pieChart(food) {
@@ -734,7 +735,7 @@ function addFavoriteFoodToHomepage(idFood) {
   // Đảm bảo lấy mảng hiện tại hoặc khởi tạo mảng rỗng
   const favoriteRecipe = loadFromLocalStorage("favoriteRecipe", []);
 
-  const index = favoriteRecipe.findIndex(food => food.id === idFood);
+  const index = favoriteRecipe.findIndex((food) => food.id === idFood);
   const isFavorite = index !== -1;
 
   if (isFavorite) {
@@ -744,7 +745,7 @@ function addFavoriteFoodToHomepage(idFood) {
     alert("Đã xóa khỏi danh sách yêu thích");
   } else {
     // Sửa lỗi: thay Food thành Recipe
-    const foodToAdd = Recipe.find(f => f.id === idFood);
+    const foodToAdd = Recipe.find((f) => f.id === idFood);
     if (foodToAdd) {
       favoriteRecipe.push(foodToAdd);
       heart.style.color = "red";
@@ -757,13 +758,13 @@ function addFavoriteFoodToHomepage(idFood) {
 
   // Lưu vào localStorage
   saveDataToLocal("favoriteRecipe", favoriteRecipe);
-  updateFavoriteCount()
+  updateFavoriteCount();
 }
 
 // Hiệu ứng tim
 function markFavoriteHearts() {
   let favoriteRecipe = loadFromLocalStorage("favoriteRecipe");
-  favoriteRecipe.forEach(food => {
+  favoriteRecipe.forEach((food) => {
     const heart = document.getElementById(`heart-${food.id}`);
     if (heart) {
       heart.style.color = "red";
@@ -779,4 +780,89 @@ function updateFavoriteCount() {
     countEl.innerText = favoriteRecipe.length;
   }
 }
+
+// Tìm kiếm băng input
+document.getElementById("searchRecipeMain").addEventListener("input", function () {
+  const keyword = this.value;
+  currentPage = 1;
+  filterRecipeMain(keyword);
+});
+function filterRecipeMain(keyword) {
+  const filtered = Recipe.filter((recipe) => recipe.name.toLowerCase().includes(keyword.toLowerCase()));
+  renderRecipes({
+    containerID: "recipeList",
+    paginationID: "paginationRecipe",
+    data: filtered,
+    state: recipeState,
+    img: "../..",
+  });
+}
+
+// sắp xếp theo nutrient
+let isAscFoodSort = true;
+const sortButtonMain = document.getElementById("sortButtonMain");
+const sortIconMain = document.getElementById("sortIconMain");
+const sortSelectMain = document.getElementById("sortSelectMain");
+sortButtonMain.addEventListener("click", () => {
+  isAscFoodSort = !isAscFoodSort;
+  // Cập nhật icon
+  sortIconMain.className = isAscFoodSort ? "fas fa-sort-amount-up m-0" : "fas fa-sort-amount-down m-0";
+
+  // Gọi lại hàm sắp xếp nếu đã chọn nutrient
+  if (sortSelectMain.value && sortSelectMain.value !== "Sort by nutrient") {
+    sortRecipesMain();
+  }
+});
+sortSelectMain.addEventListener("change", () => {
+  sortRecipesMain();
+});
+function sortRecipesMain() {
+  const nutrient = sortSelectMain.value;
+  if (!nutrient) return;
+
+  const sorted = [...Recipe].sort((a, b) => {
+    const valA = a.ingredients[0].macronutrients[nutrient];
+    const valB = b.ingredients[0].macronutrients[nutrient];
+    return isAscFoodSort ? valA - valB : valB - valA;
+  });
+
+  renderRecipes({
+    containerID: "recipeList",
+    paginationID: "paginationRecipe",
+    data: sorted,
+    state: recipeState,
+    img: "../..",
+  });
+}
+
+// tìm kiếm theo danh mục
+const categorySelectMain = document.getElementById("categorySelectMain");
+categorySelectMain.addEventListener("change", function () {
+  const value = this.value;  // Lấy đúng giá trị của <select>
+
+  // Lọc Recipe: nếu value = '' thì giữ nguyên mảng gốc
+  const filtered = value === ""
+    ? Recipe
+    : Recipe.filter(recipe => {
+        // Với mỗi recipe, ánh xạ qua mảng recipe.category để lấy tên
+        const categoryNames = recipe.category
+          .map(cat => {
+            const found = category.find(c => c.id === cat.id);
+            return found ? found.name : null;
+          })
+          .filter(name => name) // loại bỏ null
+          .map(name => name.toLowerCase());
+
+        // so sánh với value đã chọn (cũng lowercase)
+        return categoryNames.includes(value.toLowerCase());
+      });
+
+  renderRecipes({
+    containerID: "recipeList",
+    paginationID: "paginationRecipe",
+    data: filtered,
+    state: recipeState,
+    img: "../.."
+  });
+});
 

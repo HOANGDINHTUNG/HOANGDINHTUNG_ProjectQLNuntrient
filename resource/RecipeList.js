@@ -13,7 +13,11 @@ let Recipe = [
     "ingredients": [Food[10]],
     "cookingMethods": [
       { "id": 1, "content": "STEP 1: Marinate the tofu with herbs and spices for 15 minutes." },
-      { "id": 2, "content": "STEP 2: Grill the tofu on skewers until golden brown." }
+      { "id": 2, "content": "STEP 2: Grill the tofu on skewers until golden brown." },
+      { "id": 3, "content": "STEP 3: Brush the tofu with a light layer of oil before grilling." },
+      { "id": 4, "content": "STEP 4: Rotate the skewers occasionally to ensure even cooking." },
+      { "id": 5, "content": "STEP 5: Remove from heat when tofu is crispy on the outside." },
+      { "id": 6, "content": "STEP 6: Garnish with fresh herbs and serve with dipping sauce." }
     ],
     "category": [{ "id": 3 }, { "id": 4 }]
   },

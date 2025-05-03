@@ -26,16 +26,15 @@ function login(e) {
   let userData = userList.find((userF) => userF.email === data.email);
 
   if (!userData) {
-    alert("Người dùng không tồn tại");
+    showError(["Người dùng không tồn tại"]);
     return;
   }
   if (userData.password != data.password) {
-    alert("Mật khẩu không chính xác");
+    showError(["Mật khẩu không chính xác"]);
     return;
   }
   localStorage.setItem("userLogin", JSON.stringify(userData));
-  alert("Đăng nhập thành công")
-  window.location.href = "/index.html";
+  showSuccess("Đăng nhập thành công");
 }
 
 function register(e) {
@@ -44,29 +43,56 @@ function register(e) {
   let data = getFormData(formRegisterEL);
 
   if (data.email == "" || data.name == "" || data.firstName == "" || data.lastName == "") {
-    alert("Không được bỏ trống");
+    showError(["Không được bỏ trống"]);
     return;
   }
 
   if (!validateEmail(data.email)) {
-    alert("Email chưa đúng định dạng");
+    showError(["Email chưa đúng định dạng"]);
     return;
   }
 
 
   if(data.password.length<8){
-    alert("Mật khẩu tối thiệu 8 kí tự")
+    showError(["Mật khẩu tốn thiểu 8 ký tự"]);
     return;
   }
 
   if (userList.find((userF) => userF.email == data.email)) {
-    alert("Email này đã tồn tại");
+    showError(["Email này đã tồn tại"]);
     return;
   }
 
   userList.push({id: userList.length + 1, email: data.email, username: data.fullname, password: data.password});
   saveDataListToLocal(userList);
-  alert("Đăng ký thành công");
+  showSuccess("Đăng ký thành công");
   signIn();
   formRegisterEL.reset();
+}
+
+function showSuccess(message) {
+  const alertBox = document.createElement("div");
+  alertBox.className = "alert alert-success";
+  alertBox.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+  
+  document.getElementById("alertContainer").appendChild(alertBox);
+
+  setTimeout(() => {
+    alertBox.remove();
+    window.location.href = "/index.html";
+  }, 2000); 
+}
+
+function showError(messages) {
+  const alertBox = document.createElement("div");
+  alertBox.className = "alert alert-error";
+  alertBox.innerHTML = `
+    <div class="alert-header">
+      <span><i class="fas fa-minus-circle"></i> Error</span>
+      <button class="close-btn" onclick="this.parentElement.parentElement.remove()">×</button>
+    </div>
+    <div class="alert-message">${Array.isArray(messages) ? messages.join("<br>") : messages}</div>
+  `;
+  
+  document.getElementById("alertContainer").appendChild(alertBox);
 }

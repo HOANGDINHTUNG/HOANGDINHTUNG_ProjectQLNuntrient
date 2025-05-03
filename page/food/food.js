@@ -1,6 +1,6 @@
 const rowsPerPage = 5;
 let currentPage = 1;
-Food=loadFromLocalStorage("Food",Food);
+Food = loadFromLocalStorage("Food", Food);
 
 function renderFood(data = Food) {
   const start = (currentPage - 1) * rowsPerPage;
@@ -11,7 +11,7 @@ function renderFood(data = Food) {
   const pageItems = data.slice(start, end);
 
   pageItems.forEach((f, index) => {
-    const actualIndex = Food.findIndex(item => item.id === f.id);
+    const actualIndex = Food.findIndex((item) => item.id === f.id);
     const row = `
       <div class="border border-1 p-2 d-flex justify-content-between mb-3" onclick="editFoodItem(${actualIndex})">
         <div class="d-flex flex-column">
@@ -130,15 +130,14 @@ function populateForm(form, data, parentKey = "") {
   }
 }
 
-
 function addNewFood(e) {
   e.preventDefault();
-  
+
   let formFoodEl = document.getElementById("foodForm");
-  
+
   if (validateForm(formFoodEl)) {
     let formData = getFormData(formFoodEl);
-    
+
     if (editingIndex !== null && editingIndex >= 0 && editingIndex < Food.length) {
       const originalId = Food[editingIndex].id;
       const updatedFood = {
@@ -148,12 +147,12 @@ function addNewFood(e) {
         category: formData.category,
         quanlity: formData.quanlity,
         macronutrients: formData.macronutrients || {},
-        micronutrients: formData.micronutrients || {}
+        micronutrients: formData.micronutrients || {},
       };
       Food[editingIndex] = updatedFood;
       alert("Thực phẩm đã cập nhật thành công");
     } else {
-      const newId = Food.length > 0 ? Math.max(...Food.map(item => item.id || 0)) + 1 : 1;
+      const newId = Food.length > 0 ? Math.max(...Food.map((item) => item.id || 0)) + 1 : 1;
       const newFood = {
         id: newId,
         name: formData.name,
@@ -161,25 +160,23 @@ function addNewFood(e) {
         category: formData.category,
         quanlity: formData.quanlity,
         macronutrients: formData.macronutrients || {},
-        micronutrients: formData.micronutrients || {}
+        micronutrients: formData.micronutrients || {},
       };
-      
+
       Food.push(newFood);
       alert("Thực phẩm đã thêm thành công");
     }
-    
+
     // Save to localStorage and update UI
     saveDataToLocal("Food", Food);
     renderFood();
-    
+
     // Reset form and state
     formFoodEl.reset();
     editingIndex = null;
     overlay.style.display = "none";
   }
 }
-
-
 
 let editingIndex = null;
 
@@ -196,7 +193,7 @@ function editFoodItem(index) {
     overlay.style.display = "flex";
     document.getElementById("title-form-food").innerHTML = "Food information";
     document.getElementById("note-form-food").innerHTML = "Check and update the information about the food";
-    
+
     const food = Food[index];
     const foodForm = document.getElementById("foodForm");
     foodForm.reset(); // Clear form first
@@ -211,29 +208,41 @@ function filterFood(keyword) {
   const filtered = Food.filter((food) => food.name.toLowerCase().includes(keyword.toLowerCase()));
   renderFood(filtered);
 }
-
 document.getElementById("searchFood").addEventListener("input", function () {
   const keyword = this.value;
   filterFood(keyword);
 });
 
-let sortCategoryFood = document.getElementById("sortCategoryFood");
-sortCategoryFood.addEventListener("click", () => {
-  let sortFoods = [...Food];
-  const value = document.querySelectorAll("select")[0].value;
-  
-  if (value === "Energy") {
-    sortFoods.sort((a, b) => Number(a.macronutrients.energy) - Number(b.macronutrients.energy));
-  } else if (value === "Fat") {
-    sortFoods.sort((a, b) => Number(a.macronutrients.fat) - Number(b.macronutrients.fat));
-  } else if (value === "Carbohydrate") {
-    sortFoods.sort((a, b) => Number(a.macronutrients.carbohydrate) - Number(b.macronutrients.carbohydrate));
-  } else if (value === "Protein") {
-    sortFoods.sort((a, b) => Number(a.macronutrients.protein) - Number(b.macronutrients.protein));
-  }
-  
-  renderFood(sortFoods);
+let isAscFoodSort = true;
+let currentSortKey = "";
+const selectNutrientFood = document.getElementById("selectNutrientFood");
+const btnSortNutrientFood = document.getElementById("btnSortNutrientFood");
+// Khi chọn nutrient
+selectNutrientFood.addEventListener("change", () => {
+  currentSortKey = selectNutrientFood.value;
+  applySortByNutrient(currentSortKey, isAscFoodSort);
 });
+// Khi click nút (icon) → đảo chiều và sắp xếp lại
+btnSortNutrientFood.addEventListener("click", () => {
+  if (!currentSortKey) return alert("Vui lòng chọn nutrient trước!");
+  isAscFoodSort = !isAscFoodSort;
+  // Đổi icon theo chiều
+  btnSortNutrientFood.innerHTML = isAscFoodSort
+    ? '<i class="fas fa-sort-amount-up m-0"></i>'
+    : '<i class="fas fa-sort-amount-down m-0"></i>';
+  // Sắp xếp lại
+  applySortByNutrient(currentSortKey, isAscFoodSort);
+});
+// Hàm sắp xếp
+function applySortByNutrient(nutrientKey, isAsc) {
+  const sortedList = [...Food];
+  const getValue = (item) => {
+    const macro = item.macronutrients || {};
+    return Number(macro[nutrientKey.toLowerCase()]);
+  };
+  sortedList.sort((a, b) => (isAsc ? getValue(a) - getValue(b) : getValue(b) - getValue(a)));
+  renderFood(sortedList);
+}
 
 const categoryFood = document.getElementById("categoryFood");
 categoryFood.addEventListener("change", function () {
