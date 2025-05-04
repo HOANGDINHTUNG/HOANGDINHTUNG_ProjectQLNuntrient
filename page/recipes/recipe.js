@@ -98,7 +98,7 @@ function renderRecipes({containerID, paginationID, data, state, img = baseImageP
               </div>
             </div>
             <p class="card-text">${recipe.author}</p>
-            <p class="card-category"><i class="fas fa-tag"></i> ${categoryNames}</p>
+            <p class="card-category"><i class="fas fa-tag" style="color: orangered;"></i> ${categoryNames}</p>
           </div>
           <div class="card-footer border d-flex justify-content-between">
             <small><strong>By</strong> 100g</small>
@@ -335,7 +335,9 @@ function showDetailRecipe(recipe) {
                   <span class="fs-4">Cooking method</span>
                   <span style="opacity: 0.5; font-size: 14px">Give instructions to prepare this recipe</span>
                 </div>
-                ${recipe.cookingMethods.map((m, index) => `
+                ${recipe.cookingMethods
+                  .map(
+                    (m, index) => `
                   <div class="d-flex mt-2">
                     <span
                       class="border border-end-0 p-2 text-center rounded-start-0 ps-2 align-items-center d-flex fs-5 fw-light justify-content-center"
@@ -346,7 +348,9 @@ function showDetailRecipe(recipe) {
                       ${m.content}
                     </div>
                   </div>
-                `).join('')}                
+                `
+                  )
+                  .join("")}                
               </div>
             </div>
 
@@ -838,31 +842,174 @@ function sortRecipesMain() {
 // tìm kiếm theo danh mục
 const categorySelectMain = document.getElementById("categorySelectMain");
 categorySelectMain.addEventListener("change", function () {
-  const value = this.value;  // Lấy đúng giá trị của <select>
+  const value = this.value; // Lấy đúng giá trị của <select>
 
   // Lọc Recipe: nếu value = '' thì giữ nguyên mảng gốc
-  const filtered = value === ""
-    ? Recipe
-    : Recipe.filter(recipe => {
-        // Với mỗi recipe, ánh xạ qua mảng recipe.category để lấy tên
-        const categoryNames = recipe.category
-          .map(cat => {
-            const found = category.find(c => c.id === cat.id);
-            return found ? found.name : null;
-          })
-          .filter(name => name) // loại bỏ null
-          .map(name => name.toLowerCase());
+  const filtered =
+    value === ""
+      ? Recipe
+      : Recipe.filter((recipe) => {
+          // Với mỗi recipe, ánh xạ qua mảng recipe.category để lấy tên
+          const categoryNames = recipe.category
+            .map((cat) => {
+              const found = category.find((c) => c.id === cat.id);
+              return found ? found.name : null;
+            })
+            .filter((name) => name) // loại bỏ null
+            .map((name) => name.toLowerCase());
 
-        // so sánh với value đã chọn (cũng lowercase)
-        return categoryNames.includes(value.toLowerCase());
-      });
+          // so sánh với value đã chọn (cũng lowercase)
+          return categoryNames.includes(value.toLowerCase());
+        });
 
   renderRecipes({
     containerID: "recipeList",
     paginationID: "paginationRecipe",
     data: filtered,
     state: recipeState,
-    img: "../.."
+    img: "../..",
   });
 });
 
+const foodItems = [
+  {
+    name: "Keto 90 Second Bread",
+    source: "Community Recipes",
+    quantity: 1,
+    unit: "portion",
+    weight: 87,
+    weightUnit: "g",
+    energy: 301,
+    fat: 27,
+    carbs: 6,
+    protein: 11,
+  },
+  {
+    name: "Keto - Just Eggs",
+    source: "Community Recipes",
+    quantity: 1,
+    unit: "portion",
+    weight: 190,
+    weightUnit: "g",
+    energy: 469,
+    fat: 40,
+    carbs: 7,
+    protein: 23,
+  },
+  {
+    name: "Blueberry Lavender Breeze",
+    source: "Community Recipes",
+    quantity: 1,
+    unit: "portion",
+    weight: 113,
+    weightUnit: "g",
+    energy: 14,
+    fat: 0,
+    carbs: 3,
+    protein: 0,
+  },
+  {
+    name: "Jamaican Grapefruit",
+    source: "Community Recipes",
+    quantity: 1,
+    unit: "portion",
+    weight: 122,
+    weightUnit: "g",
+    energy: 45,
+    fat: 0,
+    carbs: 13,
+    protein: 1,
+  },
+  {
+    name: "Stewed Tomatoes",
+    source: "Community Recipes",
+    quantity: 100,
+    unit: "grams",
+    weight: 100,
+    weightUnit: "g",
+    energy: 8,
+    fat: 0,
+    carbs: 2,
+    protein: 0,
+  },
+];
+
+// Function to render nutrition items
+function renderNutritionItems() {
+  const container = document.getElementById("nutritionItems");
+  container.innerHTML = "";
+
+  foodItems.forEach((item, index) => {
+    const row = document.createElement("div");
+    row.className = "nutrition-row";
+    row.setAttribute("data-index", index);
+
+    row.innerHTML = `
+          <div class="d-flex border border-top-0" style="padding: 20px; background-color: white">
+              <div class="d-flex flex-column" style="width: 230px">
+                  <span>${item.name}</span>
+                  <span style="font-size: 12px; opacity: 0.5">${item.source}</span>
+                  <div class="d-flex">
+                      <span
+                          class="border text-wrap align-items-center d-flex fw-light"
+                          style="background-color: #fafafb; font-size: 12px; width: 40px; padding-left: 10px">
+                          ${item.quantity}
+                      </span>
+                      <span class="border border-start-0" style="font-size: 12px; width: 150px; padding-left: 10px">${item.unit} (${item.weight} ${item.weightUnit})</span>
+                      <span
+                          class="border text-wrap align-items-center d-flex fw-light"
+                          style="background-color: #fafafb; font-size: 12px; width: 45px; padding-left: 10px">
+                          ${item.weight}${item.weightUnit}
+                      </span>
+                  </div>
+              </div>
+              <div style="padding: 15px 15px; font-size: 10px">${item.energy} kcal</div>
+              <div style="padding: 15px 15px; font-size: 10px">${item.fat}g</div>
+              <div style="padding: 15px 15px; font-size: 10px">${item.carbs}g</div>
+              <div style="padding: 15px 15px; font-size: 10px">${item.protein}g</div>
+          </div>
+          <div class="plus-button">
+              <i class="fa-solid fa-plus" style="color: white"></i>
+          </div>
+      `;
+
+    container.appendChild(row);
+  });
+
+  // Add click handlers to rows
+  document.querySelectorAll(".nutrition-row").forEach((row) => {
+    row.addEventListener("click", function () {
+      // Remove active class from all rows
+      document.querySelectorAll(".nutrition-row").forEach((r) => {
+        r.classList.remove("active");
+      });
+
+      // Add active class to clicked row
+      this.classList.add("active");
+    });
+  });
+}
+
+// Initialize when DOM is loaded
+document.addEventListener("DOMContentLoaded", function () {
+  renderNutritionItems();
+
+  // Toggle add ingredient section
+  document.querySelector(".add-ingredient-header").addEventListener("click", function () {
+    const icon = this.querySelector("i");
+    if (icon.classList.contains("fa-chevron-up")) {
+      icon.classList.replace("fa-chevron-up", "fa-chevron-down");
+    } else {
+      icon.classList.replace("fa-chevron-down", "fa-chevron-up");
+    }
+  });
+
+  // Search functionality
+  document.querySelector('input[placeholder="Search food"]').addEventListener("input", function (e) {
+    const searchTerm = e.target.value.toLowerCase();
+
+    // Simple filtering for demo purposes
+    // In a real application, you would implement more robust searching
+    renderNutritionItems();
+  });
+});

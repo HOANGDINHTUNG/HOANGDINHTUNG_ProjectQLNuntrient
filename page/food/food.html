@@ -9,92 +9,121 @@
     <link rel="stylesheet" href="../../home/style.css" />
   </head>
   <body>
-    <div class="container-fluid Home">
-      <div class="row">
-        <!-- Sidebar -->
-        <div id="sidebar" class="col-md-2 sidebar d-flex flex-column vh-100">
-          <div class="container-fluid logo p-3">
-            <img src="../../img/bd9a9a7d62b2b3b87b6c262d3ea21469fddf65f8 (1).png" class="img-fluid" />
+    <div class="wrapper">
+      <!-- Sidebar -->
+      <nav id="sidebar">
+        <div class="sidebar-header">
+          <img src="../../img/bd9a9a7d62b2b3b87b6c262d3ea21469fddf65f8 (1).png" class="img-fluid" alt="Logo" />
+        </div>
+
+        <div class="d-flex flex-column" style="height: 90%;">
+          <div class="flex-grow-1">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link" href="../../index.html">
+                  <i class="fas fa-home"></i>
+                  <span class="nav-text">Homepage</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="#">
+                  <i class="fas fa-apple-alt"></i>
+                  <span class="nav-text">Foods</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="../recipes/recipe.html">
+                  <i class="fas fa-book"></i>
+                  <span class="nav-text">Recipes</span>
+                </a>
+              </li>
+            </ul>
           </div>
-          <nav class="nav flex-column p-3 flex-grow-1">
-            <a class="nav-link" href="../../index.html">
-              <i class="fas fa-home"></i>
-              Homepage
-            </a>
-            <a class="nav-link active">
-              <i class="fas fa-apple-alt"></i>
-              Foods
-            </a>
-            <a class="nav-link" href="../recipes/recipe.html">
-              <i class="fas fa-book"></i>
-              Recipes
-            </a>
-          </nav>
+
           <div class="p-3">
             <a class="btn btn-success w-100" href="#" onclick="logout()">
               <i class="fas fa-sign-out-alt"></i>
-              Sign out
+              <span class="btn-text">Sign out</span>
             </a>
           </div>
         </div>
+      </nav>
 
-        <!-- Main Content -->
-
-        <div id="mainContent" class="col-md-10 main-content">
-          <div class="menu border-bottom border-1">
-            <div class="rounded" onclick="toggleSidebar()">
-              <i class="fa-solid fa-bars"></i>
+      <!-- Page Content -->
+      <div id="content" >
+        <div class="menu border-bottom border-1 d-flex justify-content-between align-items-center">
+          <div class="menu-toggle" onclick="toggleSidebar()">
+            <i class="fa-solid fa-bars"></i>
+          </div>
+          <div id="sidebarToggleText" class="d-none">
+            <div class="d-flex align-items-center">
+              <a class="me-3 nav-icon" href="../../index.html" title="Homepage">
+                <i class="fas fa-home fa-lg"></i>
+              </a>
+              <a class="me-3 nav-icon" href="# title="Foods">
+                <i class="fas fa-apple-alt fa-lg"></i>
+              </a>
+              <a class="me-3 nav-icon" href="./page/recipes/recipe.html" title="Recipes">
+                <i class="fas fa-book fa-lg"></i>
+              </a>
             </div>
           </div>
-          <div class="title">
-            <h2>Food databases</h2>
-            <p>Create, check and update foods that you can use on meal plans</p>
-          </div>
+        </div>
 
-          <div class="p-4 rounded-3 shadow" id="box-food">
-            <h4>Foods</h4>
-            <p>Search, consult and add new foods to the system</p>
-            <div class="d-flex gap-4 mb-4" style="height: 40px">
+        <div class="title">
+          <h2>Food databases</h2>
+          <p>Create, check and update foods that you can use on meal plans</p>
+        </div>
+
+        <div class="card-container p-4">
+          <h4>Foods</h4>
+          <p>Search, consult and add new foods to the system</p>
+
+          <div class="row mb-3">
+            <div class="col-md-4 mb-2">
               <input type="text" class="form-control" placeholder="Search food" id="searchFood" />
+            </div>
 
+            <div class="col-md-4 mb-2">
               <div class="input-group">
                 <button class="btn btn-outline-secondary" id="btnSortNutrientFood">
-                  <i class="fas fa-sort-amount-up m-0"></i>
+                  <i id="sortIcon" class="fas fa-sort-amount-up m-0"></i>
                 </button>
-                <select class="form-select" id="selectNutrientFood" aria-label="Sort by nutrient">
-                  <option selected>Sort by nutrient</option>
-                  <option value="Energy">Energy</option>
-                  <option value="Fat">Fat</option>
-                  <option value="Carbohydrate">Carbohydrate</option>
-                  <option value="Protein">Protein</option>
+                <select class="form-select" id="selectNutrientFood">
+                  <option selected disabled>Sort by nutrient</option>
+                  <option value="energy">Energy</option>
+                  <option value="fat">Fat</option>
+                  <option value="carbohydrate">Carbohydrate</option>
+                  <option value="protein">Protein</option>
                 </select>
               </div>
-              
+            </div>
 
-              <select class="form-select form-select-sm" aria-label="Small select example" id="categoryFood">
+            <div class="col-md-4 mb-2">
+              <select class="form-select" aria-label="Category selection" id="categoryFood">
                 <option selected value="">All categories</option>
-                <option value="vegeterian">vegeterian</option>
-                <option value="appetizer">appetizer</option>
-                <option value="vegan">vegan</option>
-                <option value="main course">main course</option>
-                <option value="dessert">dessert</option>
-                <option value="low-carb">low-carb</option>
-                <option value="gluten-free">gluten-free</option>
-                <option value="breakfast">breakfast</option>
-                <option value="salad">salad</option>
-                <option value="soup">soup</option>
+                <option value="vegeterian">Vegeterian</option>
+                <option value="appetizer">Appetizer</option>
+                <option value="vegan">Vegan</option>
+                <option value="main course">Main course</option>
+                <option value="dessert">Dessert</option>
+                <option value="low-carb">Low-carb</option>
+                <option value="gluten-free">Gluten-free</option>
+                <option value="breakfast">Breakfast</option>
+                <option value="salad">Salad</option>
+                <option value="soup">Soup</option>
               </select>
             </div>
-
-            <div id="card-food"></div>
-
-            <div class="border border-1 p-3 d-flex gap-3 align-items-center" onclick="showFormFood()">
-              <i class="fa-solid fa-plus"></i>
-              <span>Create food</span>
-            </div>
-
-            <div class="pagination" id="paginationFood"></div>
           </div>
+
+          <div id="card-food"></div>
+
+          <div class="border border-1 p-3 d-flex gap-3 align-items-center" onclick="showFormFood()">
+            <i class="fa-solid fa-plus"></i>
+            <span>Create food</span>
+          </div>
+
+          <div class="pagination" id="paginationFood"></div>
         </div>
       </div>
     </div>
@@ -350,14 +379,13 @@
 
             <!-- Footer -->
             <div class="footer-btns">
-              <button class="btn btn-outline-secondary" id="close-form" >Cancel</button>
+              <button class="btn btn-outline-secondary" id="close-form">Cancel</button>
               <button type="submit" class="btn btn-success" id="save-form">Save and close</button>
             </div>
           </div>
         </form>
       </div>
     </div>
-
 
     <!--=============== JS ===============-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

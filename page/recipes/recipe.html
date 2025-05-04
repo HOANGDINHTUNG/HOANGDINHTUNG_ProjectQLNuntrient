@@ -11,59 +11,86 @@
   <body>
     <script src="../../js/main.js"></script>
     <script src="../../home/home.js"></script>
-    <div class="container-fluid Home">
-      <div class="row">
-        <!-- Sidebar -->
-        <div id="sidebar" class="col-md-2 sidebar d-flex flex-column vh-100">
-          <div class="container-fluid logo p-3">
-            <img src="../../img/bd9a9a7d62b2b3b87b6c262d3ea21469fddf65f8 (1).png" class="img-fluid" />
+
+    <div class="wrapper">
+      <!-- Sidebar -->
+      <nav id="sidebar">
+        <div class="sidebar-header">
+          <img src="../../img/bd9a9a7d62b2b3b87b6c262d3ea21469fddf65f8 (1).png" class="img-fluid" alt="Logo" />
+        </div>
+
+        <div class="d-flex flex-column" style="height: 90%">
+          <div class="flex-grow-1">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link" href="../../index.html">
+                  <i class="fas fa-home"></i>
+                  <span class="nav-text">Homepage</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="../food/food.html">
+                  <i class="fas fa-apple-alt"></i>
+                  <span class="nav-text">Foods</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="#">
+                  <i class="fas fa-book"></i>
+                  <span class="nav-text">Recipes</span>
+                </a>
+              </li>
+            </ul>
           </div>
-          <nav class="nav flex-column p-3 flex-grow-1">
-            <a class="nav-link" href="../../index.html">
-              <i class="fas fa-home"></i>
-              Homepage
-            </a>
-            <a class="nav-link" href="../food/food.html">
-              <i class="fas fa-apple-alt"></i>
-              Foods
-            </a>
-            <a class="nav-link active">
-              <i class="fas fa-book"></i>
-              Recipes
-            </a>
-          </nav>
           <div class="p-3">
-            <a class="btn btn-success w-100" href="#" onclick="logout()">
+            <a class="btn btn-success w-100" onclick="logout()">
               <i class="fas fa-sign-out-alt"></i>
-              Sign out
+              <span class="btn-text">Sign out</span>
             </a>
           </div>
         </div>
+      </nav>
 
-        <!-- Main Content -->
-
-        <div id="mainContent" class="col-md-10 main-content">
-          <div class="menu border-bottom border-1">
-            <div class="rounded" onclick="toggleSidebar()">
-              <i class="fa-solid fa-bars"></i>
+      <!-- Page Content -->
+      <div id="content">
+        <div class="menu border-bottom border-1 d-flex justify-content-between align-items-center">
+          <div class="menu-toggle" onclick="toggleSidebar()">
+            <i class="fa-solid fa-bars"></i>
+          </div>
+          <div id="sidebarToggleText" class="d-none">
+            <div class="d-flex align-items-center">
+              <a class="me-3 nav-icon" href="../../index.html" title="Homepage">
+                <i class="fas fa-home fa-lg"></i>
+              </a>
+              <a class="me-3 nav-icon" href="../food/food.html" title="Foods">
+                <i class="fas fa-apple-alt fa-lg"></i>
+              </a>
+              <a class="me-3 nav-icon" href="#" title="Recipes">
+                <i class="fas fa-book fa-lg"></i>
+              </a>
             </div>
           </div>
-          <div class="title">
-            <h2>Recipes</h2>
-            <p>Create, check and update recipes</p>
-          </div>
+        </div>
 
-          <!-- Recipe Dashboard -->
-          <div class="p-4 rounded-3 shadow" id="box-recipe">
-            <div class="d-flex align-items-center justify-content-between">
-              <div>
-                <h4>Recipes</h4>
-                <p>Create, check and creat new recipes</p>
-              </div>
-              <span style="font-size: 40px" onclick="addDetailRecipe()">+</span>
+        <div class="title">
+          <h2>Recipes</h2>
+          <p>Create, check and update recipes</p>
+        </div>
+
+        <div class="card-container p-4" id="box-recipe">
+          <div class="d-flex align-items-center justify-content-between">
+            <div>
+              <h4>Recipes</h4>
+              <p>Create, check and creat new recipes</p>
             </div>
-            <div class="d-flex gap-4 mb-3" style="height: 40px">
+            <span style="font-size: 40px" onclick="addDetailRecipe()">+</span>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-4 mb-2">
               <input type="text" class="form-control" placeholder="Search food" id="searchRecipeMain" />
+            </div>
+
+            <div class="col-md-4 mb-2">
               <div class="input-group">
                 <button class="btn btn-outline-secondary" id="sortButtonMain">
                   <i id="sortIconMain" class="fas fa-sort-amount-up m-0"></i>
@@ -76,258 +103,260 @@
                   <option value="protein">Protein</option>
                 </select>
               </div>
+            </div>
 
-              <select class="form-select form-select-sm" aria-label="Small select example" id="categorySelectMain">
+            <div class="col-md-4 mb-2">
+              <select class="form-select" aria-label="Category selection" id="categorySelectMain">
                 <option selected value="">All categories</option>
-                <option value="vegeterian">vegeterian</option>
-                <option value="appetizer">appetizer</option>
-                <option value="vegan">vegan</option>
-                <option value="main course">main course</option>
-                <option value="dessert">dessert</option>
-                <option value="low-carb">low-carb</option>
-                <option value="gluten-free">gluten-free</option>
-                <option value="breakfast">breakfast</option>
-                <option value="salad">salad</option>
-                <option value="soup">soup</option>
+                <option value="vegeterian">Vegeterian</option>
+                <option value="appetizer">Appetizer</option>
+                <option value="vegan">Vegan</option>
+                <option value="main course">Main course</option>
+                <option value="dessert">Dessert</option>
+                <option value="low-carb">Low-carb</option>
+                <option value="gluten-free">Gluten-free</option>
+                <option value="breakfast">Breakfast</option>
+                <option value="salad">Salad</option>
+                <option value="soup">Soup</option>
               </select>
             </div>
-
-            <div class="d-flex align-items-center justify-content-between mb-3">
-              <div class="border border-1 p-2 d-flex gap-2 align-items-center">
-                <i class="fa-solid fa-heart" style="color: red"></i>
-                <span>Favorites</span>
-                <span class="opacity-50" id="numberFavorite">0</span>
-              </div>
-              <div class="p-2 d-flex align-items-center">
-                <i class="fas fa-check-square" style="font-size: 20px; color: #2196f3"></i>
-                <i class="fas fa-pen-to-square" style="font-size: 20px; color: #2196f3"></i>
-                <span style="font-weight: 600; color: #2196f3">My recipes</span>
-              </div>
+          </div>
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <div class="border border-1 p-2 d-flex gap-2 align-items-center">
+              <i class="fa-solid fa-heart" style="color: red"></i>
+              <span>Favorites</span>
+              <span class="opacity-50" id="numberFavorite">0</span>
             </div>
-
-            <div id="recipeList" class="row row-cols-1 row-cols-md-2 g-4"></div>
-
-            <div class="pagination" id="paginationRecipe"></div>
+            <div class="p-2 d-flex align-items-center gap-1">
+              <i class="fas fa-check-square" style="font-size: 20px; color: #2196f3"></i>
+              <i class="fas fa-pen-to-square" style="font-size: 20px; color: #2196f3"></i>
+              <span style="font-weight: 600; color: #2196f3">My recipes</span>
+            </div>
           </div>
 
-          <!-- Add Recipe -->
-          <div id="addNewRecipe" style="display: none">
-            <div class="box-content mb-4">
-              <div class="d-flex flex-column gap-4 w-25">
-                <div class="border border-1 rounded-2" style="background-color: white; height: 300px; padding: 20px">
-                  <div class="d-flex flex-column justify-content-between h-100">
-                    <div class="d-flex align-items-center justify-content-between">
-                      <span
-                        class="border rounded-2 d-flex align-items-center shadow bg-warning me-2"
-                        style="padding: 4px"
-                        id="change-method">
-                        <i class="fas fa-users" style="margin-right: 5px"></i>
-                        <span class="text-nowrap" style="font-size: 12px; font-weight: 700">Community Recipes</span>
-                      </span>
+          <div id="recipeList" class="row row-cols-1 row-cols-md-2 g-4"></div>
 
-                      <div
-                        class="d-flex border border-1 rounded-2 gap-1 align-items-center"
-                        style="font-size: 12px; padding: 4px">
-                        <i class="far fa-heart"></i>
-                        <span id="numberFavorite"></span>
-                      </div>
-                    </div>
+          <div class="pagination" id="paginationRecipe"></div>
+        </div>
 
-                    <div class="d-flex justify-content-center" id="upLoadUrl">
-                      <div class="border rounded-2" style="padding: 4px">
-                        <i class="fas fa-pen-to-square" style="color: rgb(255, 136, 0); margin-right: 5px"></i>
-                        <span style="font-size: 12px">Upload image</span>
-                      </div>
-                    </div>
+        <!-- Add Recipe -->
+        <div id="addNewRecipe" style="display: none">
+          <div class="box-content mb-4">
+            <div class="d-flex flex-column gap-4 w-25">
+              <div class="border border-1 rounded-2" style="background-color: white; height: 300px; padding: 20px">
+                <div class="d-flex flex-column justify-content-between h-100">
+                  <div class="d-flex align-items-center justify-content-between">
+                    <span
+                      class="border rounded-2 d-flex align-items-center shadow bg-warning me-2"
+                      style="padding: 4px"
+                      id="change-method">
+                      <i class="fas fa-users" style="margin-right: 5px"></i>
+                      <span class="text-nowrap" style="font-size: 12px; font-weight: 700">Community Recipes</span>
+                    </span>
 
-                    <div class="d-flex" id="selectInput">
-                      <div class="card-category border border-1 p-1 rounded-3">
-                        <i class="fa-solid fa-tags"></i>
-                        New category
-                      </div>
+                    <div
+                      class="d-flex border border-1 rounded-2 gap-1 align-items-center"
+                      style="font-size: 12px; padding: 4px">
+                      <i class="far fa-heart"></i>
+                      <span id="numberFavorite"></span>
                     </div>
                   </div>
-                </div>
-              </div>
 
-              <div class="w-100">
-                <div>
-                  <div
-                    class="d-flex justify-content-between border border-1 rounded-2 mb-4"
-                    style="padding: 20px; background-color: white">
-                    <div class="d-flex lh-1 flex-column">
-                      <span class="fs-4">Publish recipe</span>
-                      <span style="opacity: 0.5; font-size: 14px">
-                        Publish your recipe on your website or share it with the Nutrium community
-                      </span>
+                  <div class="d-flex justify-content-center" id="upLoadUrl">
+                    <div class="border rounded-2" style="padding: 4px">
+                      <i class="fas fa-pen-to-square" style="color: rgb(255, 136, 0); margin-right: 5px"></i>
+                      <span style="font-size: 12px">Upload image</span>
                     </div>
-                    <button class="btn btn-success">Publish</button>
                   </div>
-                </div>
 
-                <div class="border border-1 rounded-2 lh-1" style="background-color: white; padding: 20px">
-                  <div class="fw-light fs-4">Basic information</div>
-                  <span class="fw-light" style="font-size: 14px">Check and edit recipe's basic information</span>
-                  <div class="d-flex mt-3">
-                    <span
-                      class="border border-end-0 w-50 text-wrap rounded-start-0 ps-2 align-items-center d-flex fs-6 fw-light"
-                      style="background-color: #fafafb">
-                      Name
-                    </span>
-                    <input type="text" class="form-control rounded-0 fw-light" placeholder="Recipe" />
-                    <span
-                      class="border text-wrap p-2 align-items-center d-flex fs-6 fw-light"
-                      style="background-color: #fafafb">
-                      <i class="fa-solid fa-pen" style="color: #1ab394"></i>
-                    </span>
-                  </div>
-                  <div class="d-flex mt-3">
-                    <span
-                      class="border border-end-0 w-50 text-wrap rounded-start-0 ps-2 align-items-center d-flex fs-6 fw-light"
-                      style="background-color: #fafafb">
-                      Description
-                    </span>
-                    <input type="text" class="form-control rounded-0 fw-light" style="height: 60px" />
-                    <span
-                      class="border text-wrap p-2 align-items-center d-flex fs-6 fw-light"
-                      style="background-color: #fafafb">
-                      <i class="fa-solid fa-pen" style="color: #1ab394"></i>
-                    </span>
-                  </div>
-                  <div class="d-flex mt-3">
-                    <span
-                      class="border border-end-0 w-50 text-wrap rounded-start-0 ps-2 align-items-center d-flex fs-6 fw-light"
-                      style="background-color: #fafafb">
-                      Author
-                    </span>
-                    <input type="text" class="form-control rounded-0 fw-light" />
-                    <span
-                      class="border text-wrap p-2 align-items-center d-flex fs-6 fw-light"
-                      style="background-color: #fafafb">
-                      <i class="fa-solid fa-pen" style="color: #1ab394"></i>
-                    </span>
-                  </div>
-                  <div class="d-flex mt-3">
-                    <span
-                      class="border border-end-0 w-50 text-wrap rounded-start-0 ps-2 align-items-center d-flex fs-6 fw-light"
-                      style="background-color: #fafafb">
-                      Total time
-                    </span>
-                    <input type="text" class="form-control rounded-0 fw-light" />
-                    <span
-                      class="border text-wrap p-2 align-items-center d-flex fs-6 fw-light"
-                      style="background-color: #fafafb">
-                      <i class="fa-solid fa-pen" style="color: #1ab394"></i>
-                    </span>
-                  </div>
-                  <div class="d-flex mt-3">
-                    <span
-                      class="border border-end-0 w-50 text-wrap rounded-start-0 ps-2 align-items-center d-flex fs-6 fw-light"
-                      style="background-color: #fafafb">
-                      Preparation time
-                    </span>
-                    <input type="text" class="form-control rounded-0 fw-light" />
-                    <span
-                      class="border text-wrap p-2 align-items-center d-flex fs-6 fw-light"
-                      style="background-color: #fafafb">
-                      <i class="fa-solid fa-pen" style="color: #1ab394"></i>
-                    </span>
-                  </div>
-                  <div class="d-flex mt-3">
-                    <span
-                      class="border border-end-0 w-50 text-wrap rounded-start-0 ps-2 align-items-center d-flex fs-6 fw-light"
-                      style="background-color: #fafafb">
-                      Final weight
-                    </span>
-                    <input type="text" class="form-control rounded-0 fw-light" value="210 grams" />
-                    <span
-                      class="border text-wrap p-2 align-items-center d-flex fs-6 fw-light"
-                      style="background-color: #fafafb">
-                      <i class="fa-solid fa-pen" style="color: #1ab394"></i>
-                    </span>
-                  </div>
-                  <div class="d-flex mt-3">
-                    <span
-                      class="border border-end-0 w-50 text-wrap rounded-start-0 ps-2 align-items-center d-flex fs-6 fw-light"
-                      style="background-color: #fafafb">
-                      Portions
-                    </span>
-                    <input type="text" class="form-control rounded-0 fw-light" />
-                    <span
-                      class="border text-wrap p-2 align-items-center d-flex fs-6 fw-light"
-                      style="background-color: #fafafb">
-                      <i class="fa-solid fa-pen" style="color: #1ab394"></i>
-                    </span>
+                  <div class="d-flex" id="selectInput">
+                    <div class="card-category border border-1 p-1 rounded-3">
+                      <i class="fa-solid fa-tags"></i>
+                      New category
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div
-              class="box-content flex-column p-3 lh-2 rounded-2 mb-4"
-              style="background-color: #1ab394; gap: 5px; color: white">
-              <span class="fs-5">Creation</span>
-              <span style="font-size: 14px">Create the recipe and choose the ingredients</span>
-            </div>
-
-            <div class="box-content">
-              <div class="statistical">
+            <div class="w-100">
+              <div>
                 <div
-                  class="d-flex flex-column border border-1 rounded-2 mb-4"
+                  class="d-flex justify-content-between border border-1 rounded-2 mb-4"
                   style="padding: 20px; background-color: white">
-                  <div class="d-flex lh-1 flex-column mb-2">
-                    <span class="fs-4">Ingredients</span>
-                    <span style="opacity: 0.5; font-size: 14px">Search and add ingredients to the recipe</span>
-                  </div>
-                  <div class="d-flex mb-3">
-                    <div class="d-flex flex-column w-100">
-                      <span class="border border-end-0 border-bottom-0" style="padding: 10px; font-size: 12px">
-                        1 serving of babyfood, water, bottled, GERBER, without added fluoride (113 g)
-                      </span>
-                      <div class="d-flex">
-                        <span
-                          class="border border-end-0 text-wrap align-items-center d-flex fs-6 fw-light"
-                          style="background-color: #fafafb; padding: 10px">
-                          <i class="fa-solid fa-plus" style="color: #1ab394"></i>
-                        </span>
-                        <input
-                          type="text"
-                          class="border border-start-0 w-100 border-end-0"
-                          placeholder="Add new food equivalent" />
-                      </div>
-                    </div>
-                    <span
-                      class="border text-wrap align-items-center d-flex fs-6 fw-light"
-                      style="background-color: #fafafb; padding: 10px">
-                      <i class="fa-solid fa-trash"></i>
+                  <div class="d-flex lh-1 flex-column">
+                    <span class="fs-4">Publish recipe</span>
+                    <span style="opacity: 0.5; font-size: 14px">
+                      Publish your recipe on your website or share it with the Nutrium community
                     </span>
                   </div>
+                  <button class="btn btn-success">Publish</button>
+                </div>
+              </div>
 
-                  <div class="d-flex mb-3">
-                    <div class="d-flex flex-column w-100">
-                      <span class="border border-end-0 border-bottom-0" style="padding: 10px; font-size: 12px">
-                        1 serving of babyfood, tropical fruit medley (88 g)
-                      </span>
-                      <div class="d-flex">
-                        <span
-                          class="border border-end-0 text-wrap align-items-center d-flex fs-6 fw-light"
-                          style="background-color: #fafafb; padding: 10px">
-                          <i class="fa-solid fa-plus" style="color: #1ab394"></i>
-                        </span>
-                        <input
-                          type="text"
-                          class="border border-start-0 w-100 border-end-0"
-                          placeholder="Add new food equivalent" />
-                      </div>
-                    </div>
-                    <span
-                      class="border text-wrap align-items-center d-flex fs-6 fw-light"
-                      style="background-color: #fafafb; padding: 10px">
-                      <i class="fa-solid fa-trash"></i>
+              <div class="border border-1 rounded-2 lh-1" style="background-color: white; padding: 20px">
+                <div class="fw-light fs-4">Basic information</div>
+                <span class="fw-light" style="font-size: 14px">Check and edit recipe's basic information</span>
+                <div class="d-flex mt-3">
+                  <span
+                    class="border border-end-0 w-50 text-wrap rounded-start-0 ps-2 align-items-center d-flex fs-6 fw-light"
+                    style="background-color: #fafafb">
+                    Name
+                  </span>
+                  <input type="text" class="form-control rounded-0 fw-light" placeholder="Recipe" />
+                  <span
+                    class="border text-wrap p-2 align-items-center d-flex fs-6 fw-light"
+                    style="background-color: #fafafb">
+                    <i class="fa-solid fa-pen" style="color: #1ab394"></i>
+                  </span>
+                </div>
+                <div class="d-flex mt-3">
+                  <span
+                    class="border border-end-0 w-50 text-wrap rounded-start-0 ps-2 align-items-center d-flex fs-6 fw-light"
+                    style="background-color: #fafafb">
+                    Description
+                  </span>
+                  <input type="text" class="form-control rounded-0 fw-light" style="height: 60px" />
+                  <span
+                    class="border text-wrap p-2 align-items-center d-flex fs-6 fw-light"
+                    style="background-color: #fafafb">
+                    <i class="fa-solid fa-pen" style="color: #1ab394"></i>
+                  </span>
+                </div>
+                <div class="d-flex mt-3">
+                  <span
+                    class="border border-end-0 w-50 text-wrap rounded-start-0 ps-2 align-items-center d-flex fs-6 fw-light"
+                    style="background-color: #fafafb">
+                    Author
+                  </span>
+                  <input type="text" class="form-control rounded-0 fw-light" />
+                  <span
+                    class="border text-wrap p-2 align-items-center d-flex fs-6 fw-light"
+                    style="background-color: #fafafb">
+                    <i class="fa-solid fa-pen" style="color: #1ab394"></i>
+                  </span>
+                </div>
+                <div class="d-flex mt-3">
+                  <span
+                    class="border border-end-0 w-50 text-wrap rounded-start-0 ps-2 align-items-center d-flex fs-6 fw-light"
+                    style="background-color: #fafafb">
+                    Total time
+                  </span>
+                  <input type="text" class="form-control rounded-0 fw-light" />
+                  <span
+                    class="border text-wrap p-2 align-items-center d-flex fs-6 fw-light"
+                    style="background-color: #fafafb">
+                    <i class="fa-solid fa-pen" style="color: #1ab394"></i>
+                  </span>
+                </div>
+                <div class="d-flex mt-3">
+                  <span
+                    class="border border-end-0 w-50 text-wrap rounded-start-0 ps-2 align-items-center d-flex fs-6 fw-light"
+                    style="background-color: #fafafb">
+                    Preparation time
+                  </span>
+                  <input type="text" class="form-control rounded-0 fw-light" />
+                  <span
+                    class="border text-wrap p-2 align-items-center d-flex fs-6 fw-light"
+                    style="background-color: #fafafb">
+                    <i class="fa-solid fa-pen" style="color: #1ab394"></i>
+                  </span>
+                </div>
+                <div class="d-flex mt-3">
+                  <span
+                    class="border border-end-0 w-50 text-wrap rounded-start-0 ps-2 align-items-center d-flex fs-6 fw-light"
+                    style="background-color: #fafafb">
+                    Final weight
+                  </span>
+                  <input type="text" class="form-control rounded-0 fw-light" value="210 grams" />
+                  <span
+                    class="border text-wrap p-2 align-items-center d-flex fs-6 fw-light"
+                    style="background-color: #fafafb">
+                    <i class="fa-solid fa-pen" style="color: #1ab394"></i>
+                  </span>
+                </div>
+                <div class="d-flex mt-3">
+                  <span
+                    class="border border-end-0 w-50 text-wrap rounded-start-0 ps-2 align-items-center d-flex fs-6 fw-light"
+                    style="background-color: #fafafb">
+                    Portions
+                  </span>
+                  <input type="text" class="form-control rounded-0 fw-light" />
+                  <span
+                    class="border text-wrap p-2 align-items-center d-flex fs-6 fw-light"
+                    style="background-color: #fafafb">
+                    <i class="fa-solid fa-pen" style="color: #1ab394"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="box-content flex-column p-3 lh-2 rounded-2 mb-4"
+            style="background-color: #1ab394; gap: 5px; color: white">
+            <span class="fs-5">Creation</span>
+            <span style="font-size: 14px">Create the recipe and choose the ingredients</span>
+          </div>
+
+          <div class="box-content">
+            <div class="statistical">
+              <div
+                class="d-flex flex-column border border-1 rounded-2 mb-4"
+                style="padding: 20px; background-color: white">
+                <div class="d-flex lh-1 flex-column mb-2">
+                  <span class="fs-4">Ingredients</span>
+                  <span style="opacity: 0.5; font-size: 14px">Search and add ingredients to the recipe</span>
+                </div>
+                <div class="d-flex mb-3">
+                  <div class="d-flex flex-column w-100">
+                    <span class="border border-end-0 border-bottom-0" style="padding: 10px; font-size: 12px">
+                      1 serving of babyfood, water, bottled, GERBER, without added fluoride (113 g)
                     </span>
+                    <div class="d-flex">
+                      <span
+                        class="border border-end-0 text-wrap align-items-center d-flex fs-6 fw-light"
+                        style="background-color: #fafafb; padding: 10px">
+                        <i class="fa-solid fa-plus" style="color: #1ab394"></i>
+                      </span>
+                      <input
+                        type="text"
+                        class="border border-start-0 w-100 border-end-0"
+                        placeholder="Add new food equivalent" />
+                    </div>
                   </div>
+                  <span
+                    class="border text-wrap align-items-center d-flex fs-6 fw-light"
+                    style="background-color: #fafafb; padding: 10px">
+                    <i class="fa-solid fa-trash"></i>
+                  </span>
+                </div>
 
-                  <div class="d-flex">
+                <div class="d-flex mb-3">
+                  <div class="d-flex flex-column w-100">
+                    <span class="border border-end-0 border-bottom-0" style="padding: 10px; font-size: 12px">
+                      1 serving of babyfood, tropical fruit medley (88 g)
+                    </span>
+                    <div class="d-flex">
+                      <span
+                        class="border border-end-0 text-wrap align-items-center d-flex fs-6 fw-light"
+                        style="background-color: #fafafb; padding: 10px">
+                        <i class="fa-solid fa-plus" style="color: #1ab394"></i>
+                      </span>
+                      <input
+                        type="text"
+                        class="border border-start-0 w-100 border-end-0"
+                        placeholder="Add new food equivalent" />
+                    </div>
+                  </div>
+                  <span
+                    class="border text-wrap align-items-center d-flex fs-6 fw-light"
+                    style="background-color: #fafafb; padding: 10px">
+                    <i class="fa-solid fa-trash"></i>
+                  </span>
+                </div>
+
+                <!-- <div class="d-flex">
                     <span
                       class="border border-end-0 text-wrap align-items-center d-flex fs-6 fw-light"
                       style="background-color: #fafafb; padding: 10px">
@@ -493,206 +522,259 @@
                         <i class="fa-solid fa-plus" style="color: white"></i>
                       </div>
                     </div>
+                  </div> -->
+
+                <!-- Add Ingredient Header -->
+                <div class="add-ingredient-header">
+                  <div class="d-flex">
+                    <span class="input-icon">
+                      <i class="fas fa-chevron-up"></i>
+                    </span>
+                    <input type="text" class="full-width-input" placeholder="Add new ingredient" />
                   </div>
                 </div>
 
-                <div
-                  class="d-flex flex-column gap-2 border border-1 rounded-2"
-                  style="padding: 20px; background-color: white">
-                  <div class="d-flex lh-1 flex-column">
-                    <span class="fs-4">Cooking method</span>
-                    <span style="opacity: 0.5; font-size: 14px">Give instructions to prepare this recipe</span>
+                <!-- Search Section -->
+                <div class="search-container">
+                  <div class="d-flex gap-2 mb-3">
+                    <input type="text" class="form-control" placeholder="Search food" style="width: 33%" />
+                    <div class="input-with-icon" style="width: 33%">
+                      <span class="input-icon">
+                        <i class="fas fa-sort-amount-up"></i>
+                      </span>
+                      <input type="text" class="full-width-input" placeholder="Sort by nutrient" />
+                    </div>
+                    <div class="database-selector" style="width: 33%">All databases</div>
                   </div>
 
-                  <div class="d-flex mt-3">
-                    <span
-                      class="border border-end-0 p-2 text-wrap rounded-start-0 align-items-center d-flex fw-light"
-                      style="background-color: #fafafb">
-                      1
-                    </span>
-                    <input type="text" class="form-control rounded-0 fw-light" placeholder="Add new cooking method" />
-                    <span
-                      class="border text-wrap p-2 align-items-center d-flex fs-6 fw-light"
-                      style="background-color: #fafafb">
-                      <i class="fa-solid fa-pen" style="color: #1ab394"></i>
-                    </span>
+                  <!-- Nutrition Table Header -->
+                  <div class="d-flex flex-column" style="margin-right: 46px; background-color: white">
+                    <div class="d-flex align-items-center">
+                      <div class="border border-1" style="padding: 10.5px; width: 270px">Nutritional Information</div>
+                      <div class="border border-1" style="padding: 15px 15px; font-size: 10px">Energy</div>
+                      <div class="border border-1" style="padding: 15px 15px; font-size: 10px">Fat</div>
+                      <div class="border border-1" style="padding: 15px 15px; font-size: 10px">Carboh..</div>
+                      <div class="border border-1" style="padding: 15px 15px; font-size: 10px">Protein</div>
+                    </div>
+                  </div>
+
+                  <!-- Nutrition Items -->
+                  <div id="nutritionItems"></div>
+
+                  <!-- Pagination -->
+                  <ul class="pagination">
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">4</a></li>
+                    <li class="page-item"><a class="page-link" href="#">5</a></li>
+                    <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
+                    <li class="page-item">
+                      <a class="page-link" href="#"><i class="fas fa-forward"></i></a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="#"><i class="fas fa-step-forward"></i></a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div
+                class="d-flex flex-column gap-2 border border-1 rounded-2"
+                style="padding: 20px; background-color: white">
+                <div class="d-flex lh-1 flex-column">
+                  <span class="fs-4">Cooking method</span>
+                  <span style="opacity: 0.5; font-size: 14px">Give instructions to prepare this recipe</span>
+                </div>
+
+                <div class="d-flex mt-3">
+                  <span
+                    class="border border-end-0 p-2 text-wrap rounded-start-0 align-items-center d-flex fw-light"
+                    style="background-color: #fafafb">
+                    1
+                  </span>
+                  <input type="text" class="form-control rounded-0 fw-light" placeholder="Add new cooking method" />
+                  <span
+                    class="border text-wrap p-2 align-items-center d-flex fs-6 fw-light"
+                    style="background-color: #fafafb">
+                    <i class="fa-solid fa-pen" style="color: #1ab394"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="chart">
+              <div class="border rounded-2 d-flex flex-column mb-4" style="background-color: white; padding: 20px">
+                <div class="d-flex lh-1 flex-column mb-2">
+                  <span class="fs-4">Global analysis</span>
+                  <div class="d-flex align-items-center justify-content-between">
+                    <span style="opacity: 0.5; font-size: 14px">Energy, macronutrients and fiber distribution</span>
+                    <div class="bg-success p-2 rounded-circle">
+                      <i class="fa-solid fa-comment" style="color: white"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="d-flex justify-content-between mt-2 mb-1 border-bottom">
+                  <span>Energy</span>
+                  <span>40 kcal</span>
+                </div>
+
+                <div class="d-flex justify-content-around mt-4 flex-wrap gap-3">
+                  <div class="d-flex flex-column align-items-center">
+                    <div class="p-2 border-5 rounded-circle m-0" style="border: solid #f3f3f4">0 g</div>
+                    <span>Fat</span>
+                  </div>
+                  <div class="d-flex flex-column align-items-center">
+                    <div class="p-2 border-5 rounded-circle m-0" style="border: solid #ea9f77">11g</div>
+                    <span>Carbohydrate</span>
+                  </div>
+                  <div class="d-flex flex-column align-items-center">
+                    <div class="p-2 border-5 rounded-circle m-0" style="border: solid #f3f3f4">0 g</div>
+                    <span>Protein</span>
+                  </div>
+                  <div class="d-flex flex-column align-items-center">
+                    <div class="p-2 border-5 rounded-circle m-0" style="border: solid #6a7d93">1 g</div>
+                    <span>Fiber</span>
                   </div>
                 </div>
               </div>
 
-              <div class="chart">
-                <div class="border rounded-2 d-flex flex-column mb-4" style="background-color: white; padding: 20px">
-                  <div class="d-flex lh-1 flex-column mb-2">
-                    <span class="fs-4">Global analysis</span>
-                    <div class="d-flex align-items-center justify-content-between">
-                      <span style="opacity: 0.5; font-size: 14px">Energy, macronutrients and fiber distribution</span>
-                      <div class="bg-success p-2 rounded-circle">
-                        <i class="fa-solid fa-comment" style="color: white"></i>
-                      </div>
-                    </div>
-                  </div>
+              <div class="border rounded-2 d-flex flex-column mb-4" style="background-color: white; padding: 20px">
+                <div class="d-flex lh-1 flex-column mb-4">
+                  <span class="fs-4">Macronutrients</span>
+                  <span style="opacity: 0.5; font-size: 14px">Macronutrients distribution of the recipe</span>
+                </div>
+                <div>
+                  <canvas width="300" height="300" class="ms-4"></canvas>
 
-                  <div class="d-flex justify-content-between mt-2 mb-1 border-bottom">
-                    <span>Energy</span>
-                    <span>40 kcal</span>
-                  </div>
-
-                  <div class="d-flex justify-content-around mt-4 flex-wrap gap-3">
-                    <div class="d-flex flex-column align-items-center">
-                      <div class="p-2 border-5 rounded-circle m-0" style="border: solid #f3f3f4">0 g</div>
-                      <span>Fat</span>
+                  <div id="legend" class="ms-5">
+                    <div class="legend-item">
+                      <div class="box" style="background-color: #db4965"></div>
+                      Fat
                     </div>
-                    <div class="d-flex flex-column align-items-center">
-                      <div class="p-2 border-5 rounded-circle m-0" style="border: solid #ea9f77">11g</div>
-                      <span>Carbohydrate</span>
+                    <div class="legend-item">
+                      <div class="box" style="background-color: #f4a261"></div>
+                      Carbohydrate
                     </div>
-                    <div class="d-flex flex-column align-items-center">
-                      <div class="p-2 border-5 rounded-circle m-0" style="border: solid #f3f3f4">0 g</div>
-                      <span>Protein</span>
-                    </div>
-                    <div class="d-flex flex-column align-items-center">
-                      <div class="p-2 border-5 rounded-circle m-0" style="border: solid #6a7d93">1 g</div>
-                      <span>Fiber</span>
+                    <div class="legend-item">
+                      <div class="box" style="background-color: #2a9d8f"></div>
+                      Protein
                     </div>
                   </div>
                 </div>
+              </div>
 
-                <div class="border rounded-2 d-flex flex-column mb-4" style="background-color: white; padding: 20px">
-                  <div class="d-flex lh-1 flex-column mb-4">
-                    <span class="fs-4">Macronutrients</span>
-                    <span style="opacity: 0.5; font-size: 14px">Macronutrients distribution of the recipe</span>
-                  </div>
-                  <div>
-                    <canvas width="300" height="300" class="ms-4"></canvas>
-
-                    <div id="legend" class="ms-5">
-                      <div class="legend-item">
-                        <div class="box" style="background-color: #db4965"></div>
-                        Fat
-                      </div>
-                      <div class="legend-item">
-                        <div class="box" style="background-color: #f4a261"></div>
-                        Carbohydrate
-                      </div>
-                      <div class="legend-item">
-                        <div class="box" style="background-color: #2a9d8f"></div>
-                        Protein
-                      </div>
-                    </div>
-                  </div>
+              <div class="border rounded-2 d-flex flex-column mb-4" style="background-color: white; padding: 20px">
+                <div class="d-flex lh-1 flex-column mb-4">
+                  <span class="fs-4">Micronutrients</span>
+                  <span style="opacity: 0.5; font-size: 14px">Micronutrients distribution of the recipe</span>
                 </div>
-
-                <div class="border rounded-2 d-flex flex-column mb-4" style="background-color: white; padding: 20px">
-                  <div class="d-flex lh-1 flex-column mb-4">
-                    <span class="fs-4">Micronutrients</span>
-                    <span style="opacity: 0.5; font-size: 14px">Micronutrients distribution of the recipe</span>
+                <div class="d-flex flex-column">
+                  <div class="d-flex justify-content-between p-1">
+                    <span>Sodium</span>
+                    <span>1418 mg</span>
                   </div>
-                  <div class="d-flex flex-column">
-                    <div class="d-flex justify-content-between p-1">
-                      <span>Sodium</span>
-                      <span>1418 mg</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1" style="background-color: #fafafb">
-                      <span>Vitamin A</span>
-                      <span>18 ug</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1">
-                      <span>Vitamin B-6</span>
-                      <span>0 mg</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1" style="background-color: #fafafb">
-                      <span>Vitamin B-12</span>
-                      <span>0 ug</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1">
-                      <span>Vitamin C</span>
-                      <span>50 mg</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1" style="background-color: #fafafb">
-                      <span>Vitamin D (D2 + D3)</span>
-                      <span>0 ug</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1">
-                      <span>Vitamin E</span>
-                      <span>1 mg</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1" style="background-color: #fafafb">
-                      <span>Vitamin K</span>
-                      <span>87 ug</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1">
-                      <span>Sugars</span>
-                      <span>13 g</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1" style="background-color: #fafafb">
-                      <span>Calcium</span>
-                      <span>88 mg</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1">
-                      <span>Iron</span>
-                      <span>4 mg</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1" style="background-color: #fafafb">
-                      <span>Magnesium</span>
-                      <span>127 mg</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1">
-                      <span>Phosphorus</span>
-                      <span>251 mg</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1" style="background-color: #fafafb">
-                      <span>Phosphorus</span>
-                      <span>649 mg</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1">
-                      <span>Zinc</span>
-                      <span>2 mg</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1" style="background-color: #fafafb">
-                      <span>Copper</span>
-                      <span>1 mg</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1">
-                      <span>Copper</span>
-                      <span>1 ug</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1" style="background-color: #fafafb">
-                      <span>Manganese</span>
-                      <span>2 mg</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1">
-                      <span>Manganese</span>
-                      <span>4 ug</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1" style="background-color: #fafafb">
-                      <span>Thiamin</span>
-                      <span>0 mg</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1">
-                      <span>Riboflavin</span>
-                      <span>0 mg</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1" style="background-color: #fafafb">
-                      <span>Niacin</span>
-                      <span>3 mg</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1">
-                      <span>Pantothenic acid</span>
-                      <span>1 mg</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1" style="background-color: #fafafb">
-                      <span>Folate, total</span>
-                      <span>156 ug</span>
-                    </div>
+                  <div class="d-flex justify-content-between p-1" style="background-color: #fafafb">
+                    <span>Vitamin A</span>
+                    <span>18 ug</span>
+                  </div>
+                  <div class="d-flex justify-content-between p-1">
+                    <span>Vitamin B-6</span>
+                    <span>0 mg</span>
+                  </div>
+                  <div class="d-flex justify-content-between p-1" style="background-color: #fafafb">
+                    <span>Vitamin B-12</span>
+                    <span>0 ug</span>
+                  </div>
+                  <div class="d-flex justify-content-between p-1">
+                    <span>Vitamin C</span>
+                    <span>50 mg</span>
+                  </div>
+                  <div class="d-flex justify-content-between p-1" style="background-color: #fafafb">
+                    <span>Vitamin D (D2 + D3)</span>
+                    <span>0 ug</span>
+                  </div>
+                  <div class="d-flex justify-content-between p-1">
+                    <span>Vitamin E</span>
+                    <span>1 mg</span>
+                  </div>
+                  <div class="d-flex justify-content-between p-1" style="background-color: #fafafb">
+                    <span>Vitamin K</span>
+                    <span>87 ug</span>
+                  </div>
+                  <div class="d-flex justify-content-between p-1">
+                    <span>Sugars</span>
+                    <span>13 g</span>
+                  </div>
+                  <div class="d-flex justify-content-between p-1" style="background-color: #fafafb">
+                    <span>Calcium</span>
+                    <span>88 mg</span>
+                  </div>
+                  <div class="d-flex justify-content-between p-1">
+                    <span>Iron</span>
+                    <span>4 mg</span>
+                  </div>
+                  <div class="d-flex justify-content-between p-1" style="background-color: #fafafb">
+                    <span>Magnesium</span>
+                    <span>127 mg</span>
+                  </div>
+                  <div class="d-flex justify-content-between p-1">
+                    <span>Phosphorus</span>
+                    <span>251 mg</span>
+                  </div>
+                  <div class="d-flex justify-content-between p-1" style="background-color: #fafafb">
+                    <span>Phosphorus</span>
+                    <span>649 mg</span>
+                  </div>
+                  <div class="d-flex justify-content-between p-1">
+                    <span>Zinc</span>
+                    <span>2 mg</span>
+                  </div>
+                  <div class="d-flex justify-content-between p-1" style="background-color: #fafafb">
+                    <span>Copper</span>
+                    <span>1 mg</span>
+                  </div>
+                  <div class="d-flex justify-content-between p-1">
+                    <span>Copper</span>
+                    <span>1 ug</span>
+                  </div>
+                  <div class="d-flex justify-content-between p-1" style="background-color: #fafafb">
+                    <span>Manganese</span>
+                    <span>2 mg</span>
+                  </div>
+                  <div class="d-flex justify-content-between p-1">
+                    <span>Manganese</span>
+                    <span>4 ug</span>
+                  </div>
+                  <div class="d-flex justify-content-between p-1" style="background-color: #fafafb">
+                    <span>Thiamin</span>
+                    <span>0 mg</span>
+                  </div>
+                  <div class="d-flex justify-content-between p-1">
+                    <span>Riboflavin</span>
+                    <span>0 mg</span>
+                  </div>
+                  <div class="d-flex justify-content-between p-1" style="background-color: #fafafb">
+                    <span>Niacin</span>
+                    <span>3 mg</span>
+                  </div>
+                  <div class="d-flex justify-content-between p-1">
+                    <span>Pantothenic acid</span>
+                    <span>1 mg</span>
+                  </div>
+                  <div class="d-flex justify-content-between p-1" style="background-color: #fafafb">
+                    <span>Folate, total</span>
+                    <span>156 ug</span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-
-          <!-- Details Recipe -->
-          <div id="recipeDetail" style="display: none"></div>
         </div>
+
+        <!-- Details Recipe -->
+        <div id="recipeDetail" style="display: none"></div>
       </div>
     </div>
 

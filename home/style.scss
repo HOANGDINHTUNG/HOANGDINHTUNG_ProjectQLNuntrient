@@ -1,88 +1,121 @@
 body {
   background-color: #f4f6f9;
+  overflow-x: hidden;
 }
 
-.sidebar {
-  height: 100vh;
-  background-color: #2b3c4e;
-  color: white;
+.nav-icon {
+  color: #1ab394;
+  transition: color 0.3s;
 }
 
-.sidebar .nav-link {
-  color: #ccc;
+.nav-icon:hover {
+  color: #16a085;
 }
 
-.sidebar .nav-link.active {
-  background-color: #1abc9c;
-  color: white;
-}
-
-.sidebar .nav-link:hover {
-  background-color: #1abc9c;
-  color: white;
-}
-
-.card-category {
-  font-size: 0.85rem;
-  color: #ff8c42;
-}
-
-.card-footer small {
-  margin-right: 15px;
-}
-
-.logo {
-  padding: 40px 15px;
-
-  img {
-    width: 150px;
-    height: 44px;
+.wrapper {
+  display: flex;
+  width: 100%;
+  align-items: stretch;
+  #sidebar {
+    min-width: 250px;
+    max-width: 250px;
+    height: 100vh;
+    background-color: #2b3c4e;
+    color: white;
+    position: fixed;
+    transition: all 0.3s;
+    z-index: 999;
+    .sidebar-header {
+      padding: 20px;
+    }
+    .nav-link {
+      color: #ccc;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      transition: all 0.3s;
+      .nav-text {
+        margin-left: 10px;
+      }
+    }
+    .nav-link.active {
+      background-color: #1abc9c;
+      color: white;
+    }
+    .nav-link:hover {
+      background-color: #1abc9c;
+      color: white;
+    }
   }
+  .collapsed {
+    min-width: 0;
+    max-width: 0;
+    overflow: hidden;
+    padding: 0;
+    margin-left: -250px;
+    .nav-text {
+      display: none;
+    }
+    .btn-text {
+      display: none;
+    }
+  }
+  #content {
+    width: 100%;
+    min-height: 100vh;
+    transition: all 0.3s;
+    margin-left: 250px;
+    .image-bg-picture{
+
+      .menu-nav {
+        padding: 30px;
+        height: 50px;
+        background-color: #1d4e1a;
+      }
+    }
+  } 
 }
 
-.menu {
-  height: 75px;
-  background-color: white;
-  padding: 20px;
+#content.expanded {
+  margin-left: 0;
 }
 
 .rounded {
-  background-color: #1ab394;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--card-bg);
+  border-radius: 50% !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color:#fcf3d9 ;
+}
+
+.menu-toggle {
+  background-color: #fcf3d9;
   padding: 5px 10px;
   width: 40px;
   text-align: center;
-  color: white;
+  color: #1d4e1a;
+  cursor: pointer;
+  border-radius: 4px;
 }
 
 .title {
-  padding: 20px;
-  background-color: white;
-  color: #ccc;
+  padding: 30px;
+  background-color: #1d4e1a;
+  color: #555;
+  padding-bottom: 100px;
 }
 
-.p-4 {
+.card-container {
   margin: 30px 20px;
   background-color: white;
-}
-
-.fas {
-  margin-right: 10px;
-}
-
-// .input-group,
-.form-select {
-  width: 500px;
-}
-
-/* Đóng mở thanh sidebar*/
-.sidebar.collapsed {
-  display: none !important;
-}
-
-.main-content.full-width {
-  width: 100% !important;
-  flex: 0 0 100%;
-  max-width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 }
 
 .pagination {
@@ -213,7 +246,6 @@ input.form-control::placeholder {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
-
 .form-container h2 {
   font-size: 24px;
   text-align: center;
@@ -267,10 +299,154 @@ input.form-control::placeholder {
   justify-content: center;
 }
 
-
 .footer-btns {
   display: flex;
   justify-content: end;
   gap: 10px;
   margin-top: 20px;
+}
+
+//them food inter
+.add-ingredient-header {
+  background-color: white;
+}
+.search-container {
+  background-color: #fafafb;
+  border: 1px solid #dee2e6;
+  border-top: 0;
+  padding: 15px;
+}
+.nutrition-header {
+  background-color: white;
+  margin-right: 46px;
+}
+.nutrition-header div {
+  padding: 10px 15px;
+  text-align: center;
+  font-size: 14px;
+  border: 1px solid #dee2e6;
+}
+.nutrition-row {
+  margin-bottom: 1px;
+  position: relative;
+}
+.nutrition-item {
+  background-color: white;
+  border: 1px solid #dee2e6;
+  border-top: 0;
+  padding: 15px;
+  width: 100%;
+}
+.nutrition-data {
+  padding: 15px;
+  text-align: center;
+  font-size: 12px;
+  min-width: 60px;
+}
+.plus-button {
+  display: none;
+  background-color: #018337;
+  color: white;
+  padding: 12px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 100%;
+  width: 45px;
+}
+.nutrition-row.active .plus-button {
+  display: flex;
+}
+.community-source {
+  font-size: 12px;
+  color: #6c757d;
+  opacity: 0.7;
+}
+.portion-input {
+  display: flex;
+  margin-top: 5px;
+}
+.quantity-box {
+  background-color: #fafafb;
+  border: 1px solid #dee2e6;
+  padding: 5px 10px;
+  font-size: 12px;
+  width: 40px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.portion-box {
+  border: 1px solid #dee2e6;
+  border-left: 0;
+  font-size: 12px;
+  padding: 5px 10px;
+  width: 150px;
+}
+.weight-box {
+  background-color: #fafafb;
+  border: 1px solid #dee2e6;
+  padding: 5px 10px;
+  font-size: 12px;
+  width: 45px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pagination {
+  justify-content: end;
+}
+input::placeholder {
+  color: #aaa;
+  font-size: 14px;
+}
+.input-with-icon {
+  position: relative;
+  display: flex;
+}
+.input-icon {
+  background-color: #fafafb;
+  border: 1px solid #dee2e6;
+  border-right: 0;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
+.input-icon i {
+  color: #1ab394;
+}
+.full-width-input {
+  border: 1px solid #dee2e6;
+  border-left: 0;
+  padding: 10px;
+  width: 100%;
+}
+.database-selector {
+  border: 1px solid #dee2e6;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+}
+.sort-input {
+  display: flex;
+  width: 100%;
+}
+.info-col {
+  width: 270px;
+}
+.data-col {
+  text-align: center;
+  min-width: 60px;
+}
+.page-link {
+  background-color: #ffffff;
+  color: black;
 }

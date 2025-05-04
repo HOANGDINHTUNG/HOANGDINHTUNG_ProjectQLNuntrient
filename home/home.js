@@ -103,7 +103,7 @@ function sortRecipes() {
     paginationID: "paginationHome",
     data: sorted,
     state: homeState,
-    img: "."
+    img: "."  
   });
 }
 
