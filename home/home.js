@@ -53,9 +53,10 @@ if (favoriteRecipe.length > 0) {
 // Tìm kiếm băng input
 document.getElementById("searchInput").addEventListener("input", function () {
   const keyword = this.value;
-  currentPage = 1; 
+  homeState.currentPage = 1; 
   filterRecipe(keyword);
 });
+
 function filterRecipe(keyword) {
   const filtered = favoriteRecipe.filter((recipe) => recipe.name.toLowerCase().includes(keyword.toLowerCase()));
   renderRecipes({

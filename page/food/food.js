@@ -13,7 +13,7 @@ function renderFood(data = Food) {
   pageItems.forEach((f, index) => {
     const actualIndex = Food.findIndex((item) => item.id === f.id);
     const row = `
-      <div class="border border-1 p-2 d-flex justify-content-between mb-3" onclick="editFoodItem(${actualIndex})">
+      <div class=" rounded-3 p-2 d-flex justify-content-between mb-3" style="background-color:rgb(142, 141, 139);" onclick="editFoodItem(${actualIndex})">
         <div class="d-flex flex-column">
           <h5>${f.name}</h5>
           <span>${f.source || "McCance and Widdowson's"}</span>

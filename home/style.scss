@@ -1,5 +1,5 @@
 body {
-  background-color: #f4f6f9;
+  background-color: #000000a0;
   overflow-x: hidden;
 }
 
@@ -20,7 +20,7 @@ body {
     min-width: 250px;
     max-width: 250px;
     height: 100vh;
-    background-color: #2b3c4e;
+    background-color: #11161c;
     color: white;
     position: fixed;
     transition: all 0.3s;
@@ -29,7 +29,7 @@ body {
       padding: 20px;
     }
     .nav-link {
-      color: #ccc;
+      color: #fcf3d9;
       padding: 10px 20px;
       display: flex;
       align-items: center;
@@ -39,12 +39,12 @@ body {
       }
     }
     .nav-link.active {
-      background-color: #1abc9c;
-      color: white;
+      background-color: #fcf3d9;
+      color: black;
     }
     .nav-link:hover {
-      background-color: #1abc9c;
-      color: white;
+      background-color: #fcf3d9;
+      color: black;
     }
   }
   .collapsed {
@@ -65,15 +65,68 @@ body {
     min-height: 100vh;
     transition: all 0.3s;
     margin-left: 250px;
-    .image-bg-picture{
-
-      .menu-nav {
-        padding: 30px;
-        height: 50px;
-        background-color: #1d4e1a;
+    .image-bg-picture {
+      display: flex;
+      justify-content: center;
+      padding-top: 20px;
+      img {
+        width: 200px;
       }
     }
-  } 
+    .menu-nav {
+      padding: 30px;
+      height: 50px;
+      background-color: rgba(19, 18, 18, 0.568);
+      img {
+        width: 200px;
+      }
+      #sidebarToggleText {
+        a {
+          text-decoration: none;
+          color: #fcf3d9;
+          font-weight: 600;
+          font-size: 14px;
+        }
+        .rounded-pill {
+          background-color: #2d2f2d;
+          padding: 5px 10px;
+        }
+        .rounded-pill:hover {
+          background-color: #fcf3d9;
+          color: #4e524e;
+        }
+      }
+    }
+  }
+  .card-container {
+    margin: 30px 20px;
+    background-color: rgba(47, 45, 45, 0.674);
+    border-radius: 8px;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    color: #000000;
+    .col-md-4 {
+      input {
+        background-color: rgb(75, 74, 74);
+        color: #fcf3d9;
+      }
+      input::placeholder {
+        color: #fcf3d9; /* hoặc dùng mã màu như #999999 */
+      }
+      select:focus,
+      input:focus {
+        outline: none;
+        box-shadow: none;
+      }
+      select {
+        background-color: rgb(75, 74, 74);
+        color: #fcf3d9;
+        option:checked {
+          background-color: #fcf3d9;
+          color: #000000;
+        }
+      }
+    }
+  }
 }
 
 #content.expanded {
@@ -91,7 +144,10 @@ body {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transition: all 0.3s ease;
-  background-color:#fcf3d9 ;
+  background-color: #fcf3d9;
+  i {
+    color: #3f423f;
+  }
 }
 
 .menu-toggle {
@@ -99,24 +155,209 @@ body {
   padding: 5px 10px;
   width: 40px;
   text-align: center;
-  color: #1d4e1a;
+  color: #d8d8d8;
   cursor: pointer;
   border-radius: 4px;
 }
 
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500&display=swap");
+
 .title {
-  padding: 30px;
-  background-color: #1d4e1a;
-  color: #555;
-  padding-bottom: 100px;
+  padding: 70px 30px 30px;
+  background-color: #00000018; 
+  color: #fcf3d9;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+  transition: all 0.8s ease;
 }
 
-.card-container {
-  margin: 30px 20px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+.title h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 50px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  letter-spacing: 1px;
 }
+
+.title > div:first-child p {
+  font-size: 18px;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+  margin-bottom: 25px;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.align-items-end {
+  align-items: flex-end;
+}
+
+.ms-5 {
+  margin-left: 20px;
+}
+
+.box-information {
+  padding: 30px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  max-width: 400px;
+  transition: all 0.8s ease;
+  position: relative;
+  z-index: 2;
+}
+
+.box-information p:first-child {
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+  color: #f8e9b8;
+  transition: all 0.6s ease;
+  opacity: 1;
+}
+
+.box-information h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  line-height: 1.3;
+  transition: all 0.6s ease;
+  opacity: 1;
+}
+
+.box-information p:last-child {
+  font-size: 14px !important;
+  line-height: 1.6;
+  font-weight: 300;
+  transition: all 0.6s ease;
+  opacity: 1;
+}
+
+.slideshow-container {
+  position: relative;
+  width: 500px;
+  height: 300px;
+  margin-left: 20px;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.slideshow-image {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.slideshow-image.active {
+  opacity: 1;
+}
+
+/* Animation cho text */
+@keyframes textFadeIn {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.text-animated {
+  animation: textFadeIn 0.8s forwards;
+}
+
+/* Hiệu ứng hover cho các phần tử */
+.box-information:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.slideshow-container:hover {
+  transform: scale(1.03);
+  transition: transform 0.5s ease;
+}
+
+/* Nút điều hướng */
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.3);
+  color: white;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  font-size: 16px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s ease, background-color 0.3s ease;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.prev {
+  left: 10px;
+}
+
+.next {
+  right: 10px;
+}
+
+.slideshow-container:hover .nav-btn {
+  opacity: 1;
+}
+
+.nav-btn:hover {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+/* Biểu tượng khi slideshow tạm dừng */
+.paused-indicator {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: rgba(248, 233, 184, 0.7);
+  color: #1d4e1a;
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 500;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+}
+
+.paused-indicator.active {
+  opacity: 1;
+}
+
+//ảnh nền
+
+#animation{
+  // background-image: url("../img/67bc4717833ea4680fcafc3b_img_vgQO.webp"); /* ảnh đầu */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: auto;
+  transition: background-image 1s ease-in-out; /* hiệu ứng mượt */
+}
+
+.hidden {
+  display: none !important;
+}
+
+//phan trang
 
 .pagination {
   margin-top: 20px;
@@ -128,14 +369,14 @@ body {
   margin: 0 4px;
   padding: 2px 10px;
   border-radius: 5px;
-  border: 1px solid #1ab394;
-  color: #1ab394;
+  border: 1px solid #000000;
+  color: #000000;
   background-color: white;
-  cursor: pointer;
+  cursor: poter;
 }
 
 .pagination button.active {
-  background-color: #1ab394;
+  background-color: #000000;
   color: white;
 }
 
@@ -181,19 +422,7 @@ input.form-control::placeholder {
   height: 12px;
 }
 
-.plus-button {
-  display: none;
-  background-color: #018337;
-  color: white;
-  padding: 12px;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
 
-.nutrition-row.active .plus-button {
-  display: flex;
-}
 
 #box-recipe {
   display: block;
@@ -345,7 +574,7 @@ input.form-control::placeholder {
 }
 .plus-button {
   display: none;
-  background-color: #018337;
+  background-color: black;
   color: white;
   padding: 12px;
   align-items: center;
@@ -449,4 +678,122 @@ input::placeholder {
 .page-link {
   background-color: #ffffff;
   color: black;
+}
+
+//thẻ
+.recipe-card {
+  height: 250px; /* Đã điều chỉnh từ 300px xuống 200px */
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.5s ease;
+  background-color: #000;
+}
+
+.recipe-image {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  transition: all 0.5s ease;
+}
+
+.recipe-content {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 20px;
+  left: -50%;
+  transition: all 0.5s ease;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #fd7e14 rgba(0, 0, 0, 0.2);
+}
+
+.recipe-card:hover .recipe-image {
+  width: 50%;
+  right: 0;
+  left: auto;
+}
+
+.recipe-card:hover .recipe-content {
+  left: 0;
+}
+
+.subtitle {
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  margin-bottom: 8px;
+  color: #ffc107;
+}
+
+.recipe-title {
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.author-text {
+  font-style: italic;
+  margin: 0 0 10px 0;
+  font-size: 0.9rem;
+  color: #e0e0e0;
+}
+
+.category-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+}
+
+.nutrition-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: auto;
+  font-size: 0.75rem;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.nutrition-item {
+  white-space: nowrap;
+  display: inline-block; /* Thêm thuộc tính này để đảm bảo các item hiển thị đúng */
+}
+
+.likes-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fd7e14;
+  border: 1px solid #fd7e14;
+  padding: 4px 10px;
+  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.8rem;
+  z-index: 10;
+}
+
+/* Thêm CSS cho thanh trượt */
+.recipe-content::-webkit-scrollbar {
+  width: 5px;
+}
+
+.recipe-content::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.recipe-content::-webkit-scrollbar-thumb {
+  background-color: #fd7e14;
+  border-radius: 10px;
 }

@@ -16,7 +16,7 @@
           <img src="../../img/bd9a9a7d62b2b3b87b6c262d3ea21469fddf65f8 (1).png" class="img-fluid" alt="Logo" />
         </div>
 
-        <div class="d-flex flex-column" style="height: 90%;">
+        <div class="d-flex flex-column" style="height: 90%">
           <div class="flex-grow-1">
             <ul class="nav flex-column">
               <li class="nav-item">
@@ -41,7 +41,7 @@
           </div>
 
           <div class="p-3">
-            <a class="btn btn-success w-100" href="#" onclick="logout()">
+            <a class="btn btn-success w-100" style="background-color: #fcf3d9; color: black" onclick="logout()">
               <i class="fas fa-sign-out-alt"></i>
               <span class="btn-text">Sign out</span>
             </a>
@@ -50,22 +50,41 @@
       </nav>
 
       <!-- Page Content -->
-      <div id="content" >
-        <div class="menu border-bottom border-1 d-flex justify-content-between align-items-center">
-          <div class="menu-toggle" onclick="toggleSidebar()">
-            <i class="fa-solid fa-bars"></i>
+      <div id="content">
+        <div class="menu-nav d-flex justify-content-between align-items-center nav-food" >
+          <div onclick="toggleSidebar()">
+            <div class="menu-toggle">
+              <i class="fa-solid fa-bars"></i>
+            </div>
+            <img src="../../img/bd9a9a7d62b2b3b87b6c262d3ea21469fddf65f8 (1).png" id="btn-logo" class="d-none" />
           </div>
           <div id="sidebarToggleText" class="d-none">
             <div class="d-flex align-items-center">
-              <a class="me-3 nav-icon" href="../../index.html" title="Homepage">
-                <i class="fas fa-home fa-lg"></i>
+              <a class="me-3 nav-icon rounded-pill" href="../../index.html" title="Homepage">
+                <!-- <i class="fas fa-home fa-lg"></i> -->
+                Homepage
               </a>
-              <a class="me-3 nav-icon" href="# title="Foods">
-                <i class="fas fa-apple-alt fa-lg"></i>
+              <a class="me-3 nav-icon rounded-pill" href="#" title="Foods">
+                <!-- <i class="fas fa-apple-alt fa-lg"></i> -->
+                Foods
               </a>
-              <a class="me-3 nav-icon" href="./page/recipes/recipe.html" title="Recipes">
-                <i class="fas fa-book fa-lg"></i>
+              <a class="me-3 nav-icon rounded-pill" href="./page/recipes/recipe.html" title="Recipes">
+                <!-- <i class="fas fa-book fa-lg"></i> -->
+                Recipes
               </a>
+            </div>
+          </div>
+          <div class="d-none" id="tool">
+            <div class="d-flex gap-2">
+              <div class="rounded">
+                <i class="fas fa-bell"></i>
+              </div>
+              <div class="rounded">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <div class="rounded">
+                <i class="fas fa-user"></i>
+              </div>
             </div>
           </div>
         </div>
@@ -86,7 +105,7 @@
 
             <div class="col-md-4 mb-2">
               <div class="input-group">
-                <button class="btn btn-outline-secondary" id="btnSortNutrientFood">
+                <button class="btn" id="btnSortNutrientFood">
                   <i id="sortIcon" class="fas fa-sort-amount-up m-0"></i>
                 </button>
                 <select class="form-select" id="selectNutrientFood">

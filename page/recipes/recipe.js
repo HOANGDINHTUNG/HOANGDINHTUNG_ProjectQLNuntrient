@@ -44,20 +44,19 @@ renderRecipes({
   img: baseImagePath,
 });
 
+
 function renderRecipes({containerID, paginationID, data, state, img = baseImagePath}) {
   const start = (state.currentPage - 1) * state.rowsPerPage;
   const end = start + state.rowsPerPage;
   const recipeList = document.getElementById(containerID);
 
   recipeList.addEventListener("click", (e) => {
-    const card = e.target.closest(".card");
+    const card = e.target.closest(".recipe-card");
     if (card && card.dataset.id) {
       const id = card.dataset.id;
       const recipe = data.find((r) => r.id == id);
       document.getElementById("box-recipe").style.display = "none";
       document.getElementById("recipeDetail").style.display = "block";
-      // const detailContainer = document.getElementById("recipeDetail");
-      // detailContainer.dataset.imagePath = img;
       updateRecipeWithChart(recipe);
     }
   });
@@ -78,34 +77,30 @@ function renderRecipes({containerID, paginationID, data, state, img = baseImageP
 
     recipeList.innerHTML += `
       <div class="col">
-        <div class="card h-100 shadow-lg" data-id="${recipe.id}"
-          style="
-            background-image: url('${imagePath}');
-            color:white;
-            background-size: cover;
-            background-position: center;
-          ">
-          <div class="card-body">
-            <span class="badge text-bg-warning mb-2">
-              <i class="fas fa-users"></i> Community Recipes
-            </span>
-            <div class="d-flex justify-content-between align-items-center">
-              <h5 class="card-title">${recipe.name}</h5>
-              <div class="gap-2">
-                <div class="border border-1 rounded-2 align-items-center p-1 d-flex flex-nowrap" style="color:white" id="recipeList">
-                  <i class="far fa-heart me-2"></i> ${getRandomNumber()}
-                </div>
-              </div>
-            </div>
-            <p class="card-text">${recipe.author}</p>
-            <p class="card-category"><i class="fas fa-tag" style="color: orangered;"></i> ${categoryNames}</p>
+        <div class="recipe-card" data-id="${recipe.id}">
+          <div class="likes-badge">
+            <i class="far fa-heart me-1"></i> ${getRandomNumber()}
           </div>
-          <div class="card-footer border d-flex justify-content-between">
-            <small><strong>By</strong> 100g</small>
-            <small><strong>Energy</strong> ${nutrition.energy}kcal</small>
-            <small><strong>Fat</strong> ${nutrition.fat}g</small>
-            <small><strong>Carbohydrate</strong> ${nutrition.carbohydrate}g</small>
-            <small><strong>Protein</strong> ${nutrition.protein}g</small>
+          
+          <div class="recipe-image" style="background-image: url('${imagePath}');"></div>
+          
+          <div class="recipe-content">
+            <p class="subtitle">Community Recipes</p>
+            <h5 class="recipe-title">${recipe.name}</h5>
+            <p class="author-text">${recipe.author}</p>
+            
+            <div class="category-tag">
+              <i class="fas fa-tag" style="color: orangered;"></i>
+              <span>${categoryNames}</span>
+            </div>
+            
+            <div class="card-footer d-flex flex-column justify-content-between">
+              <small><strong>By</strong> 100g</small>
+              <small><strong>Energy</strong> ${nutrition.energy}kcal</small>
+              <small><strong>Fat</strong> ${nutrition.fat}g</small>
+              <small><strong>Carbohydrate</strong> ${nutrition.carbohydrate}g</small>
+              <small><strong>Protein</strong> ${nutrition.protein}g</small>
+            </div>
           </div>
         </div>
       </div>
@@ -124,6 +119,8 @@ function renderRecipes({containerID, paginationID, data, state, img = baseImageP
 
   updateFavoriteCount();
 }
+
+
 
 function renderPagination({paginationID, dataLength, state, onPageChange}) {
   const totalPages = Math.ceil(dataLength / state.rowsPerPage);
@@ -219,8 +216,8 @@ function showDetailRecipe(recipe) {
                       </div>
                     </div>
 
-                    <div class="card-category border border-1 p-1 rounded-3" style="width: 150px">
-                      <i class="fas fa-tag"></i>
+                    <div class="card-category border border-1 p-1 rounded-3" style="width: 150px;color:white">
+                      <i class="fas fa-tag" style="color: orangered;"></i>
                       ${categoryNames}
                     </div>
                   </div>
@@ -298,7 +295,7 @@ function showDetailRecipe(recipe) {
 
           <div
             class="box-content flex-column p-3 lh-2 rounded-2 mb-4"
-            style="background-color: #1ab394; gap: 5px; color: white">
+            style="background-color: #333433; gap: 5px; color: white">
             <span class="fs-5">Creation</span>
             <span style="font-size: 14px">Create the recipe and choose the ingredients</span>
           </div>
@@ -871,108 +868,53 @@ categorySelectMain.addEventListener("change", function () {
   });
 });
 
-const foodItems = [
-  {
-    name: "Keto 90 Second Bread",
-    source: "Community Recipes",
-    quantity: 1,
-    unit: "portion",
-    weight: 87,
-    weightUnit: "g",
-    energy: 301,
-    fat: 27,
-    carbs: 6,
-    protein: 11,
-  },
-  {
-    name: "Keto - Just Eggs",
-    source: "Community Recipes",
-    quantity: 1,
-    unit: "portion",
-    weight: 190,
-    weightUnit: "g",
-    energy: 469,
-    fat: 40,
-    carbs: 7,
-    protein: 23,
-  },
-  {
-    name: "Blueberry Lavender Breeze",
-    source: "Community Recipes",
-    quantity: 1,
-    unit: "portion",
-    weight: 113,
-    weightUnit: "g",
-    energy: 14,
-    fat: 0,
-    carbs: 3,
-    protein: 0,
-  },
-  {
-    name: "Jamaican Grapefruit",
-    source: "Community Recipes",
-    quantity: 1,
-    unit: "portion",
-    weight: 122,
-    weightUnit: "g",
-    energy: 45,
-    fat: 0,
-    carbs: 13,
-    protein: 1,
-  },
-  {
-    name: "Stewed Tomatoes",
-    source: "Community Recipes",
-    quantity: 100,
-    unit: "grams",
-    weight: 100,
-    weightUnit: "g",
-    energy: 8,
-    fat: 0,
-    carbs: 2,
-    protein: 0,
-  },
-];
+
+const rowsPerPage = 5;
+let currentPage = 1;
 
 // Function to render nutrition items
 function renderNutritionItems() {
+  const start = (currentPage - 1) * rowsPerPage;
+  const end = start + rowsPerPage;
   const container = document.getElementById("nutritionItems");
   container.innerHTML = "";
 
-  foodItems.forEach((item, index) => {
+  const pageItems = Food.slice(start, end);
+
+  pageItems.forEach((item, index) => {
     const row = document.createElement("div");
     row.className = "nutrition-row";
     row.setAttribute("data-index", index);
 
     row.innerHTML = `
           <div class="d-flex border border-top-0" style="padding: 20px; background-color: white">
-              <div class="d-flex flex-column" style="width: 230px">
-                  <span>${item.name}</span>
-                  <span style="font-size: 12px; opacity: 0.5">${item.source}</span>
-                  <div class="d-flex">
-                      <span
-                          class="border text-wrap align-items-center d-flex fw-light"
-                          style="background-color: #fafafb; font-size: 12px; width: 40px; padding-left: 10px">
-                          ${item.quantity}
-                      </span>
-                      <span class="border border-start-0" style="font-size: 12px; width: 150px; padding-left: 10px">${item.unit} (${item.weight} ${item.weightUnit})</span>
-                      <span
-                          class="border text-wrap align-items-center d-flex fw-light"
-                          style="background-color: #fafafb; font-size: 12px; width: 45px; padding-left: 10px">
-                          ${item.weight}${item.weightUnit}
-                      </span>
-                  </div>
+            <div class="d-flex flex-column" style="width: 200px">
+              <span>${item.name}</span>
+              <span style="font-size: 12px; opacity: 0.5">${item.source}</span>
+              <div class="d-flex">
+                <span
+                  class="border text-wrap align-items-center d-flex fw-light"
+                  style="background-color: #fafafb; font-size: 12px; width: 30px; padding-left: 10px">
+                  1
+                </span>
+                <span class="border border-start-0" style="font-size: 12px; width: 120px; padding-left: 10px">portion (${item.quantity} grams)</span>
+                <span
+                  class="border text-wrap align-items-center d-flex fw-light"
+                  style="background-color: #fafafb; font-size: 12px; width: 45px; padding-left: 10px">
+                  ${item.quantity}g
+                </span>
               </div>
-              <div style="padding: 15px 15px; font-size: 10px">${item.energy} kcal</div>
-              <div style="padding: 15px 15px; font-size: 10px">${item.fat}g</div>
-              <div style="padding: 15px 15px; font-size: 10px">${item.carbs}g</div>
-              <div style="padding: 15px 15px; font-size: 10px">${item.protein}g</div>
-          </div>
-          <div class="plus-button">
+              </div>
+                  <div style="padding: 15px 15px; font-size: 10px">${item.macronutrients.energy} kcal</div>
+                  <div style="padding: 15px 15px; font-size: 10px">${item.macronutrients.fat}g</div>
+                  <div style="padding: 15px 15px; font-size: 10px">${item.macronutrients.carbohydrate}g</div>
+                  <div style="padding: 15px 15px; font-size: 10px">${item.macronutrients.protein}g</div>
+              </div>
+            <div class="plus-button">
               <i class="fa-solid fa-plus" style="color: white"></i>
+            </div>
           </div>
       `;
-
     container.appendChild(row);
   });
 
@@ -983,11 +925,13 @@ function renderNutritionItems() {
       document.querySelectorAll(".nutrition-row").forEach((r) => {
         r.classList.remove("active");
       });
-
       // Add active class to clicked row
       this.classList.add("active");
     });
   });
+
+  // phân trang
+  renderPaginationNutri(Food)
 }
 
 // Initialize when DOM is loaded
@@ -1007,9 +951,78 @@ document.addEventListener("DOMContentLoaded", function () {
   // Search functionality
   document.querySelector('input[placeholder="Search food"]').addEventListener("input", function (e) {
     const searchTerm = e.target.value.toLowerCase();
-
-    // Simple filtering for demo purposes
-    // In a real application, you would implement more robust searching
     renderNutritionItems();
   });
 });
+
+function renderPaginationNutri(data) {
+  const totalPages = Math.ceil(data.length / rowsPerPage);
+  const pagination = document.getElementById("paginationNutri");
+  pagination.innerHTML = "";
+
+  // Nút về trang đầu ⏮ (ẩn nếu đang ở trang 1)
+  if (currentPage > 1) {
+    const firstBtn = document.createElement("button");
+    firstBtn.innerHTML = `<i class="fas fa-angle-double-left"></i>`;
+    firstBtn.addEventListener("click", () => changePageNutri(data, 1));
+    pagination.appendChild(firstBtn);
+
+    // Nút trước đó ◀
+    const prevBtn = document.createElement("button");
+    prevBtn.innerHTML = `<i class="fas fa-angle-left"></i>`;
+    prevBtn.addEventListener("click", () => changePageNutri(data, currentPage - 1));
+    pagination.appendChild(prevBtn);
+  }
+
+  // Các nút số trang
+  const maxVisiblePages = 5;
+  let startPage = Math.max(1, currentPage - 2);
+  let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+  if (endPage - startPage < maxVisiblePages - 1) {
+    startPage = Math.max(1, endPage - maxVisiblePages + 1);
+  }
+
+  // Hiển thị dấu ba chấm nếu có
+  if (startPage > 1) {
+    const dots = document.createElement("button");
+    dots.textContent = "...";
+    dots.classList.add("dots");
+    pagination.appendChild(dots);
+  }
+
+  for (let i = startPage; i <= endPage; i++) {
+    const pageBtn = document.createElement("button");
+    pageBtn.textContent = i;
+    if (i === currentPage) pageBtn.classList.add("active");
+    pageBtn.addEventListener("click", () => changePageNutri(data, i));
+    pagination.appendChild(pageBtn);
+  }
+
+  // Hiển thị dấu ba chấm nếu có
+  if (endPage < totalPages) {
+    const dots = document.createElement("button");
+    dots.textContent = "...";
+    dots.classList.add("dots");
+    pagination.appendChild(dots);
+  }
+
+  // Nút kế tiếp ▶ và đến cuối ⏭ (ẩn nếu đang ở trang cuối)
+  if (currentPage < totalPages) {
+    const nextBtn = document.createElement("button");
+    nextBtn.innerHTML = `<i class="fas fa-angle-right"></i>`;
+    nextBtn.addEventListener("click", () => changePageNutri(data, currentPage + 1));
+    pagination.appendChild(nextBtn);
+
+    const lastBtn = document.createElement("button");
+    lastBtn.innerHTML = `<i class="fas fa-angle-double-right"></i>`;
+    lastBtn.addEventListener("click", () => changePageNutri(data, totalPages));
+    pagination.appendChild(lastBtn);
+  }
+}
+
+function changePageNutri(data, page) {
+  const totalPages = Math.ceil(data.length / rowsPerPage);
+  if (page < 1 || page > totalPages) return;
+  currentPage = page;
+  renderNutritionItems(data);
+}

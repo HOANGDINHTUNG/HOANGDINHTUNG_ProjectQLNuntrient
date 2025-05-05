@@ -41,14 +41,17 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="./page/recipes/recipe.html">
-                  <i class="fas fa-book"></i>  
+                  <i class="fas fa-book"></i>
                   <span class="nav-text">Recipes</span>
                 </a>
               </li>
             </ul>
           </div>
           <div class="p-3">
-            <a class="btn btn-success w-100" onclick="logout()">
+            <a
+              class="btn btn-success w-100 border-0"
+              style="background-color: #fcf3d9; color: black"
+              onclick="logout()">
               <i class="fas fa-sign-out-alt"></i>
               <span class="btn-text">Sign out</span>
             </a>
@@ -58,45 +61,52 @@
 
       <!-- Page Content -->
       <div id="content">
-        <div class="image-bg-picture">
-          <div class="menu-nav d-flex justify-content-between align-items-center">
-            <div class="menu-toggle" onclick="toggleSidebar()">
-              <i class="fa-solid fa-bars"></i>
+        <div class="menu-nav d-flex justify-content-between align-items-center fixed-top nav-home"  style="margin-left: 250px;">
+          <div onclick="toggleSidebar()">
+            <div class="menu-toggle">
+              <i class="fa-solid fa-bars" style="color: black;"></i>
             </div>
-            <div id="sidebarToggleText" class="d-none">
-              <div class="d-flex align-items-center">
-                <a class="me-3 nav-icon" href="#" title="Homepage">
-                  <!-- <i class="fas fa-home fa-lg"></i> -->
-                  Homepage
-                </a>
-                <a class="me-3 nav-icon" href="./page/food/food.html" title="Foods">
-                  <!-- <i class="fas fa-apple-alt fa-lg"></i> -->
-                  Foods
-                </a>
-                <a class="me-3 nav-icon" href="./page/recipes/recipe.html" title="Recipes">
-                  <!-- <i class="fas fa-book fa-lg"></i> -->
-                  Recipes
-                </a>
-              </div>
-            </div>
-            <div class="d-none" id="tool">
-              <div class="d-flex gap-2">
-                <div class="rounded" data-tooltip="Notifications">
-                  <i class="fas fa-bell"></i>
-                </div>
-                <div class="rounded" data-tooltip="Messages">
-                  <i class="fas fa-envelope"></i>
-                </div>
-                <div class="rounded" data-tooltip="User Profile">
-                  <i class="fas fa-user"></i>
-                </div>
-              </div>
-            </div> 
+            <img src="./img/bd9a9a7d62b2b3b87b6c262d3ea21469fddf65f8 (1).png" id="btn-logo" class="d-none" />
           </div>
-  
-          <div class="title">
+          <div id="sidebarToggleText" class="d-none">
+            <div class="d-flex align-items-center">
+              <a class="me-3 nav-icon rounded-pill" href="#" title="Homepage">Homepage</a>
+              <a class="me-3 nav-icon rounded-pill" href="./page/food/food.html" title="Foods">Foods</a>
+              <a class="nav-icon rounded-pill" href="./page/recipes/recipe.html" title="Recipes">Recipes</a>
+            </div>
+          </div>
+          <div class="d-none" id="tool">
+            <div class="d-flex gap-2">
+              <div class="rounded">
+                <i class="fas fa-bell"></i>
+              </div>
+              <div class="rounded">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <div class="rounded">
+                <i class="fas fa-user"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="title d-flex flex-column" id="animation">
+          <div>
             <h2>Recipes</h2>
             <p>Create, check and update recipes</p>
+          </div>
+          <div class="d-flex justify-content-end align-items-end ms-5">
+            <div class="box-information">
+              <p id="recipeType" class="text-animated">Special Recipes</p>
+              <h3 id="recipeName" class="text-animated">Pan-Seared Salmon with Roasted Vegetables</h3>
+              <p id="recipeDescription" class="text-animated">
+                The vibrant colors and rich flavors make it a healthy yet indulgent meal, perfect for any gourmet
+                occasion.
+              </p>
+            </div>
+            <div class="slideshow-container" >
+              <!-- Images will be inserted here by JavaScript -->
+              <div class="paused-indicator">PAUSED</div>
+            </div>
           </div>
         </div>
 
@@ -111,8 +121,8 @@
 
             <div class="col-md-4 mb-2">
               <div class="input-group">
-                <button class="btn btn-outline-secondary" id="sortButton">
-                  <i id="sortIcon" class="fas fa-sort-amount-up m-0"></i>
+                <button class="btn" id="sortButton">
+                  <i id="sortIcon" class="fas fa-sort-amount-up m-0" style="color: black;"></i>
                 </button>
                 <select class="form-select" id="sortSelect">
                   <option selected disabled>Sort by nutrient</option>
