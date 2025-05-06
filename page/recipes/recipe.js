@@ -1,5 +1,5 @@
 const baseImagePath = "../..";
-
+//
 document.addEventListener("DOMContentLoaded", () => {
   const inputs = document.querySelectorAll(".nutrition-row input");
 
@@ -44,6 +44,7 @@ renderRecipes({
   img: baseImagePath,
 });
 
+Recipe = loadFromLocalStorage("Recipe", Recipe) || [];
 
 function renderRecipes({containerID, paginationID, data, state, img = baseImagePath}) {
   const start = (state.currentPage - 1) * state.rowsPerPage;
@@ -116,11 +117,8 @@ function renderRecipes({containerID, paginationID, data, state, img = baseImageP
       renderRecipes({containerID, paginationID, data, state, img});
     },
   });
-
   updateFavoriteCount();
 }
-
-
 
 function renderPagination({paginationID, dataLength, state, onPageChange}) {
   const totalPages = Math.ceil(dataLength / state.rowsPerPage);
@@ -530,13 +528,26 @@ function showDetailRecipe(recipe) {
   markFavoriteHearts();
 }
 
-function pieChart(food) {
-  const ctx = document.getElementById("myPieChart").getContext("2d");
+function pieChart(food, id) {
+  // Clear any existing chart first
+  Chart.getChart(id)?.destroy();
 
-  let total = food.macronutrients.fat + food.macronutrients.carbohydrate + food.macronutrients.protein;
-  let fat = (food.macronutrients.fat * 100) / total;
-  let carbohydrate = (food.macronutrients.carbohydrate * 100) / total;
-  let protein = (food.macronutrients.protein * 100) / total;
+  const ctx = document.getElementById(id);
+  if (!ctx) {
+    console.error(`Canvas with ID '${id}' not found`);
+    return;
+  }
+
+  const total = food.macronutrients.fat + food.macronutrients.carbohydrate + food.macronutrients.protein;
+  if (total <= 0) {
+    console.error("Total macronutrients is zero or negative");
+    return;
+  }
+
+  const fat = (food.macronutrients.fat * 100) / total;
+  const carbohydrate = (food.macronutrients.carbohydrate * 100) / total;
+  const protein = (food.macronutrients.protein * 100) / total;
+
   const data = {
     labels: ["Fat", "Carbohydrate", "Protein"],
     datasets: [
@@ -575,9 +586,11 @@ function pieChart(food) {
         },
       },
     },
-    plugins: [ChartDataLabels], // <<< thêm dòng này
+    plugins: [ChartDataLabels],
   };
+
   new Chart(ctx, config);
+  console.log("Chart created for food:", food.name);
 }
 
 function updateRecipeWithChart(recipe) {
@@ -588,7 +601,7 @@ function updateRecipeWithChart(recipe) {
   const nutrition = recipe.ingredients[0];
 
   // Vẽ biểu đồ tròn
-  pieChart(nutrition);
+  pieChart(nutrition, "myPieChart");
 }
 
 function goBack() {
@@ -666,13 +679,16 @@ function initCombo() {
   const comboList = document.getElementById("comboList");
   if (!comboInput || !comboList) return;
   const options = [
-    "Desserts",
-    "Breakfast and snacks",
-    "Appetizers and side dishes",
-    "Soups",
-    "Meat dishes",
-    "Fish dishes",
-    "Vegetarian dishes",
+    "vegeterian",
+    "appetizer",
+    "vegan",
+    "main course",
+    "dessert",
+    "low-carb",
+    "gluten-free",
+    "breakfast",
+    "salad",
+    "soup",
   ];
   function renderDropdown(items) {
     comboList.innerHTML = items.map((o) => `<li class="list-group-item list-group-item-action">${o}</li>`).join("");
@@ -695,40 +711,6 @@ function initCombo() {
     }
   });
 }
-
-// Toggle giữa label và input
-selectInput.addEventListener("dblclick", () => {
-  if (!isInputVisible) {
-    selectInput.innerHTML = inputHTML;
-    initCombo(); // 👉 bind lại comboInput/comboList
-  } else {
-    selectInput.innerHTML = labelHTML;
-  }
-  isInputVisible = !isInputVisible;
-});
-
-let upLoadUrl = document.getElementById("upLoadUrl");
-const imageHTML = `
-  <div class="border rounded-2" style="padding: 4px">
-    <i class="fas fa-pen-to-square" style="color: rgb(255, 136, 0); margin-right: 5px"></i>
-    <span style="font-size: 12px">Upload image</span>
-  </div>
-`;
-const inputUrl = `
-  <input
-    type="text"
-    placeholder="Copy url của ảnh vào + Enter"
-    style="font-size: 12px; width: 100%" />
-`;
-let flap = false;
-upLoadUrl.addEventListener("dblclick", () => {
-  if (!flap) {
-    upLoadUrl.innerHTML = inputUrl;
-  } else {
-    upLoadUrl.innerHTML = imageHTML;
-  }
-  flap = !flap;
-});
 
 //Thêm vào danh sách yêu thích
 function addFavoriteFoodToHomepage(idFood) {
@@ -868,11 +850,9 @@ categorySelectMain.addEventListener("change", function () {
   });
 });
 
-
 const rowsPerPage = 5;
 let currentPage = 1;
 
-// Function to render nutrition items
 function renderNutritionItems() {
   const start = (currentPage - 1) * rowsPerPage;
   const end = start + rowsPerPage;
@@ -884,11 +864,13 @@ function renderNutritionItems() {
   pageItems.forEach((item, index) => {
     const row = document.createElement("div");
     row.className = "nutrition-row";
-    row.setAttribute("data-index", index);
+    // Store the actual index from the Food array
+    const realIndex = start + index;
+    row.setAttribute("data-index", realIndex);
 
     row.innerHTML = `
           <div class="d-flex border border-top-0" style="padding: 20px; background-color: white">
-            <div class="d-flex flex-column" style="width: 200px">
+            <div class="d-flex flex-column" style="width: 230px">
               <span>${item.name}</span>
               <span style="font-size: 12px; opacity: 0.5">${item.source}</span>
               <div class="d-flex">
@@ -910,7 +892,7 @@ function renderNutritionItems() {
                   <div style="padding: 15px 15px; font-size: 10px">${item.macronutrients.carbohydrate}g</div>
                   <div style="padding: 15px 15px; font-size: 10px">${item.macronutrients.protein}g</div>
               </div>
-            <div class="plus-button">
+            <div class="plus-button add-to-queue" data-index="${realIndex}">
               <i class="fa-solid fa-plus" style="color: white"></i>
             </div>
           </div>
@@ -920,19 +902,258 @@ function renderNutritionItems() {
 
   // Add click handlers to rows
   document.querySelectorAll(".nutrition-row").forEach((row) => {
-    row.addEventListener("click", function () {
+    row.addEventListener("click", function (e) {
+      // Don't trigger row selection when clicking the plus button
+      if (e.target.closest(".add-to-queue")) {
+        return;
+      }
+
       // Remove active class from all rows
       document.querySelectorAll(".nutrition-row").forEach((r) => {
         r.classList.remove("active");
       });
       // Add active class to clicked row
       this.classList.add("active");
+
+      const index = parseInt(this.getAttribute("data-index"));
+      const selectedFood = Food[index];
+
+      // Display the chart immediately
+      pieChart(selectedFood, "nutritionPieChart");
+      informContainerChart(selectedFood);
+      renderMicronutrientsFromData(selectedFood, "micronutrientsContainer");
+
+    });
+  });
+
+  // Add click handlers for plus buttons
+  document.querySelectorAll(".add-to-queue").forEach((button) => {
+    button.addEventListener("click", function (e) {
+      e.stopPropagation(); // Prevent row click event from firing
+      const index = parseInt(this.getAttribute("data-index"));
+      const selectedFood = Food[index];
+      addIngredientChart(selectedFood);
     });
   });
 
   // phân trang
-  renderPaginationNutri(Food)
+  renderPaginationNutri(Food);
 }
+
+function addIngredientChart(food) {
+  const addIngredients = document.getElementById("addIngredients");
+
+  // Créer un ID unique pour cet élément d'ingrédient
+  const ingredientId = `ingredient-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+
+  addIngredients.innerHTML += `
+    <div id="${ingredientId}" class="ingredient-item d-flex mb-3">
+      <div class="d-flex flex-column w-100">
+        <span class="border border-end-0 border-bottom-0" style="padding: 10px; font-size: 12px">
+          ${food.name}
+        </span>
+        <div class="d-flex">
+          <span
+            class="border border-end-0 text-wrap align-items-center d-flex fs-6 fw-light"
+            style="background-color: #fafafb; padding: 10px">
+            <i class="fa-solid fa-plus" style="color: #023f10"></i>
+          </span>
+          <input
+            type="text"
+            class="border border-start-0 w-100 border-end-0"
+            placeholder="Add new food equivalent" />
+        </div>
+      </div>
+      <span
+        class="delete-ingredient border text-wrap align-items-center d-flex fs-6 fw-light cursor-pointer"
+        style="background-color: #fafafb; padding: 10px; cursor: pointer;"
+        data-ingredient-id="${ingredientId}">
+        <i class="fa-solid fa-trash"></i>
+      </span>
+    </div>
+  `;
+
+  // Ajouter l'écouteur d'événement après avoir ajouté l'élément au DOM
+  addIngredients.addEventListener("click", function (e) {
+    if (e.target.closest(".delete-ingredient")) {
+      const button = e.target.closest(".delete-ingredient");
+      const ingredientId = button.getAttribute("data-ingredient-id");
+      const ingredientElement = document.getElementById(ingredientId);
+      if (ingredientElement) {
+        ingredientElement.style.transition = "opacity 0.3s";
+        ingredientElement.style.opacity = "0";
+        setTimeout(() => {
+          ingredientElement.remove();
+        }, 300);
+      }
+    }
+  });  
+}
+
+function informContainerChart(food) {
+  const containerInformFood = document.getElementById("containerInformFood");
+  containerInformFood.innerHTML = `
+    <div class="border rounded-2 d-flex flex-column mb-4" style="background-color: white; padding: 20px">
+      <div class="d-flex lh-1 flex-column mb-2">
+        <span class="fs-4">Global analysis</span>
+        <div class="d-flex align-items-center justify-content-between">
+          <span style="opacity: 0.5; font-size: 14px">Energy, macronutrients and fiber distribution</span>
+          <div class="bg-success p-2 rounded-circle">
+            <i class="fa-solid fa-comment" style="color: white"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-between mt-2 mb-1 border-bottom">
+        <span>Energy</span>
+        <span>${food.macronutrients.energy} kcal</span>
+      </div>
+
+      <div class="d-flex justify-content-around mt-4 flex-wrap gap-3">
+        <div class="d-flex flex-column align-items-center">
+          <div class="p-2 border-5 rounded-circle m-0" style="border: solid #db4965">${food.macronutrients.fat} g</div>
+          <span>Fat</span>
+        </div>
+        <div class="d-flex flex-column align-items-center">
+          <div class="p-2 border-5 rounded-circle m-0" style="border: solid #f4a261">${
+            food.macronutrients.carbohydrate
+          } g</div>
+          <span>Carbohydrate</span>
+        </div>
+        <div class="d-flex flex-column align-items-center">
+          <div class="p-2 border-5 rounded-circle m-0" style="border: solid #2a9d8f">${
+            food.macronutrients.protein
+          } g</div>
+          <span>Protein</span>
+        </div>
+        <div class="d-flex flex-column align-items-center">
+          <div class="p-2 border-5 rounded-circle m-0" style="border: solid #6a7d93">${
+            (100 - food.macronutrients.fat - food.macronutrients.carbohydrate - food.macronutrients.protein).toFixed(2)
+          } g</div>
+          <span>Fiber</span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function addChartContainer() {
+  // Check if container already exists
+  const container = document.getElementById("containerChart");
+  if (!container) {
+    console.error("Container with ID 'containerChart' not found");
+    return;
+  }
+
+  container.innerHTML = `
+      <div class="border rounded-2 d-flex flex-column mb-4" style="background-color: white; padding: 20px">
+        <div class="d-flex lh-1 flex-column mb-4">
+          <span class="fs-4">Macronutrients</span>
+          <span style="opacity: 0.5; font-size: 14px">Macronutrients distribution of the recipe</span>
+        </div>
+        <div>
+          <canvas id="nutritionPieChart" width="270px" height="270px"></canvas>
+
+          <div id="legend" class="ms-5">
+            <div class="legend-item">
+              <div class="box" style="background-color: #db4965"></div>
+              Fat
+            </div>
+            <div class="legend-item">
+              <div class="box" style="background-color: #f4a261"></div>
+              Carbohydrate
+            </div>
+            <div class="legend-item">
+              <div class="box" style="background-color: #2a9d8f"></div>
+              Protein
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+}
+
+function renderMicronutrientsFromData(data, containerId) {
+  const container = document.getElementById(containerId);
+  if (!container || !data || !data.micronutrients) return;
+
+  const unitMap = {
+    cholesterol: "mg",
+    fiber: "g",
+    sodium: "mg",
+    water: "g",
+    vitaminA: "µg",
+    vitaminB6: "mg",
+    vitaminB12: "µg",
+    vitaminC: "mg",
+    vitaminD: "µg",
+    vitaminE: "mg",
+    vitaminK: "µg",
+    starch: "g",
+    lactose: "g",
+    alcohol: "g",
+    caffeine: "mg",
+    sugars: "g",
+    calcium: "mg",
+    iron: "mg",
+    magnesium: "mg",
+    phosphorus: "mg",
+    potassium: "mg",
+    zinc: "mg",
+    copper: "mg",
+    fluoride: "µg",
+    manganese: "mg",
+    selenium: "µg",
+    thiamin: "mg",
+    riboflavin: "mg",
+    niacin: "mg",
+    pantothenicAcid: "mg",
+    folateTotal: "µg",
+    folicAcid: "µg",
+    fattyAcidsTrans: "g",
+    fattyAcidsSaturated: "g",
+    fattyAcidsMonounsaturated: "g",
+    fattyAcidsPolyunsaturated: "g",
+    chloride: "mg"
+  };
+
+  function camelToLabel(str) {
+    return str
+      .replace(/([A-Z])/g, ' $1')
+      .replace(/Acid/g, 'Acid')
+      .replace(/Total/g, 'Total')
+      .replace(/^./, char => char.toUpperCase())
+      .trim();
+  }
+
+  container.innerHTML = `
+    <div class="border rounded-2 d-flex flex-column mb-4" style="background-color: white; padding: 20px">
+      <div class="d-flex lh-1 flex-column mb-4">
+        <span class="fs-4">Micronutrients</span>
+        <span style="opacity: 0.5; font-size: 14px">Micronutrients distribution of the recipe</span>
+      </div>
+      <div class="d-flex flex-column" id="${containerId}-list"></div>
+    </div>
+  `;
+
+  const listContainer = document.getElementById(`${containerId}-list`);
+  const entries = Object.entries(data.micronutrients).filter(([, value]) => value != null);
+
+  entries.forEach(([key, value], index) => {
+    const isAlt = index % 2 !== 0;
+    const label = camelToLabel(key);
+    const unit = unitMap[key] || "";
+
+    const row = document.createElement("div");
+    row.className = "d-flex justify-content-between p-1";
+    if (isAlt) row.style.backgroundColor = "#fafafb";
+    row.innerHTML = `<span>${label}</span><span>${value} ${unit}</span>`;
+    listContainer.appendChild(row);
+  });
+}
+
+
+addChartContainer();
 
 // Initialize when DOM is loaded
 document.addEventListener("DOMContentLoaded", function () {
@@ -1026,3 +1247,111 @@ function changePageNutri(data, page) {
   currentPage = page;
   renderNutritionItems(data);
 }
+
+// Main form submission handler
+function addNewRecipes(event) {
+  event.preventDefault();
+
+  // Xóa mọi lỗi xác thực hiện có
+  clearValidationErrors();
+  const formRecipe = document.getElementById("formRecipe");
+  // lấy dữ liệu từ ô input
+  const recipeData = getFormData(formRecipe);
+
+  // lấy category
+  const comboInput = document.getElementById("comboInput");
+  if (comboInput && comboInput.value) {
+    recipeData.category = comboInput.value;
+  }
+
+  //
+  const coverInput = document.getElementById("coverInput");
+  if (coverInput.files.length > 0) {
+    // Lưu trữ tên tệp
+    recipeData.coverSrc = coverInput.files[0].name;
+  }
+
+  // Validate dữ liệu
+  const validationResult = validateRecipeForm(recipeData);
+
+  if (!validationResult.isValid) {
+    // Hiển thị lỗi xác thực
+    Object.keys(validationResult.errors).forEach((fieldName) => {
+      showValidationError(fieldName, validationResult.errors[fieldName]);
+    });
+
+    // du chuyển đến lỗi đầu tiên
+    const firstErrorField = document.querySelector(".is-invalid");
+    if (firstErrorField) {
+      firstErrorField.focus();
+      firstErrorField.scrollIntoView({behavior: "smooth", block: "center"});
+    }
+
+    return;
+  }
+
+  // lưu vào mảng
+  Recipe.push({id: Recipe.length + 1, ...recipeData});
+
+  // lưu localStorage
+  saveDataToLocal("Recipe", Recipe);
+
+  // Reset the form
+  form.reset();
+
+  // reset lại ảnh
+  const previewImage = document.getElementById("previewImage");
+  if (previewImage) {
+    previewImage.src = "";
+  }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  //
+  addValidationStyles();
+
+  //
+  setupValidationListeners();
+
+  // Setup form submission (if not already in HTML)
+  const form = document.querySelector("form");
+  if (form && !form.getAttribute("onsubmit")) {
+    form.addEventListener("submit", addNewRecipes);
+  }
+
+  // Initialize the combo input
+  const selectInput = document.getElementById("selectInput");
+  if (selectInput) {
+    // Your existing code for select input
+    selectInput.addEventListener("dblclick", () => {
+      if (!isInputVisible) {
+        selectInput.innerHTML = inputHTML;
+        initCombo(); // Rebind comboInput/comboList
+      } else {
+        selectInput.innerHTML = labelHTML;
+      }
+      isInputVisible = !isInputVisible;
+    });
+  }
+
+  // Initialize image upload
+  const uploadBtn = document.getElementById("uploadBtn");
+  const coverInput = document.getElementById("coverInput");
+  if (uploadBtn && coverInput) {
+    uploadBtn.addEventListener("click", function () {
+      coverInput.click();
+    });
+
+    coverInput.addEventListener("change", function () {
+      const file = this.files[0];
+      if (file) {
+        const imgURL = URL.createObjectURL(file);
+        const previewImage = document.getElementById("previewImage");
+        if (previewImage) {
+          previewImage.src = imgURL;
+        }
+        console.log("File name:", file.name);
+      }
+    });
+  }
+});

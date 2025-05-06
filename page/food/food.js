@@ -133,50 +133,47 @@ function populateForm(form, data, parentKey = "") {
 function addNewFood(e) {
   e.preventDefault();
 
-  let formFoodEl = document.getElementById("foodForm");
+  const formFoodEl = e.target;
 
-  if (validateForm(formFoodEl)) {
-    let formData = getFormData(formFoodEl);
+  if (!validateForm(formFoodEl)) return;
 
-    if (editingIndex !== null && editingIndex >= 0 && editingIndex < Food.length) {
-      const originalId = Food[editingIndex].id;
-      const updatedFood = {
-        id: originalId,
-        name: formData.name,
-        source: formData.source,
-        category: formData.category,
-        quanlity: formData.quanlity,
-        macronutrients: formData.macronutrients || {},
-        micronutrients: formData.micronutrients || {},
-      };
-      Food[editingIndex] = updatedFood;
-      alert("Thực phẩm đã cập nhật thành công");
-    } else {
-      const newId = Food.length > 0 ? Math.max(...Food.map((item) => item.id || 0)) + 1 : 1;
-      const newFood = {
-        id: newId,
-        name: formData.name,
-        source: formData.source,
-        category: formData.category,
-        quanlity: formData.quanlity,
-        macronutrients: formData.macronutrients || {},
-        micronutrients: formData.micronutrients || {},
-      };
+  const formData = getFormData(formFoodEl);
 
-      Food.push(newFood);
-      alert("Thực phẩm đã thêm thành công");
-    }
-
-    // Save to localStorage and update UI
-    saveDataToLocal("Food", Food);
-    renderFood();
-
-    // Reset form and state
-    formFoodEl.reset();
-    editingIndex = null;
-    overlay.style.display = "none";
+  if (editingIndex !== null && editingIndex >= 0 && editingIndex < Food.length) {
+    const originalId = Food[editingIndex].id;
+    const updatedFood = {
+      id: originalId,
+      name: formData.name,
+      source: formData.source,
+      category: formData.category,
+      quanlity: formData.quanlity,
+      macronutrients: formData.macronutrients || {},
+      micronutrients: formData.micronutrients || {},
+    };
+    Food[editingIndex] = updatedFood;
+    alert("Thực phẩm đã cập nhật thành công");
+  } else {
+    const newId = Food.length > 0 ? Math.max(...Food.map((item) => item.id || 0)) + 1 : 1;
+    const newFood = {
+      id: newId,
+      name: formData.name,
+      source: formData.source,
+      category: formData.category,
+      quanlity: formData.quanlity,
+      macronutrients: formData.macronutrients || {},
+      micronutrients: formData.micronutrients || {},
+    };
+    Food.push(newFood);
+    alert("Thực phẩm đã thêm thành công");
   }
+
+  saveDataToLocal("Food", Food);
+  renderFood();
+  formFoodEl.reset();
+  editingIndex = null;
+  overlay.style.display = "none";
 }
+
 
 let editingIndex = null;
 

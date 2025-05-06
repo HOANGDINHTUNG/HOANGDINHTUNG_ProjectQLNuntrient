@@ -56,7 +56,7 @@
         <div class="menu-nav d-flex justify-content-between align-items-center nav-recipe">
           <div onclick="toggleSidebar()">
             <div class="menu-toggle">
-              <i class="fa-solid fa-bars"></i>
+              <i class="fa-solid fa-bars" style="color: black"></i>
             </div>
             <img src="../../img/bd9a9a7d62b2b3b87b6c262d3ea21469fddf65f8 (1).png" id="btn-logo" class="d-none" />
           </div>
@@ -112,7 +112,7 @@
             <div class="col-md-4 mb-2">
               <div class="input-group">
                 <button class="btn" id="sortButtonMain">
-                  <i id="sortIconMain" class="fas fa-sort-amount-up m-0" style="color: #000000;"></i>
+                  <i id="sortIconMain" class="fas fa-sort-amount-up m-0" style="color: #000000"></i>
                 </button>
                 <select class="form-select" id="sortSelectMain">
                   <option selected disabled>Sort by nutrient</option>
@@ -160,7 +160,7 @@
 
         <!-- Add Recipe -->
         <div id="addNewRecipe" style="display: none">
-          <form onsubmit="addNewRecipes">
+          <form onsubmit="addNewRecipes(event)" id="formRecipe">
             <div class="box-content mb-4">
               <div class="d-flex flex-column gap-4 w-25">
                 <div class="border border-1 rounded-2" style="background-color: white; height: 300px; padding: 20px">
@@ -183,11 +183,13 @@
                     </div>
 
                     <div class="d-flex justify-content-center" id="upLoadUrl">
-                      <div class="border rounded-2" style="padding: 4px">
+                      <input type="file" name="coverSrc" accept="image/*" style="display: none" id="coverInput" />
+                      <div class="border rounded-2" id="uploadBtn" style="padding: 4px; cursor: pointer">
                         <i class="fas fa-pen-to-square" style="color: rgb(255, 136, 0); margin-right: 5px"></i>
                         <span style="font-size: 12px">Upload image</span>
                       </div>
                     </div>
+                    <!-- <img id="previewImage" src="" alt="Preview" style="max-width: 100%; margin-top: 10px" /> -->
 
                     <div class="d-flex" id="selectInput">
                       <div class="card-category border border-1 p-1 rounded-3">
@@ -200,7 +202,7 @@
               </div>
 
               <!-- class="w-100" -->
-              <div id="publishRecipe" style="width: 67%">
+              <div id="publishRecipe" class="w-100">
                 <div
                   class="d-flex justify-content-between border border-1 rounded-2 mb-4"
                   style="padding: 20px; background-color: white">
@@ -222,7 +224,7 @@
                       style="background-color: #fafafb">
                       Name
                     </span>
-                    <input type="text" class="form-control rounded-0 fw-light" placeholder="Recipe" />
+                    <input type="text" class="form-control rounded-0 fw-light" placeholder="Recipe" name="name" />
                     <span
                       class="border text-wrap p-2 align-items-center d-flex fs-6 fw-light"
                       style="background-color: #fafafb">
@@ -235,7 +237,11 @@
                       style="background-color: #fafafb">
                       Description
                     </span>
-                    <input type="text" class="form-control rounded-0 fw-light" style="height: 60px" />
+                    <input
+                      type="text"
+                      class="form-control rounded-0 fw-light"
+                      style="height: 60px"
+                      name="description" />
                     <span
                       class="border text-wrap p-2 align-items-center d-flex fs-6 fw-light"
                       style="background-color: #fafafb">
@@ -248,7 +254,7 @@
                       style="background-color: #fafafb">
                       Author
                     </span>
-                    <input type="text" class="form-control rounded-0 fw-light" />
+                    <input type="text" class="form-control rounded-0 fw-light" name="author" />
                     <span
                       class="border text-wrap p-2 align-items-center d-flex fs-6 fw-light"
                       style="background-color: #fafafb">
@@ -261,7 +267,7 @@
                       style="background-color: #fafafb">
                       Total time
                     </span>
-                    <input type="text" class="form-control rounded-0 fw-light" />
+                    <input type="text" class="form-control rounded-0 fw-light" name="totalTime" />
                     <span
                       class="border text-wrap p-2 align-items-center d-flex fs-6 fw-light"
                       style="background-color: #fafafb">
@@ -274,7 +280,7 @@
                       style="background-color: #fafafb">
                       Preparation time
                     </span>
-                    <input type="text" class="form-control rounded-0 fw-light" />
+                    <input type="text" class="form-control rounded-0 fw-light" name="preparationTime" />
                     <span
                       class="border text-wrap p-2 align-items-center d-flex fs-6 fw-light"
                       style="background-color: #fafafb">
@@ -287,7 +293,11 @@
                       style="background-color: #fafafb">
                       Final weight
                     </span>
-                    <input type="text" class="form-control rounded-0 fw-light" value="210 grams" />
+                    <input
+                      type="text"
+                      class="form-control rounded-0 fw-light"
+                      placeholder="210 grams"
+                      name="finalWeight" />
                     <span
                       class="border text-wrap p-2 align-items-center d-flex fs-6 fw-light"
                       style="background-color: #fafafb">
@@ -300,7 +310,7 @@
                       style="background-color: #fafafb">
                       Portions
                     </span>
-                    <input type="text" class="form-control rounded-0 fw-light" />
+                    <input type="text" class="form-control rounded-0 fw-light" name="portions" />
                     <span
                       class="border text-wrap p-2 align-items-center d-flex fs-6 fw-light"
                       style="background-color: #fafafb">
@@ -313,13 +323,13 @@
 
             <div
               class="box-content flex-column p-3 lh-2 rounded-2 mb-4"
-              style="background-color: #333433; gap: 5px; color: white; width: 91.3%">
+              style="background-color: #333433; gap: 5px; color: white">
               <span class="fs-5">Creation</span>
               <span style="font-size: 14px">Create the recipe and choose the ingredients</span>
             </div>
 
             <div class="box-content">
-              <div class="statistical" style="width: 55%">
+              <div class="statistical" style="width: 60%">
                 <div
                   class="d-flex flex-column border border-1 rounded-2 mb-4"
                   style="padding: 20px; background-color: white">
@@ -327,227 +337,14 @@
                     <span class="fs-4">Ingredients</span>
                     <span style="opacity: 0.5; font-size: 14px">Search and add ingredients to the recipe</span>
                   </div>
-                  <div class="d-flex mb-3">
-                    <div class="d-flex flex-column w-100">
-                      <span class="border border-end-0 border-bottom-0" style="padding: 10px; font-size: 12px">
-                        1 serving of babyfood, water, bottled, GERBER, without added fluoride (113 g)
-                      </span>
-                      <div class="d-flex">
-                        <span
-                          class="border border-end-0 text-wrap align-items-center d-flex fs-6 fw-light"
-                          style="background-color: #fafafb; padding: 10px">
-                          <i class="fa-solid fa-plus" style="color: #023f10"></i>
-                        </span>
-                        <input
-                          type="text"
-                          class="border border-start-0 w-100 border-end-0"
-                          placeholder="Add new food equivalent" />
-                      </div>
-                    </div>
-                    <span
-                      class="border text-wrap align-items-center d-flex fs-6 fw-light"
-                      style="background-color: #fafafb; padding: 10px">
-                      <i class="fa-solid fa-trash"></i>
-                    </span>
-                  </div>
 
-                  <div class="d-flex mb-3">
-                    <div class="d-flex flex-column w-100">
-                      <span class="border border-end-0 border-bottom-0" style="padding: 10px; font-size: 12px">
-                        1 serving of babyfood, tropical fruit medley (88 g)
-                      </span>
-                      <div class="d-flex">
-                        <span
-                          class="border border-end-0 text-wrap align-items-center d-flex fs-6 fw-light"
-                          style="background-color: #fafafb; padding: 10px">
-                          <i class="fa-solid fa-plus" style="color: #023f10"></i>
-                        </span>
-                        <input
-                          type="text"
-                          class="border border-start-0 w-100 border-end-0"
-                          placeholder="Add new food equivalent" />
-                      </div>
-                    </div>
-                    <span
-                      class="border text-wrap align-items-center d-flex fs-6 fw-light"
-                      style="background-color: #fafafb; padding: 10px">
-                      <i class="fa-solid fa-trash"></i>
-                    </span>
-                  </div>
-
-                  <!-- <div class="d-flex">
-                        <span
-                          class="border border-end-0 text-wrap align-items-center d-flex fs-6 fw-light"
-                          style="background-color: #fafafb; padding: 10px">
-                          <i class="fas fa-chevron-up" style="color: #023f10"></i>
-                        </span>
-                        <input type="text" class="border border-start-0 w-100" placeholder="Add new food equivalent" />
-                      </div>
-    
-                      <div class="border border-top-0 p-3" style="background-color: #fafafb">
-                        <div class="d-flex gap-2 mb-3">
-                          <input type="text" placeholder="Search food" style="width: 33%" />
-                          <div class="d-flex" style="width: 33%">
-                            <span
-                              class="border border-end-0 text-wrap align-items-center d-flex fs-6 fw-light"
-                              style="background-color: #fafafb; padding: 10px">
-                              <i class="fas fa-sort-amount-up m-0"></i>
-                            </span>
-                            <input type="text" class="border border-start-0 w-100" placeholder="Sort by nutrient" />
-                          </div>
-                          <div class="border border-1 d-flex align-items-center justify-content-center" style="width: 33%">
-                            All databases
-                          </div>
-                        </div>
-    
-                        <div class="d-flex flex-column" style="margin-right: 46px; background-color: white">
-                          <div class="d-flex align-items-center">
-                            <div class="border border-1" style="padding: 10.5px; width: 270px">Nutritional Information</div>
-                            <div class="border border-1" style="padding: 15px 15px; font-size: 10px">Energy</div>
-                            <div class="border border-1" style="padding: 15px 15px; font-size: 10px">Fat</div>
-                            <div class="border border-1" style="padding: 15px 15px; font-size: 10px">Carboh..</div>
-                            <div class="border border-1" style="padding: 15px 15px; font-size: 10px">Protein</div>
-                          </div>
-                        </div>
-    
-                        <div class="d-flex nutrition-row">
-                          <div class="d-flex border border-top-0" style="padding: 20px; background-color: white">
-                            <div class="d-flex flex-column" style="width: 230px">
-                              <span>Keto - Just Eggs</span>
-                              <span style="font-size: 12px; opacity: 0.5">Community Recipes</span>
-                              <div class="d-flex">
-                                <span
-                                  class="border text-wrap align-items-center d-flex fw-light"
-                                  style="background-color: #fafafb; font-size: 12px; width: 40px; padding-left: 10px">
-                                  1
-                                </span>
-                                <input
-                                  type="text"
-                                  class="border border-start-0"
-                                  placeholder="portion (87 grams)"
-                                  style="font-size: 12px; width: 150px; padding-left: 10px" />
-                                <span
-                                  class="border text-wrap align-items-center d-flex fw-light"
-                                  style="background-color: #fafafb; font-size: 12px; width: 45px; padding-left: 10px">
-                                  87g
-                                </span>
-                              </div>
-                            </div>
-                            <div style="padding: 15px 15px; font-size: 10px">301kcal</div>
-                            <div style="padding: 15px 15px; font-size: 10px">27g</div>
-                            <div style="padding: 15px 15px; font-size: 10px">6g</div>
-                            <div style="padding: 15px 15px; font-size: 10px">11g</div>
-                          </div>
-                          <div class="plus-button">
-                            <i class="fa-solid fa-plus" style="color: white"></i>
-                          </div>
-                        </div>
-    
-                        <div class="d-flex nutrition-row">
-                          <div class="d-flex border border-top-0" style="padding: 20px; background-color: white">
-                            <div class="d-flex flex-column" style="width: 230px">
-                              <span>Keto - Just Eggs</span>
-                              <span style="font-size: 12px; opacity: 0.5">Community Recipes</span>
-                              <div class="d-flex">
-                                <span
-                                  class="border text-wrap align-items-center d-flex fw-light"
-                                  style="background-color: #fafafb; font-size: 12px; width: 40px; padding-left: 10px">
-                                  1
-                                </span>
-                                <input
-                                  type="text"
-                                  class="border border-start-0"
-                                  placeholder="portion (87 grams)"
-                                  style="font-size: 12px; width: 150px; padding-left: 10px" />
-                                <span
-                                  class="border text-wrap align-items-center d-flex fw-light"
-                                  style="background-color: #fafafb; font-size: 12px; width: 45px; padding-left: 10px">
-                                  87g
-                                </span>
-                              </div>
-                            </div>
-                            <div style="padding: 15px 15px; font-size: 10px">301kcal</div>
-                            <div style="padding: 15px 15px; font-size: 10px">27g</div>
-                            <div style="padding: 15px 15px; font-size: 10px">6g</div>
-                            <div style="padding: 15px 15px; font-size: 10px">11g</div>
-                          </div>
-                          <div class="plus-button">
-                            <i class="fa-solid fa-plus" style="color: white"></i>
-                          </div>
-                        </div>
-    
-                        <div class="d-flex nutrition-row">
-                          <div class="d-flex border border-top-0" style="padding: 20px; background-color: white">
-                            <div class="d-flex flex-column" style="width: 230px">
-                              <span>Keto - Just Eggs</span>
-                              <span style="font-size: 12px; opacity: 0.5">Community Recipes</span>
-                              <div class="d-flex">
-                                <span
-                                  class="border text-wrap align-items-center d-flex fw-light"
-                                  style="background-color: #fafafb; font-size: 12px; width: 40px; padding-left: 10px">
-                                  1
-                                </span>
-                                <input
-                                  type="text"
-                                  class="border border-start-0"
-                                  placeholder="portion (87 grams)"
-                                  style="font-size: 12px; width: 150px; padding-left: 10px" />
-                                <span
-                                  class="border text-wrap align-items-center d-flex fw-light"
-                                  style="background-color: #fafafb; font-size: 12px; width: 45px; padding-left: 10px">
-                                  87g
-                                </span>
-                              </div>
-                            </div>
-                            <div style="padding: 15px 15px; font-size: 10px">301kcal</div>
-                            <div style="padding: 15px 15px; font-size: 10px">27g</div>
-                            <div style="padding: 15px 15px; font-size: 10px">6g</div>
-                            <div style="padding: 15px 15px; font-size: 10px">11g</div>
-                          </div>
-                          <div class="plus-button">
-                            <i class="fa-solid fa-plus" style="color: white"></i>
-                          </div>
-                        </div>
-    
-                        <div class="d-flex nutrition-row">
-                          <div class="d-flex border border-top-0" style="padding: 20px; background-color: white">
-                            <div class="d-flex flex-column" style="width: 230px">
-                              <span>Keto - Just Eggs</span>
-                              <span style="font-size: 12px; opacity: 0.5">Community Recipes</span>
-                              <div class="d-flex">
-                                <span
-                                  class="border text-wrap align-items-center d-flex fw-light"
-                                  style="background-color: #fafafb; font-size: 12px; width: 40px; padding-left: 10px">
-                                  1
-                                </span>
-                                <input
-                                  type="text"
-                                  class="border border-start-0"
-                                  placeholder="portion (87 grams)"
-                                  style="font-size: 12px; width: 150px; padding-left: 10px" />
-                                <span
-                                  class="border text-wrap align-items-center d-flex fw-light"
-                                  style="background-color: #fafafb; font-size: 12px; width: 45px; padding-left: 10px">
-                                  87g
-                                </span>
-                              </div>
-                            </div>
-                            <div style="padding: 15px 15px; font-size: 10px">301kcal</div>
-                            <div style="padding: 15px 15px; font-size: 10px">27g</div>
-                            <div style="padding: 15px 15px; font-size: 10px">6g</div>
-                            <div style="padding: 15px 15px; font-size: 10px">11g</div>
-                          </div>
-                          <div class="plus-button">
-                            <i class="fa-solid fa-plus" style="color: white"></i>
-                          </div>
-                        </div>
-                      </div> -->
+                  <div id="addIngredients"></div>
 
                   <!-- Add Ingredient Header -->
                   <div class="add-ingredient-header">
                     <div class="d-flex">
                       <span class="input-icon">
-                        <i class="fas fa-chevron-up" style="color: #000000;"></i>
+                        <i class="fas fa-chevron-up" style="color: #000000"></i>
                       </span>
                       <input type="text" class="full-width-input" placeholder="Add new ingredient" />
                     </div>
@@ -559,7 +356,7 @@
                       <input type="text" class="form-control" placeholder="Search food" style="width: 33%" />
                       <div class="input-with-icon" style="width: 33%">
                         <span class="input-icon">
-                          <i class="fas fa-sort-amount-up" style="color: #000000;"></i>
+                          <i class="fas fa-sort-amount-up" style="color: #000000"></i>
                         </span>
                         <input type="text" class="full-width-input" placeholder="Sort by nutrient" />
                       </div>
@@ -609,172 +406,12 @@
                 </div>
               </div>
 
-              <div class="chart" style="width: 37%">
-                <div class="border rounded-2 d-flex flex-column mb-4" style="background-color: white; padding: 20px">
-                  <div class="d-flex lh-1 flex-column mb-2">
-                    <span class="fs-4">Global analysis</span>
-                    <div class="d-flex align-items-center justify-content-between">
-                      <span style="opacity: 0.5; font-size: 14px">Energy, macronutrients and fiber distribution</span>
-                      <div class="bg-success p-2 rounded-circle">
-                        <i class="fa-solid fa-comment" style="color: white"></i>
-                      </div>
-                    </div>
-                  </div>
+              <div class="chart" style="width: 40%">
+                <div id="containerInformFood"></div>
 
-                  <div class="d-flex justify-content-between mt-2 mb-1 border-bottom">
-                    <span>Energy</span>
-                    <span>40 kcal</span>
-                  </div>
+                <div id="containerChart"></div>
 
-                  <div class="d-flex justify-content-around mt-4 flex-wrap gap-3">
-                    <div class="d-flex flex-column align-items-center">
-                      <div class="p-2 border-5 rounded-circle m-0" style="border: solid #f3f3f4">0 g</div>
-                      <span>Fat</span>
-                    </div>
-                    <div class="d-flex flex-column align-items-center">
-                      <div class="p-2 border-5 rounded-circle m-0" style="border: solid #ea9f77">11g</div>
-                      <span>Carbohydrate</span>
-                    </div>
-                    <div class="d-flex flex-column align-items-center">
-                      <div class="p-2 border-5 rounded-circle m-0" style="border: solid #f3f3f4">0 g</div>
-                      <span>Protein</span>
-                    </div>
-                    <div class="d-flex flex-column align-items-center">
-                      <div class="p-2 border-5 rounded-circle m-0" style="border: solid #6a7d93">1 g</div>
-                      <span>Fiber</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="border rounded-2 d-flex flex-column mb-4" style="background-color: white; padding: 20px">
-                  <div class="d-flex lh-1 flex-column mb-4">
-                    <span class="fs-4">Macronutrients</span>
-                    <span style="opacity: 0.5; font-size: 14px">Macronutrients distribution of the recipe</span>
-                  </div>
-                  <div>
-                    <canvas width="300" height="300" class="ms-4"></canvas>
-
-                    <div id="legend" class="ms-5">
-                      <div class="legend-item">
-                        <div class="box" style="background-color: #db4965"></div>
-                        Fat
-                      </div>
-                      <div class="legend-item">
-                        <div class="box" style="background-color: #f4a261"></div>
-                        Carbohydrate
-                      </div>
-                      <div class="legend-item">
-                        <div class="box" style="background-color: #2a9d8f"></div>
-                        Protein
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="border rounded-2 d-flex flex-column mb-4" style="background-color: white; padding: 20px">
-                  <div class="d-flex lh-1 flex-column mb-4">
-                    <span class="fs-4">Micronutrients</span>
-                    <span style="opacity: 0.5; font-size: 14px">Micronutrients distribution of the recipe</span>
-                  </div>
-                  <div class="d-flex flex-column">
-                    <div class="d-flex justify-content-between p-1">
-                      <span>Sodium</span>
-                      <span>1418 mg</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1" style="background-color: #fafafb">
-                      <span>Vitamin A</span>
-                      <span>18 ug</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1">
-                      <span>Vitamin B-6</span>
-                      <span>0 mg</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1" style="background-color: #fafafb">
-                      <span>Vitamin B-12</span>
-                      <span>0 ug</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1">
-                      <span>Vitamin C</span>
-                      <span>50 mg</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1" style="background-color: #fafafb">
-                      <span>Vitamin D (D2 + D3)</span>
-                      <span>0 ug</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1">
-                      <span>Vitamin E</span>
-                      <span>1 mg</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1" style="background-color: #fafafb">
-                      <span>Vitamin K</span>
-                      <span>87 ug</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1">
-                      <span>Sugars</span>
-                      <span>13 g</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1" style="background-color: #fafafb">
-                      <span>Calcium</span>
-                      <span>88 mg</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1">
-                      <span>Iron</span>
-                      <span>4 mg</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1" style="background-color: #fafafb">
-                      <span>Magnesium</span>
-                      <span>127 mg</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1">
-                      <span>Phosphorus</span>
-                      <span>251 mg</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1" style="background-color: #fafafb">
-                      <span>Phosphorus</span>
-                      <span>649 mg</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1">
-                      <span>Zinc</span>
-                      <span>2 mg</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1" style="background-color: #fafafb">
-                      <span>Copper</span>
-                      <span>1 mg</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1">
-                      <span>Copper</span>
-                      <span>1 ug</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1" style="background-color: #fafafb">
-                      <span>Manganese</span>
-                      <span>2 mg</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1">
-                      <span>Manganese</span>
-                      <span>4 ug</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1" style="background-color: #fafafb">
-                      <span>Thiamin</span>
-                      <span>0 mg</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1">
-                      <span>Riboflavin</span>
-                      <span>0 mg</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1" style="background-color: #fafafb">
-                      <span>Niacin</span>
-                      <span>3 mg</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1">
-                      <span>Pantothenic acid</span>
-                      <span>1 mg</span>
-                    </div>
-                    <div class="d-flex justify-content-between p-1" style="background-color: #fafafb">
-                      <span>Folate, total</span>
-                      <span>156 ug</span>
-                    </div>
-                  </div>
-                </div>
+                <div id="micronutrientsContainer"></div>
               </div>
             </div>
           </form>
