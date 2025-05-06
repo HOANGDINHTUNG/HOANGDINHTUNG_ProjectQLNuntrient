@@ -2,8 +2,8 @@ let Food = [
   {
     id: 1,
     name: "Ackee, canned, drained",
-    source: "Minh Cuong Tran",
-    category: "",
+    source: "McCance and Widdowson's",
+    category: "vegeterian and appetizer",
     quantity: "100",
     macronutrients: {
       energy: 151,
@@ -54,7 +54,7 @@ let Food = [
   {
     id: 2,
     name: "Broccoli, raw",
-    source: "Nutrition DB",
+    source: "McCance and Widdowson's",
     category: "vegan and main course",
     quantity: "100",
     macronutrients: {
@@ -106,7 +106,7 @@ let Food = [
   {
     id: 3,
     name: "Apple, with skin",
-    source: "Fruit Facts",
+    source: "McCance and Widdowson's",
     category: "salad, dessert and breakfast",
     quantity: "100",
     macronutrients: {
@@ -158,7 +158,7 @@ let Food = [
   {
     id: 4,
     name: "Banana, raw",
-    source: "Minh Cuong Tran",
+    source: "McCance and Widdowson's",
     category: "gluten-free, dessert ,vegeterian and appetizer",
     quantity: "100",
     macronutrients: {
@@ -210,7 +210,7 @@ let Food = [
   {
     id: 5,
     name: "Carrot, raw",
-    source: "Healthy Food DB",
+    source: "McCance and Widdowson's",
     category: "low-carb, soup and breakfast",
     quantity: "100",
     macronutrients: {
@@ -262,7 +262,7 @@ let Food = [
   {
     id: 6,
     name: "Chicken breast, grilled",
-    source: "Protein Source",
+    source: "McCance and Widdowson's",
     category: "main course, gluten-free and low-carb",
     quantity: "100",
     macronutrients: {
@@ -314,7 +314,7 @@ let Food = [
   {
     id: 7,
     name: "Salmon, baked",
-    source: "Fish Nutrition",
+    source: "McCance and Widdowson's",
     category: "main course and vegeterian",
     quantity: "100",
     macronutrients: {
@@ -366,7 +366,7 @@ let Food = [
   {
     id: 8,
     name: "Brown rice, cooked",
-    source: "Whole Grains DB",
+    source: "McCance and Widdowson's",
     category: "low-carb, gluten-free and soup",
     quantity: "100",
     macronutrients: {
@@ -418,7 +418,7 @@ let Food = [
   {
     id: 9,
     name: "White bread",
-    source: "Bakery",
+    source: "McCance and Widdowson's",
     category: "dessert, breakfast and appetizer",
     quantity: "100",
     macronutrients: {
@@ -470,7 +470,7 @@ let Food = [
   {
     id: 10,
     name: "Egg, boiled",
-    source: "Protein Source",
+    source: "McCance and Widdowson's",
     category: "Animal Products",
     quantity: "100",
     macronutrients: {
@@ -522,7 +522,7 @@ let Food = [
   {
     id: 11,
     name: "Tofu, firm",
-    source: "Vegan Base",
+    source: "McCance and Widdowson's",
     category: "Vegetarian",
     quantity: "100",
     macronutrients: {
@@ -574,7 +574,7 @@ let Food = [
   {
     id: 12,
     name: "Almonds",
-    source: "Nuts & Seeds",
+    source: "McCance and Widdowson's",
     category: "main course",
     quantity: "100",
     macronutrients: {
@@ -626,7 +626,7 @@ let Food = [
   {
     id: 13,
     name: "Cheddar cheese",
-    source: "Dairy Base",
+    source: "McCance and Widdowson's",
     category: "salad",
     quantity: "100",
     macronutrients: {
@@ -678,7 +678,7 @@ let Food = [
   {
     id: 14,
     name: "Greek yogurt, plain",
-    source: "Dairy Base",
+    source: "McCance and Widdowson's",
     category: "vegan",
     quantity: "100",
     macronutrients: {
@@ -730,7 +730,7 @@ let Food = [
   {
     id: 15,
     name: "Lentils, boiled",
-    source: "Plant Protein",
+    source: "McCance and Widdowson's",
     category: "soup and breakfast",
     quantity: "100",
     macronutrients: {
@@ -782,7 +782,7 @@ let Food = [
   {
     id: 16,
     name: "Sweet potato, baked",
-    source: "Root Veggies",
+    source: "McCance and Widdowson's",
     category: "gluten-free and breakfast",
     quantity: "100",
     macronutrients: {
@@ -834,7 +834,7 @@ let Food = [
   {
     id: 17,
     name: "Avocado",
-    source: "Healthy Fats",
+    source: "McCance and Widdowson's",
     category: "main course and dessert",
     quantity: "100",
     macronutrients: {
@@ -886,7 +886,7 @@ let Food = [
   {
     id: 18,
     name: "Beef, ground, cooked",
-    source: "Meat",
+    source: "McCance and Widdowson's",
     category: "breakfast and vegeterian",
     quantity: "100",
     macronutrients: {
@@ -938,7 +938,7 @@ let Food = [
   {
     id: 19,
     name: "Shrimp, cooked",
-    source: "Fish",
+    source: "McCance and Widdowson's",
     category: "dessert and gluten-free",
     quantity: "100",
     macronutrients: {
@@ -990,7 +990,7 @@ let Food = [
   {
     id: 20,
     name: "Pumpkin, cooked",
-    source: "Vegetable Base",
+    source: "McCance and Widdowson's",
     category: "vegeterian and soup",
     quantity: "100",
     macronutrients: {
@@ -1042,7 +1042,7 @@ let Food = [
   {
     id: 21,
     name: "Mango, raw",
-    source: "Fruits",
+    source: "McCance and Widdowson's",
     category: "main course and ow-carb",
     quantity: "100",
     macronutrients: {
@@ -1094,7 +1094,7 @@ let Food = [
   {
     id: 22,
     name: "Almonds, raw",
-    source: "Minh Cuong Tran",
+    source: "McCance and Widdowson's",
     category: "dessert and appetizer",
     quantity: "100",
     macronutrients: {
@@ -1146,7 +1146,7 @@ let Food = [
   {
     id: 23,
     name: "Apple, raw",
-    source: "Minh Cuong Tran",
+    source: "McCance and Widdowson's",
     category: "gluten-free and breakfast",
     quantity: "100",
     macronutrients: {
@@ -1198,7 +1198,7 @@ let Food = [
   {
     id: 24,
     name: "Avocado, raw",
-    source: "Minh Cuong Tran",
+    source: "McCance and Widdowson's",
     category: "salad and soup",
     quantity: "100",
     macronutrients: {
@@ -1250,7 +1250,7 @@ let Food = [
   {
     id: 25,
     name: "Banana, raw",
-    source: "Minh Cuong Tran",
+    source: "McCance and Widdowson's",
     category: "dessert",
     quantity: "100",
     macronutrients: {
@@ -1302,7 +1302,7 @@ let Food = [
   {
     id: 26,
     name: "Beef, cooked",
-    source: "Minh Cuong Tran",
+    source: "McCance and Widdowson's",
     category: "main course",
     quantity: "100",
     macronutrients: {
@@ -1354,7 +1354,7 @@ let Food = [
   {
     id: 27,
     name: "Broccoli, raw",
-    source: "Minh Cuong Tran",
+    source: "McCance and Widdowson's",
     category: "appetizer",
     quantity: "100",
     macronutrients: {
@@ -1406,7 +1406,7 @@ let Food = [
   {
     id: 28,
     name: "Carrot, raw",
-    source: "Minh Cuong Tran",
+    source: "McCance and Widdowson's",
     category: "vegeterian",
     quantity: "100",
     macronutrients: {
@@ -1458,7 +1458,7 @@ let Food = [
   {
     id: 29,
     name: "Chicken breast, cooked",
-    source: "Minh Cuong Tran",
+    source: "McCance and Widdowson's",
     category: "main course and gluten-free",
     quantity: "100",
     macronutrients: {
@@ -1510,7 +1510,7 @@ let Food = [
   {
     id: 30,
     name: "Chickpeas, cooked",
-    source: "Minh Cuong Tran",
+    source: "McCance and Widdowson's",
     category: "breakfast",
     quantity: "100",
     macronutrients: {
@@ -1562,7 +1562,7 @@ let Food = [
   {
     id: 31,
     name: "Cucumber, raw",
-    source: "Minh Cuong Tran",
+    source: "McCance and Widdowson's",
     category: "appetizer and vegan",
     quantity: "100",
     macronutrients: {
@@ -1614,7 +1614,7 @@ let Food = [
   {
     id: 32,
     name: "Egg, whole, raw",
-    source: "Minh Cuong Tran",
+    source: "McCance and Widdowson's",
     category: "main course, low-carb and gluten-free",
     quantity: "100",
     macronutrients: {
@@ -1666,7 +1666,7 @@ let Food = [
   {
     id: 33,
     name: "Garlic, raw",
-    source: "Minh Cuong Tran",
+    source: "McCance and Widdowson's",
     category: "gluten-free, breakfast and vegeterian",
     quantity: "100",
     macronutrients: {
@@ -1718,7 +1718,7 @@ let Food = [
   {
     id: 34,
     name: "Greek yogurt, plain",
-    source: "Minh Cuong Tran",
+    source: "McCance and Widdowson's",
     category: "dessert, salad and low-carb",
     quantity: "100",
     macronutrients: {
@@ -1770,7 +1770,7 @@ let Food = [
   {
     id: 35,
     name: "Kale, raw",
-    source: "Minh Cuong Tran",
+    source: "McCance and Widdowson's",
     category: "vegeterian and appetizer",
     quantity: "100",
     macronutrients: {
@@ -1822,7 +1822,7 @@ let Food = [
   {
     id: 36,
     name: "Lentils, cooked",
-    source: "Minh Cuong Tran",
+    source: "McCance and Widdowson's",
     category: "gluten-free, appetizer and soup",
     quantity: "100",
     macronutrients: {
@@ -1874,7 +1874,7 @@ let Food = [
   {
     id: 37,
     name: "Lettuce, raw",
-    source: "Minh Cuong Tran",
+    source: "McCance and Widdowson's",
     category: "vegeterian, appetizer and dessert",
     quantity: "100",
     macronutrients: {
@@ -1926,7 +1926,7 @@ let Food = [
   {
     id: 38,
     name: "Mango, raw",
-    source: "Minh Cuong Tran",
+    source: "McCance and Widdowson's",
     category: "dessert and salad",
     quantity: "100",
     macronutrients: {
@@ -1978,7 +1978,7 @@ let Food = [
   {
     id: 39,
     name: "Oats, raw",
-    source: "Minh Cuong Tran",
+    source: "McCance and Widdowson's",
     category: "dessert, vegeterian and low-carb",
     quantity: "100",
     macronutrients: {
@@ -2030,7 +2030,7 @@ let Food = [
   {
     id: 40,
     name: "Orange, raw",
-    source: "Minh Cuong Tran",
+    source: "McCance and Widdowson's",
     category: "salad and appetizer",
     quantity: "100",
     macronutrients: {
@@ -2082,7 +2082,7 @@ let Food = [
   {
     id: 41,
     name: "Salmon, cooked",
-    source: "Minh Cuong Tran",
+    source: "McCance and Widdowson's",
     category: "gluten-free, vegan and vegeterian",
     quantity: "100",
     macronutrients: {

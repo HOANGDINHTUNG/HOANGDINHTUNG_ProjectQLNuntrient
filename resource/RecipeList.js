@@ -8,7 +8,7 @@ let Recipe = [
     "author": "Minh Cuong Tran",
     "totalTime": "00:30",
     "preparationTime": "00:15",
-    "finalWeight": "500 grams",
+    "finalWeight": "500",
     "portions": 2,
     "ingredients": [Food[10]],
     "cookingMethods": [
@@ -29,7 +29,7 @@ let Recipe = [
     "author": "Nguyen Bao Anh",
     "totalTime": "00:45",
     "preparationTime": "00:20",
-    "finalWeight": "800 grams",
+    "finalWeight": "800",
     "portions": 4,
     "ingredients": [Food[1]],
     "cookingMethods": [
@@ -46,7 +46,7 @@ let Recipe = [
     "author": "Linh Nguyen",
     "totalTime": "00:10",
     "preparationTime": "00:10",
-    "finalWeight": "250 grams",
+    "finalWeight": "250",
     "portions": 1,
     "ingredients": [Food[16]],
     "cookingMethods": [
@@ -63,7 +63,7 @@ let Recipe = [
     "author": "Tran Quoc Huy",
     "totalTime": "00:20",
     "preparationTime": "00:10",
-    "finalWeight": "400 grams",
+    "finalWeight": "400",
     "portions": 2,
     "ingredients": [Food[11]],
     "cookingMethods": [
@@ -80,7 +80,7 @@ let Recipe = [
     "author": "Dang Thanh Tam",
     "totalTime": "00:35",
     "preparationTime": "00:15",
-    "finalWeight": "600 grams",
+    "finalWeight": "600",
     "portions": 3,
     "ingredients": [Food[15]],
     "cookingMethods": [
@@ -97,7 +97,7 @@ let Recipe = [
     "author": "Nguyen Thi Mai",
     "totalTime": "00:50",
     "preparationTime": "00:15",
-    "finalWeight": "900 grams",
+    "finalWeight": "900",
     "portions": 4,
     "ingredients": [Food[14]],
     "cookingMethods": [
@@ -113,7 +113,7 @@ let Recipe = [
     "author": "Vo Thi Kim Oanh",
     "totalTime": "00:15",
     "preparationTime": "00:10",
-    "finalWeight": "350 grams",
+    "finalWeight": "350",
     "portions": 1,
     "ingredients": [Food[9]],
     "cookingMethods": [
@@ -129,7 +129,7 @@ let Recipe = [
     "author": "Pham Tuan Anh",
     "totalTime": "00:25",
     "preparationTime": "00:20",
-    "finalWeight": "450 grams",
+    "finalWeight": "450",
     "portions": 2,
     "ingredients": [Food[7]],
     "cookingMethods": [
@@ -146,7 +146,7 @@ let Recipe = [
     "author": "Le Thi Thao",
     "totalTime": "00:40",
     "preparationTime": "00:10",
-    "finalWeight": "600 grams",
+    "finalWeight": "600",
     "portions": 3,
     "ingredients": [Food[12]],
     "cookingMethods": [
@@ -162,7 +162,7 @@ let Recipe = [
     "author": "Hoang Minh Tuan",
     "totalTime": "00:20",
     "preparationTime": "00:10",
-    "finalWeight": "500 grams",
+    "finalWeight": "500",
     "portions": 2,
     "ingredients": [Food[6]],
     "cookingMethods": [
@@ -178,7 +178,7 @@ let Recipe = [
     "author": "Nguyen Van Hieu",
     "totalTime": "00:30",
     "preparationTime": "00:15",
-    "finalWeight": "400 grams",
+    "finalWeight": "400",
     "portions": 2,
     "ingredients": [Food[2]],
     "cookingMethods": [
@@ -195,7 +195,7 @@ let Recipe = [
     "author": "Phan Thi Lan",
     "totalTime": "00:35",
     "preparationTime": "00:20",
-    "finalWeight": "500 grams",
+    "finalWeight": "500",
     "portions": 2,
     "ingredients": [Food[20]],
     "cookingMethods": [
@@ -211,7 +211,7 @@ let Recipe = [
     "author": "Dang Quang Huy",
     "totalTime": "00:50",
     "preparationTime": "00:30",
-    "finalWeight": "600 grams",
+    "finalWeight": "600",
     "portions": 3,
     "ingredients": [Food[4]],
     "cookingMethods": [
@@ -228,7 +228,7 @@ let Recipe = [
     "author": "Vo Thi Thu Ha",
     "totalTime": "00:10",
     "preparationTime": "00:10",
-    "finalWeight": "400 grams",
+    "finalWeight": "400",
     "portions": 2,
     "ingredients": [Food[5]],
     "cookingMethods": [
@@ -244,7 +244,7 @@ let Recipe = [
     "author": "Le Van Long",
     "totalTime": "00:55",
     "preparationTime": "00:25",
-    "finalWeight": "750 grams",
+    "finalWeight": "750",
     "portions": 4,
     "ingredients": [Food[0]],
     "cookingMethods": [

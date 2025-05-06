@@ -1,5 +1,7 @@
 const baseImagePath = "../..";
-//
+
+Recipe = loadFromLocalStorage("Recipe", Recipe) || [];
+
 document.addEventListener("DOMContentLoaded", () => {
   const inputs = document.querySelectorAll(".nutrition-row input");
 
@@ -44,7 +46,6 @@ renderRecipes({
   img: baseImagePath,
 });
 
-Recipe = loadFromLocalStorage("Recipe", Recipe) || [];
 
 function renderRecipes({containerID, paginationID, data, state, img = baseImagePath}) {
   const start = (state.currentPage - 1) * state.rowsPerPage;
@@ -107,6 +108,8 @@ function renderRecipes({containerID, paginationID, data, state, img = baseImageP
       </div>
     `;
   });
+
+  console.log(Recipe)
 
   renderPagination({
     paginationID,
@@ -278,7 +281,7 @@ function showDetailRecipe(recipe) {
                   style="background-color: #fafafb">
                   Final weight
                 </span>
-                <span class="form-control rounded-0 fw-light">${recipe.finalWeight}</span>
+                <span class="form-control rounded-0 fw-light">${recipe.finalWeight} grams</span>
               </div>
               <div class="d-flex mt-3">
                 <span
@@ -648,7 +651,7 @@ changeMethod.addEventListener("click", () => {
   }
 });
 
-const selectInput = document.getElementById("selectInput");
+// khởi tạo để tương tác
 const labelHTML = `
   <div class="card-category border border-1 p-1 rounded-3">
     <i class="fa-solid fa-tags"></i>
@@ -673,7 +676,6 @@ const inputHTML = `
   </div>
 `;
 let isInputVisible = false;
-// Hàm khởi tạo lại combo mỗi lần render inputHTML
 function initCombo() {
   const comboInput = document.getElementById("comboInput");
   const comboList = document.getElementById("comboList");
@@ -765,13 +767,21 @@ function updateFavoriteCount() {
 }
 
 // Tìm kiếm băng input
-document.getElementById("searchRecipeMain").addEventListener("input", function () {
-  const keyword = this.value;
-  currentPage = 1;
-  filterRecipeMain(keyword);
-});
-function filterRecipeMain(keyword) {
-  const filtered = Recipe.filter((recipe) => recipe.name.toLowerCase().includes(keyword.toLowerCase()));
+function searchFood(input, datas, render) {
+  document.getElementById(input).addEventListener("input", function () {
+    const keyword = this.value;
+    currentPage = 1;
+    filterRecipeMain(keyword);
+  });
+
+  function filterRecipeMain(keyword) {
+    const filtered = datas.filter((d) => d.name.toLowerCase().includes(keyword.toLowerCase()));
+    render(filtered); // gọi hàm render đúng cách
+  }
+}
+
+// gọi
+searchFood("searchRecipeMain", Recipe, function (filtered) {
   renderRecipes({
     containerID: "recipeList",
     paginationID: "paginationRecipe",
@@ -779,36 +789,52 @@ function filterRecipeMain(keyword) {
     state: recipeState,
     img: "../..",
   });
-}
+});
 
 // sắp xếp theo nutrient
 let isAscFoodSort = true;
 const sortButtonMain = document.getElementById("sortButtonMain");
 const sortIconMain = document.getElementById("sortIconMain");
 const sortSelectMain = document.getElementById("sortSelectMain");
-sortButtonMain.addEventListener("click", () => {
-  isAscFoodSort = !isAscFoodSort;
-  // Cập nhật icon
-  sortIconMain.className = isAscFoodSort ? "fas fa-sort-amount-up m-0" : "fas fa-sort-amount-down m-0";
 
-  // Gọi lại hàm sắp xếp nếu đã chọn nutrient
-  if (sortSelectMain.value && sortSelectMain.value !== "Sort by nutrient") {
-    sortRecipesMain();
-  }
-});
-sortSelectMain.addEventListener("change", () => {
-  sortRecipesMain();
-});
-function sortRecipesMain() {
-  const nutrient = sortSelectMain.value;
-  if (!nutrient) return;
-
-  const sorted = [...Recipe].sort((a, b) => {
-    const valA = a.ingredients[0].macronutrients[nutrient];
-    const valB = b.ingredients[0].macronutrients[nutrient];
-    return isAscFoodSort ? valA - valB : valB - valA;
+function mainSortSelect(btn, icon, stackingDirection, data, render) {
+  btn.addEventListener("click", () => {
+    isAscFoodSort = !isAscFoodSort;
+    icon.className = isAscFoodSort ? "fas fa-sort-amount-up m-0" : "fas fa-sort-amount-down m-0";
+    if (stackingDirection.value && stackingDirection.value !== "Sort by nutrient") {
+      sortMain();
+    }
   });
 
+  stackingDirection.addEventListener("change", () => {
+    sortMain();
+  });
+
+  function sortMain() {
+    const nutrient = stackingDirection.value;
+    if (!nutrient) return;
+
+    const sorted = [...data].sort((a, b) => {
+      let valA, valB;
+
+      // Kiểm tra loại dữ liệu đang xử lý
+      if (data === Food) {
+        valA = a.macronutrients?.[nutrient] ?? 0;
+        valB = b.macronutrients?.[nutrient] ?? 0;
+      } else if (data === Recipe) {
+        valA = a.ingredients?.[0]?.macronutrients?.[nutrient] ?? 0;
+        valB = b.ingredients?.[0]?.macronutrients?.[nutrient] ?? 0;
+      }
+      return isAscFoodSort ? valA - valB : valB - valA;
+    });
+
+    // Gọi render callback với dữ liệu đã sắp xếp
+    render(sorted);
+  }
+}
+
+// gọi
+mainSortSelect(sortButtonMain, sortIconMain, sortSelectMain, Recipe, function (sorted) {
   renderRecipes({
     containerID: "recipeList",
     paginationID: "paginationRecipe",
@@ -816,22 +842,27 @@ function sortRecipesMain() {
     state: recipeState,
     img: "../..",
   });
-}
+});
 
 // tìm kiếm theo danh mục
 const categorySelectMain = document.getElementById("categorySelectMain");
-categorySelectMain.addEventListener("change", function () {
-  const value = this.value; // Lấy đúng giá trị của <select>
-
-  // Lọc Recipe: nếu value = '' thì giữ nguyên mảng gốc
-  const filtered =
-    value === ""
-      ? Recipe
-      : Recipe.filter((recipe) => {
-          // Với mỗi recipe, ánh xạ qua mảng recipe.category để lấy tên
-          const categoryNames = recipe.category
-            .map((cat) => {
-              const found = category.find((c) => c.id === cat.id);
+function categorySelectNutrition(key, data, render) {
+  key.addEventListener("change", function () {
+    const value = this.value;
+    let filtered;
+    if (value === "") {
+      filtered = data;
+    } else {
+      if (data === Food) {
+        filtered = data.filter((d) => {
+          const categoryNames = d.category;
+          return categoryNames && categoryNames.toLowerCase().includes(value.toLowerCase());
+        });
+      } else if (data === Recipe) {
+        filtered = data.filter((d) => {
+          const categoryNames = d.category
+            .map((cate) => {
+              const found = category.find((c) => c.id === cate.id);
               return found ? found.name : null;
             })
             .filter((name) => name) // loại bỏ null
@@ -840,7 +871,15 @@ categorySelectMain.addEventListener("change", function () {
           // so sánh với value đã chọn (cũng lowercase)
           return categoryNames.includes(value.toLowerCase());
         });
+      }
+    }
 
+    render(filtered);
+  });
+}
+
+//gọi
+categorySelectNutrition(categorySelectMain, Recipe, function (filtered) {
   renderRecipes({
     containerID: "recipeList",
     paginationID: "paginationRecipe",
@@ -853,18 +892,18 @@ categorySelectMain.addEventListener("change", function () {
 const rowsPerPage = 5;
 let currentPage = 1;
 
-function renderNutritionItems() {
+function renderNutritionItems(data = Food) {
   const start = (currentPage - 1) * rowsPerPage;
   const end = start + rowsPerPage;
   const container = document.getElementById("nutritionItems");
   container.innerHTML = "";
 
-  const pageItems = Food.slice(start, end);
+  const pageItems = data.slice(start, end);
 
   pageItems.forEach((item, index) => {
     const row = document.createElement("div");
     row.className = "nutrition-row";
-    // Store the actual index from the Food array
+    // Store the actual index from the array
     const realIndex = start + index;
     row.setAttribute("data-index", realIndex);
 
@@ -916,13 +955,12 @@ function renderNutritionItems() {
       this.classList.add("active");
 
       const index = parseInt(this.getAttribute("data-index"));
-      const selectedFood = Food[index];
+      const selectedFood = data[index];
 
       // Display the chart immediately
       pieChart(selectedFood, "nutritionPieChart");
       informContainerChart(selectedFood);
       renderMicronutrientsFromData(selectedFood, "micronutrientsContainer");
-
     });
   });
 
@@ -931,20 +969,28 @@ function renderNutritionItems() {
     button.addEventListener("click", function (e) {
       e.stopPropagation(); // Prevent row click event from firing
       const index = parseInt(this.getAttribute("data-index"));
-      const selectedFood = Food[index];
+      const selectedFood = data[index];
       addIngredientChart(selectedFood);
     });
   });
 
   // phân trang
-  renderPaginationNutri(Food);
+  renderPaginationNutri(data);
 }
 
+let selectedIngredients = [];
+
+// Thêm vào food vào hàng chờ
 function addIngredientChart(food) {
   const addIngredients = document.getElementById("addIngredients");
 
-  // Créer un ID unique pour cet élément d'ingrédient
   const ingredientId = `ingredient-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+
+  // Thêm đối tượng thực phẩm hoàn chỉnh vào mảng selectedIngredients
+  selectedIngredients.push({
+    id: ingredientId,
+    food: food, // Lưu trữ toàn bộ thực phẩm
+  });
 
   addIngredients.innerHTML += `
     <div id="${ingredientId}" class="ingredient-item d-flex mb-3">
@@ -973,13 +1019,30 @@ function addIngredientChart(food) {
     </div>
   `;
 
-  // Ajouter l'écouteur d'événement après avoir ajouté l'élément au DOM
-  addIngredients.addEventListener("click", function (e) {
+  // hàm xóa
+  setupDeleteIngredientListeners();
+}
+
+// hàm xóa food khỏi Ingredient
+function setupDeleteIngredientListeners() {
+  const addIngredients = document.getElementById("addIngredients");
+
+  // Xóa các trình nghe hiện có để tránh trùng lặp
+  const newAddIngredients = addIngredients.cloneNode(true);
+  addIngredients.parentNode.replaceChild(newAddIngredients, addIngredients);
+
+  // thêm sự kiện vào
+  newAddIngredients.addEventListener("click", function (e) {
     if (e.target.closest(".delete-ingredient")) {
       const button = e.target.closest(".delete-ingredient");
       const ingredientId = button.getAttribute("data-ingredient-id");
       const ingredientElement = document.getElementById(ingredientId);
+
       if (ingredientElement) {
+        // Xóa khỏi mảng selectedIngredients
+        selectedIngredients = selectedIngredients.filter((item) => item.id !== ingredientId);
+
+        // hiệu ứng xóa
         ingredientElement.style.transition = "opacity 0.3s";
         ingredientElement.style.opacity = "0";
         setTimeout(() => {
@@ -987,9 +1050,10 @@ function addIngredientChart(food) {
         }, 300);
       }
     }
-  });  
+  });
 }
 
+//dữ liệu số của Macronutrients
 function informContainerChart(food) {
   const containerInformFood = document.getElementById("containerInformFood");
   containerInformFood.innerHTML = `
@@ -1027,9 +1091,12 @@ function informContainerChart(food) {
           <span>Protein</span>
         </div>
         <div class="d-flex flex-column align-items-center">
-          <div class="p-2 border-5 rounded-circle m-0" style="border: solid #6a7d93">${
-            (100 - food.macronutrients.fat - food.macronutrients.carbohydrate - food.macronutrients.protein).toFixed(2)
-          } g</div>
+          <div class="p-2 border-5 rounded-circle m-0" style="border: solid #6a7d93">${(
+            100 -
+            food.macronutrients.fat -
+            food.macronutrients.carbohydrate -
+            food.macronutrients.protein
+          ).toFixed(2)} g</div>
           <span>Fiber</span>
         </div>
       </div>
@@ -1037,6 +1104,7 @@ function informContainerChart(food) {
   `;
 }
 
+// biểu đồ
 function addChartContainer() {
   // Check if container already exists
   const container = document.getElementById("containerChart");
@@ -1073,6 +1141,7 @@ function addChartContainer() {
     `;
 }
 
+// dữ liệu của Micronutrients
 function renderMicronutrientsFromData(data, containerId) {
   const container = document.getElementById(containerId);
   if (!container || !data || !data.micronutrients) return;
@@ -1114,15 +1183,15 @@ function renderMicronutrientsFromData(data, containerId) {
     fattyAcidsSaturated: "g",
     fattyAcidsMonounsaturated: "g",
     fattyAcidsPolyunsaturated: "g",
-    chloride: "mg"
+    chloride: "mg",
   };
 
   function camelToLabel(str) {
     return str
-      .replace(/([A-Z])/g, ' $1')
-      .replace(/Acid/g, 'Acid')
-      .replace(/Total/g, 'Total')
-      .replace(/^./, char => char.toUpperCase())
+      .replace(/([A-Z])/g, " $1")
+      .replace(/Acid/g, "Acid")
+      .replace(/Total/g, "Total")
+      .replace(/^./, (char) => char.toUpperCase())
       .trim();
   }
 
@@ -1152,27 +1221,26 @@ function renderMicronutrientsFromData(data, containerId) {
   });
 }
 
-
 addChartContainer();
 
-// Initialize when DOM is loaded
+// render và tìm kiếm
 document.addEventListener("DOMContentLoaded", function () {
   renderNutritionItems();
-
-  // Toggle add ingredient section
-  document.querySelector(".add-ingredient-header").addEventListener("click", function () {
-    const icon = this.querySelector("i");
-    if (icon.classList.contains("fa-chevron-up")) {
-      icon.classList.replace("fa-chevron-up", "fa-chevron-down");
-    } else {
-      icon.classList.replace("fa-chevron-down", "fa-chevron-up");
-    }
+  // truyền dữ liệu cho tìm kiếm input
+  searchFood("searchNutrition", Food, function (filtered) {
+    renderNutritionItems(filtered);
   });
-
-  // Search functionality
-  document.querySelector('input[placeholder="Search food"]').addEventListener("input", function (e) {
-    const searchTerm = e.target.value.toLowerCase();
-    renderNutritionItems();
+  // sắp xếp theo dinh dưỡng
+  const sortNutrition = document.getElementById("sortNutrition");
+  const sortIconNutrion = document.getElementById("sortIconNutrion");
+  const sortSelectNutrition = document.getElementById("sortSelectNutrition");
+  mainSortSelect(sortNutrition, sortIconNutrion, sortSelectNutrition, Food, function (sorted) {
+    renderNutritionItems(sorted);
+  });
+  // tìm kiếm bằng category
+  const categorySelectNutri = document.getElementById("categorySelectNutri");
+  categorySelectNutrition(categorySelectNutri, Food, function (filtered) {
+    renderNutritionItems(filtered);
   });
 });
 
@@ -1248,39 +1316,207 @@ function changePageNutri(data, page) {
   renderNutritionItems(data);
 }
 
-// Main form submission handler
+document.addEventListener("DOMContentLoaded", function () {
+  const container = document.querySelector(".cooking-methods-container");
+
+  // Lắng nghe sự kiện nhấn phím trong container
+  if (container) {
+    container.addEventListener("keydown", function (event) {
+      // Nếu phím Enter được nhấn
+      if (event.key === "Enter") {
+        // Ngăn chặn hành vi mặc định (xuống dòng trong input)
+        event.preventDefault();
+
+        // Lấy vị trí hiện tại của con trỏ trong input
+        const activeElement = document.activeElement;
+
+        // Chỉ xử lý khi đang focus vào input
+        if (activeElement.classList.contains("cooking-method-input")) {
+          // Tìm dòng hiện tại
+          const currentRow = activeElement.closest(".cooking-method-row");
+
+          // Tạo dòng mới
+          createNewRow(currentRow);
+        }
+      }
+    });
+  }
+
+  // Hàm tạo dòng mới
+  function createNewRow(afterElement) {
+    // Đếm số dòng hiện tại để xác định số thứ tự mới
+    const rowCount = container.querySelectorAll(".cooking-method-row").length + 1;
+
+    // Tạo phần tử div mới cho dòng
+    const newRow = document.createElement("div");
+    newRow.className = "cooking-method-row d-flex mb-2";
+
+    // Thiết lập HTML cho dòng mới
+    newRow.innerHTML = `
+      <span class="border border-end-0 p-2 text-wrap rounded-start-0 align-items-center d-flex fw-light step-number" style="background-color: #fafafb">
+        ${rowCount}
+      </span>
+      <input type="text" class="form-control rounded-0 fw-light cooking-method-input" placeholder="Add new cooking method" />
+      <span class="border text-wrap p-2 align-items-center d-flex fs-6 fw-light edit-button" style="background-color: #fafafb">
+        <i class="fa-solid fa-pen" style="color: #023f10"></i>
+      </span>
+      <span class="border text-wrap p-2 align-items-center d-flex fs-6 fw-light delete-btn" style="background-color: #fafafb; cursor: pointer;">
+        <i class="fa-solid fa-trash" style="color: #ff0000"></i>
+      </span>
+    `;
+
+    // Chèn dòng mới sau dòng hiện tại
+    if (afterElement) {
+      afterElement.after(newRow);
+    } else {
+      container.appendChild(newRow);
+    }
+
+    // Focus vào input của dòng mới
+    const newInput = newRow.querySelector(".cooking-method-input");
+    newInput.focus();
+
+    // Cập nhật lại số thứ tự cho tất cả các dòng (để bảo đảm tuần tự)
+    updateStepNumbers();
+  }
+
+  // Hàm cập nhật số thứ tự cho tất cả các dòng
+  function updateStepNumbers() {
+    const rows = container.querySelectorAll(".cooking-method-row");
+    rows.forEach((row, index) => {
+      const stepNumber = row.querySelector(".step-number");
+      stepNumber.textContent = index + 1;
+    });
+  }
+
+  // Thêm hàm xóa dòng
+  if (container) {
+    container.addEventListener("click", function (event) {
+      // Kiểm tra nếu nút xóa được click
+      if (event.target.classList.contains("delete-btn") || event.target.closest(".delete-btn")) {
+        const rowToDelete = event.target.closest(".cooking-method-row");
+
+        // Chỉ xóa nếu có nhiều hơn 1 dòng
+        if (container.querySelectorAll(".cooking-method-row").length > 1) {
+          rowToDelete.remove();
+          updateStepNumbers(); // Cập nhật lại số thứ tự
+        }
+      }
+    });
+  }
+
+  // Khởi tạo ban đầu với một dòng nếu chưa có
+  if (container && container.querySelectorAll(".cooking-method-row").length === 0) {
+    createNewRow();
+  }
+});
+
+// Hàm thu thập dữ liệu cooking methods
+function collectCookingMethods() {
+  const cookingMethods = [];
+  const container = document.querySelector(".cooking-methods-container");
+
+  if (!container) return [];
+
+  const rows = container.querySelectorAll(".cooking-method-row");
+
+  rows.forEach((row, index) => {
+    const stepNumber = index + 1;
+    const contentInput = row.querySelector(".cooking-method-input");
+    const content = contentInput.value.trim();
+
+    // Chỉ lưu những dòng có nội dung
+    if (content) {
+      cookingMethods.push({
+        id: stepNumber,
+        content: `STEP ${stepNumber}: ${content}`,
+      });
+    }
+  });
+
+  return cookingMethods;
+}
+
+// Tạo rand sách
+function createFoodSelector() {
+  const foodSelectorContainer = document.getElementById("foodSelectorContainer");
+  if (!foodSelectorContainer) return;
+
+  const foodSelector = document.createElement("div");
+  foodSelector.className = "food-selector mb-3";
+  foodSelector.innerHTML = `
+    <label for="foodSelect" class="form-label">Select Ingredients</label>
+    <select id="foodSelect" class="form-select">
+      <option value="">-- Select a food ingredient --</option>
+      ${Food.map((food) => `<option value="${food.id}">${food.name}</option>`).join("")}
+    </select>
+    <button type="button" id="addFoodButton" class="btn btn-primary mt-2">Add Ingredient</button>
+  `;
+
+  foodSelectorContainer.appendChild(foodSelector);
+
+  // Event listener for add button
+  document.getElementById("addFoodButton").addEventListener("click", function () {
+    const select = document.getElementById("foodSelect");
+    const foodId = parseInt(select.value);
+
+    if (foodId) {
+      const selectedFood = Food.find((food) => food.id === foodId);
+      if (selectedFood) {
+        addIngredientChart(selectedFood);
+      }
+    }
+  });
+}
+
+// Chức năng thu thập các thành phần đã chọn cho công thức
+function collectIngredients() {
+  return selectedIngredients.map((item) => item.food); // Trả lại các đối tượng thực phẩm hoàn chỉnh
+}
+
 function addNewRecipes(event) {
   event.preventDefault();
 
-  // Xóa mọi lỗi xác thực hiện có
+  // xóa lỗi xác thực
   clearValidationErrors();
-  const formRecipe = document.getElementById("formRecipe");
-  // lấy dữ liệu từ ô input
+  const formRecipe = event.target;
   const recipeData = getFormData(formRecipe);
 
-  // lấy category
+  // lấy category và chuyển thành id
   const comboInput = document.getElementById("comboInput");
   if (comboInput && comboInput.value) {
-    recipeData.category = comboInput.value;
+    const selectedNames = comboInput.value.split(",").map((name) => name.trim().toLowerCase());
+
+    const selectedCategoryIds = category
+      .filter((cat) => selectedNames.includes(cat.name.toLowerCase()))
+      .map((cat) => ({id: cat.id}));
+
+    recipeData.category = selectedCategoryIds;
   }
 
-  //
+  // lấy dữ liệu cooking
+  const cookingMethods = collectCookingMethods();
+  recipeData.cookingMethods = cookingMethods;
+
+  // thêm ingredients
+  recipeData.ingredients = collectIngredients();
+
+  // lấy dữ liệu ảnh
   const coverInput = document.getElementById("coverInput");
-  if (coverInput.files.length > 0) {
-    // Lưu trữ tên tệp
-    recipeData.coverSrc = coverInput.files[0].name;
+  if (coverInput.files && coverInput.files.length > 0) {
+    recipeData.coverSrc = "/img/" + coverInput.files[0].name;
   }
 
-  // Validate dữ liệu
+  // kiểu tra form hợp lệ hay chưa
   const validationResult = validateRecipeForm(recipeData);
 
   if (!validationResult.isValid) {
-    // Hiển thị lỗi xác thực
+    // hiển thị lỗi
     Object.keys(validationResult.errors).forEach((fieldName) => {
       showValidationError(fieldName, validationResult.errors[fieldName]);
     });
 
-    // du chuyển đến lỗi đầu tiên
+    // di chuyển đến lỗi đàu tiên
     const firstErrorField = document.querySelector(".is-invalid");
     if (firstErrorField) {
       firstErrorField.focus();
@@ -1290,20 +1526,162 @@ function addNewRecipes(event) {
     return;
   }
 
-  // lưu vào mảng
   Recipe.push({id: Recipe.length + 1, ...recipeData});
-
-  // lưu localStorage
   saveDataToLocal("Recipe", Recipe);
+  renderRecipes({
+    containerID: "recipeList",
+    paginationID: "paginationRecipe",
+    data: Recipe,
+    state: recipeState,
+    img: baseImagePath,
+  });
+  alert("Thêm vào danh sách Recipe thành công");
+  formRecipe.reset();
 
-  // Reset the form
-  form.reset();
-
-  // reset lại ảnh
+  // reset ảnh
   const previewImage = document.getElementById("previewImage");
   if (previewImage) {
     previewImage.src = "";
   }
+
+  // Reset bước làm
+  const cookingMethodsContainer = document.querySelector(".cooking-methods-container");
+  if (cookingMethodsContainer) {
+    cookingMethodsContainer.innerHTML = "";
+  }
+
+  // Reset ingredients
+  const addIngredients = document.getElementById("addIngredients");
+  if (addIngredients) {
+    addIngredients.innerHTML = "";
+    selectedIngredients = [];
+  }
+}
+
+// Function to show validation error
+function showValidationError(fieldName, errorMessage) {
+  const field =
+    document.getElementById(fieldName) ||
+    document.querySelector(`[name="${fieldName}"]`) ||
+    document.getElementById(`${fieldName}Container`);
+
+  if (field) {
+    field.classList.add("is-invalid");
+
+    // tạo phần tử lỗi
+    const errorDiv = document.createElement("div");
+    errorDiv.className = "invalid-feedback";
+    errorDiv.textContent = errorMessage;
+
+    // Chèn thông báo lỗi sau trường
+    field.parentNode.insertBefore(errorDiv, field.nextSibling);
+  } else if (fieldName === "ingredients") {
+    // Trường hợp đặc biệt cho các thành phần có thể không có trường trực tiếp
+    const ingredientsContainer = document.getElementById("addIngredients");
+    if (ingredientsContainer) {
+      ingredientsContainer.classList.add("is-invalid");
+
+      const errorDiv = document.createElement("div");
+      errorDiv.className = "invalid-feedback d-block";
+      errorDiv.textContent = errorMessage;
+
+      ingredientsContainer.parentNode.insertBefore(errorDiv, ingredientsContainer.nextSibling);
+    }
+  }
+}
+
+// Chức năng xóa tất cả các lỗi xác thực
+function clearValidationErrors() {
+  // Xóa lớp đỏ khỏi tất cả các phần tử
+  document.querySelectorAll(".is-invalid").forEach((element) => {
+    element.classList.remove("is-invalid");
+  });
+
+  // Xóa tất cả các thông báo lỗi
+  document.querySelectorAll(".invalid-feedback").forEach((element) => {
+    element.remove();
+  });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Create the food selector
+  createFoodSelector();
+
+  // khi bấm vào nút submit
+  const recipeForm = document.getElementById("recipeForm");
+  if (recipeForm) {
+    recipeForm.addEventListener("submit", addNewRecipes);
+  }
+});
+
+// Hàm kiểm tra xác thực form có thể cần thêm phần cookingMethods
+function validateRecipeForm(data) {
+  const errors = {};
+  let isValid = true;
+
+  // Các kiểm tra hiện có
+  if (!data.name || data.name.trim() === "") {
+    errors.name = "Tên công thức không được để trống";
+    isValid = false;
+  }
+
+  // Kiểm tra cookingMethods
+  if (!data.cookingMethods || data.cookingMethods.length === 0) {
+    errors.cookingMethods = "Vui lòng thêm ít nhất một bước nấu ăn";
+    isValid = false;
+  }
+
+  // Các kiểm tra khác...
+
+  return {
+    isValid,
+    errors,
+  };
+}
+
+// Helper function để tạo row mới cho cooking methods container
+function createNewRow(afterElement = null) {
+  const container = document.querySelector(".cooking-methods-container");
+  if (!container) return;
+
+  // Đếm số dòng hiện tại để xác định số thứ tự mới
+  const rowCount = container.querySelectorAll(".cooking-method-row").length + 1;
+
+  // Tạo phần tử div mới cho dòng
+  const newRow = document.createElement("div");
+  newRow.className = "cooking-method-row d-flex mb-2";
+
+  // Thiết lập HTML cho dòng mới
+  newRow.innerHTML = `
+    <span class="border border-end-0 p-2 text-wrap rounded-start-0 align-items-center d-flex fw-light step-number" style="background-color: #fafafb">
+      ${rowCount}
+    </span>
+    <input type="text" class="form-control rounded-0 fw-light cooking-method-input" placeholder="Add new cooking method" />
+    <span class="border text-wrap p-2 align-items-center d-flex fs-6 fw-light edit-button" style="background-color: #fafafb">
+      <i class="fa-solid fa-pen" style="color: #023f10"></i>
+    </span>
+    <span class="border text-wrap p-2 align-items-center d-flex fs-6 fw-light delete-btn" style="background-color: #fafafb; cursor: pointer;">
+      <i class="fa-solid fa-trash" style="color: #ff0000"></i>
+    </span>
+  `;
+
+  // Chèn dòng mới sau dòng hiện tại
+  if (afterElement) {
+    afterElement.after(newRow);
+  } else {
+    container.appendChild(newRow);
+  }
+
+  // Focus vào input của dòng mới
+  const newInput = newRow.querySelector(".cooking-method-input");
+  newInput.focus();
+
+  // Cập nhật lại số thứ tự cho tất cả các dòng
+  const rows = container.querySelectorAll(".cooking-method-row");
+  rows.forEach((row, index) => {
+    const stepNumber = row.querySelector(".step-number");
+    stepNumber.textContent = index + 1;
+  });
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -1319,14 +1697,13 @@ document.addEventListener("DOMContentLoaded", function () {
     form.addEventListener("submit", addNewRecipes);
   }
 
-  // Initialize the combo input
+  // bắt dữ liệu khi tương tác
   const selectInput = document.getElementById("selectInput");
   if (selectInput) {
-    // Your existing code for select input
     selectInput.addEventListener("dblclick", () => {
       if (!isInputVisible) {
         selectInput.innerHTML = inputHTML;
-        initCombo(); // Rebind comboInput/comboList
+        initCombo();
       } else {
         selectInput.innerHTML = labelHTML;
       }
@@ -1334,7 +1711,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Initialize image upload
   const uploadBtn = document.getElementById("uploadBtn");
   const coverInput = document.getElementById("coverInput");
   if (uploadBtn && coverInput) {

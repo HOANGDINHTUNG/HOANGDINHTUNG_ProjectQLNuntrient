@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../../home/style.css" />
   </head>
   <body>
+    <script src="../../auth/authen.js"></script>
     <script src="../../js/main.js"></script>
     <script src="../../home/home.js"></script>
 
@@ -338,6 +339,7 @@
                     <span style="opacity: 0.5; font-size: 14px">Search and add ingredients to the recipe</span>
                   </div>
 
+                  <!-- Add Food to Recipe -->
                   <div id="addIngredients"></div>
 
                   <!-- Add Ingredient Header -->
@@ -353,14 +355,39 @@
                   <!-- Search Section -->
                   <div class="search-container">
                     <div class="d-flex gap-2 mb-3">
-                      <input type="text" class="form-control" placeholder="Search food" style="width: 33%" />
-                      <div class="input-with-icon" style="width: 33%">
-                        <span class="input-icon">
-                          <i class="fas fa-sort-amount-up" style="color: #000000"></i>
-                        </span>
-                        <input type="text" class="full-width-input" placeholder="Sort by nutrient" />
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Search food"
+                        id="searchNutrition"
+                        style="width: 33%" />
+
+                      <div class="input-group" style="width: 33%">
+                        <div class="btn" id="sortNutrition">
+                          <i id="sortIconNutrion" class="fas fa-sort-amount-up m-0" style="color: black"></i>
+                        </div>
+                        <select class="form-select" id="sortSelectNutrition">
+                          <option selected disabled>Sort by nutrient</option>
+                          <option value="energy">Energy</option>
+                          <option value="fat">Fat</option>
+                          <option value="carbohydrate">Carbohydrate</option>
+                          <option value="protein">Protein</option>
+                        </select>
                       </div>
-                      <div class="database-selector" style="width: 33%">All databases</div>
+
+                      <select class="form-select" id="categorySelectNutri" style="width: 33%">
+                        <option selected value="">All databases</option>
+                        <option value="vegeterian">Vegeterian</option>
+                        <option value="appetizer">Appetizer</option>
+                        <option value="vegan">Vegan</option>
+                        <option value="main course">Main course</option>
+                        <option value="dessert">Dessert</option>
+                        <option value="low-carb">Low-carb</option>
+                        <option value="gluten-free">Gluten-free</option>
+                        <option value="breakfast">Breakfast</option>
+                        <option value="salad">Salad</option>
+                        <option value="soup">Soup</option>
+                      </select>
                     </div>
 
                     <!-- Nutrition Table Header -->
@@ -382,6 +409,7 @@
                   </div>
                 </div>
 
+                <!-- Cooking method -->
                 <div
                   class="d-flex flex-column gap-2 border border-1 rounded-2"
                   style="padding: 20px; background-color: white">
@@ -390,18 +418,24 @@
                     <span style="opacity: 0.5; font-size: 14px">Give instructions to prepare this recipe</span>
                   </div>
 
-                  <div class="d-flex mt-3">
-                    <span
-                      class="border border-end-0 p-2 text-wrap rounded-start-0 align-items-center d-flex fw-light"
-                      style="background-color: #fafafb">
-                      1
-                    </span>
-                    <input type="text" class="form-control rounded-0 fw-light" placeholder="Add new cooking method" />
-                    <span
-                      class="border text-wrap p-2 align-items-center d-flex fs-6 fw-light"
-                      style="background-color: #fafafb">
-                      <i class="fa-solid fa-pen" style="color: #023f10"></i>
-                    </span>
+                  <div class="cooking-methods-container mt-3">
+                    <!-- Ban đầu chỉ có một dòng -->
+                    <div class="cooking-method-row d-flex mb-2">
+                      <span
+                        class="border border-end-0 p-2 text-wrap rounded-start-0 align-items-center d-flex fw-light step-number"
+                        style="background-color: #fafafb">
+                        1
+                      </span>
+                      <input
+                        type="text"
+                        class="form-control rounded-0 fw-light cooking-method-input"
+                        placeholder="Add new cooking method" />
+                      <span
+                        class="border text-wrap p-2 align-items-center d-flex fs-6 fw-light edit-button"
+                        style="background-color: #fafafb">
+                        <i class="fa-solid fa-pen" style="color: #023f10"></i>
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>

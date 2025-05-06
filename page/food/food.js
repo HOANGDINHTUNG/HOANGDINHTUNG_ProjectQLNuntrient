@@ -10,7 +10,7 @@ function renderFood(data = Food) {
 
   const pageItems = data.slice(start, end);
 
-  pageItems.forEach((f, index) => {
+  pageItems.forEach((f) => {
     const actualIndex = Food.findIndex((item) => item.id === f.id);
     const row = `
       <div class=" rounded-3 p-2 d-flex justify-content-between mb-3" style="background-color:rgb(142, 141, 139);" onclick="editFoodItem(${actualIndex})">
@@ -170,10 +170,14 @@ function addNewFood(e) {
   saveDataToLocal("Food", Food);
   renderFood();
   formFoodEl.reset();
+  // di chuyển đến trang mới thêm
   editingIndex = null;
   overlay.style.display = "none";
+  if(confirm("Có muồn di chuyển đến xem Food vừa thêm không???")){
+    let finishPages = Math.ceil(Food.length / rowsPerPage)
+    changePage(Food,finishPages)
+  }
 }
-
 
 let editingIndex = null;
 
